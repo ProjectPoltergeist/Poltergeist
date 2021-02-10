@@ -1,6 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poltergeist", "Poltergeist\Poltergeist.csproj", "{7D47A9E9-B088-4887-9DF9-45EEE9BE8FBE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poltergeist.Sandbox", "Poltergeist.Sandbox\Poltergeist.Sandbox.csproj", "{7D47A9E9-B088-4887-9DF9-45EEE9BE8FBE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poltergeist.Core", "Poltergeist.Core\Poltergeist.Core.csproj", "{1A7B4E06-EE29-432C-8C82-3F4571C6B69A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poltergeist.Core.Tests", "Poltergeist.Core.Tests\Poltergeist.Core.Tests.csproj", "{ACDCE4E3-E717-4332-8834-966E47AB3DC3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poltergeist.Editor", "Poltergeist.Editor\Poltergeist.Editor.csproj", "{3A3C778E-9F25-442F-ADF3-EBB2AE83F970}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -12,5 +18,17 @@ Global
 		{7D47A9E9-B088-4887-9DF9-45EEE9BE8FBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7D47A9E9-B088-4887-9DF9-45EEE9BE8FBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7D47A9E9-B088-4887-9DF9-45EEE9BE8FBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A7B4E06-EE29-432C-8C82-3F4571C6B69A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A7B4E06-EE29-432C-8C82-3F4571C6B69A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A7B4E06-EE29-432C-8C82-3F4571C6B69A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A7B4E06-EE29-432C-8C82-3F4571C6B69A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACDCE4E3-E717-4332-8834-966E47AB3DC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACDCE4E3-E717-4332-8834-966E47AB3DC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACDCE4E3-E717-4332-8834-966E47AB3DC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACDCE4E3-E717-4332-8834-966E47AB3DC3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A3C778E-9F25-442F-ADF3-EBB2AE83F970}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A3C778E-9F25-442F-ADF3-EBB2AE83F970}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A3C778E-9F25-442F-ADF3-EBB2AE83F970}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A3C778E-9F25-442F-ADF3-EBB2AE83F970}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
