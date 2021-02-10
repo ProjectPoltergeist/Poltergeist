@@ -1,5 +1,5 @@
 int cheat = 0;
-        foreach (Process process in Process.GetProcessesByName("CheatEngine72"))
+        foreach (Process process in Process.GetProcessesByName("Cheat Engine"))
         {
             counter++;
         }
