@@ -6,4 +6,8 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Include="glfw3.dll" CopyToOutputDirectory="Always" />
+  </ItemGroup>
+
 </Project>
