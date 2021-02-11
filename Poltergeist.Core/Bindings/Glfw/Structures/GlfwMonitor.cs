@@ -3,7 +3,7 @@
 namespace Poltergeist.Core.Bindings.Glfw.Structures
 {
 	[StructLayout(LayoutKind.Sequential)]
-	internal readonly struct GlfwMonitor
+	public readonly struct GlfwMonitor
 	{
 	}
 }

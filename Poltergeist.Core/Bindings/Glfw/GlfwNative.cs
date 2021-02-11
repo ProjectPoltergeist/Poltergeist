@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace Poltergeist.Core.Bindings.Glfw
 {
-	internal static unsafe class GlfwNative
+	public static unsafe class GlfwNative
 	{
 		private const string GlfwLibrary = "glfw3";
 		private const CallingConvention Convention = CallingConvention.Cdecl;
