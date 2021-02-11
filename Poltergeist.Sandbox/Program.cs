@@ -57,9 +57,9 @@ namespace Poltergeist.Sandbox
 					0.0f, 0.5f, 0.0f
 				};
 
-				openGl.BufferData(glArrayBuffer, sizeof(float) * 9, vertices, glStaticDraw);
+				openGl.BufferData(glArrayBuffer, 9 * sizeof(float), vertices, glStaticDraw);
 
-				openGl.VertexAttributePointer(0, 3, glFloat, glFalse, sizeof(float) * 3, null);
+				openGl.VertexAttributePointer(0, 3, glFloat, glFalse, 3 * sizeof(float), null);
 				openGl.EnableVertexAttributeArray(0);
 
 				while (GlfwNative.WindowShouldClose(window) == glfwFalse)
