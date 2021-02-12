@@ -38,17 +38,15 @@ namespace Poltergeist.Sandbox
 
 				GlfwNative.MakeContextCurrent(window);
 
-				var openGl = new OpenGl3Native(&GlfwNative.GetProcessAddress);
-
 				var vertexArrayObjects = stackalloc uint[1];
 
-				openGl.GenerateVertexArrays(1, vertexArrayObjects);
-				openGl.BindVertexArray(vertexArrayObjects[0]);
+				OpenGl3Native.GenerateVertexArrays(1, vertexArrayObjects);
+				OpenGl3Native.BindVertexArray(vertexArrayObjects[0]);
 
 				var vertexBufferObjects = stackalloc uint[1];
 
-				openGl.GenerateBuffers(1, vertexBufferObjects);
-				openGl.BindBuffer(glArrayBuffer, vertexBufferObjects[0]);
+				OpenGl3Native.GenerateBuffers(1, vertexBufferObjects);
+				OpenGl3Native.BindBuffer(glArrayBuffer, vertexBufferObjects[0]);
 
 				var vertices = stackalloc float[]
 				{
@@ -56,25 +54,25 @@ namespace Poltergeist.Sandbox
 					0.5f, -0.5f, 0.0f,
 					0.0f, 0.5f, 0.0f
 				};
+				
+				OpenGl3Native.BufferData(glArrayBuffer, 9 * sizeof(float), vertices, glStaticDraw);
 
-				openGl.BufferData(glArrayBuffer, 9 * sizeof(float), vertices, glStaticDraw);
-
-				openGl.VertexAttributePointer(0, 3, glFloat, glFalse, 3 * sizeof(float), null);
-				openGl.EnableVertexAttributeArray(0);
+				OpenGl3Native.VertexAttributePointer(0, 3, glFloat, glFalse, 3 * sizeof(float), null);
+				OpenGl3Native.EnableVertexAttributeArray(0);
 
 				while (GlfwNative.WindowShouldClose(window) == glfwFalse)
 				{
 					GlfwNative.PollEvents();
 
-					openGl.ClearColor(0.3f, 0.3f, 0.3f, 1.0f);
-					openGl.Clear(glColorBufferBit);
-					openGl.DrawArrays(glTriangles, 0, 3);
+					OpenGl3Native.ClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+					OpenGl3Native.Clear(glColorBufferBit);
+					OpenGl3Native.DrawArrays(glTriangles, 0, 3);
 
 					GlfwNative.SwapBuffers(window);
 				}
 
-				openGl.DeleteVertexArrays(1, vertexArrayObjects);
-				openGl.DeleteBuffers(1, vertexBufferObjects);
+				OpenGl3Native.DeleteVertexArrays(1, vertexArrayObjects);
+				OpenGl3Native.DeleteBuffers(1, vertexBufferObjects);
 
 				GlfwNative.DestroyWindow(window);
 				GlfwNative.Terminate();
