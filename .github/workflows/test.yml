@@ -1,0 +1,33 @@
+name: Test
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: Poltergeist test (${{matrix.runtime}} ${{matrix.configuration}})
+    runs-on: ${{matrix.os}}
+
+    strategy:
+      matrix:
+        os: [windows-latest]
+        configuration: ['debug', 'release']
+        include:
+          - os: windows-latest
+            runtime: 'win-x64'
+
+    env:
+      DOTNET_NOLOGO: true
+      DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '5.0'
+
+    - name: Restore dependencies
+      run: dotnet restore -r ${{matrix.runtime}}
+
+    - name: Test
+      run: dotnet test -c ${{matrix.configuration}} -r ${{matrix.runtime}}
