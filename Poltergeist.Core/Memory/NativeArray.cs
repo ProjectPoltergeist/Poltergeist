@@ -1,53 +1,85 @@
-﻿using System;
+﻿using Poltergeist.Core.Math;
+using System;
 using System.Buffers;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Numerics;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
 // ReSharper disable UnusedType.Global
 // ReSharper disable MemberCanBePrivate.Global
 
-namespace Poltergeist.Core
+namespace Poltergeist.Core.Memory
 {
-	public sealed unsafe class NativeArray<T> : MemoryManager<T>, IDisposable, IReadOnlyList<T> where T : unmanaged
+	public sealed unsafe class NativeArray<T> : MemoryManager<T>, IReadOnlyList<T>, IDisposable where T : unmanaged
 	{
-		public static readonly int DefaultMemoryAlignment = Math.Max(Math.Max(16, sizeof(T)), MathUtils.Align(Vector<byte>.Count, 16));
+		// ReSharper disable StaticMemberInGenericType
+		public static readonly int MaxSize = int.MaxValue / sizeof(T);
+		public static readonly int DefaultMemoryAlignment = System.Math.Max(System.Math.Max(16, sizeof(T)), MathUtils.Align(Vector<byte>.Count, 16));
+		public static readonly INativeAllocator DefaultAllocator = new CoTaskMemAllocator();
+		// ReSharper restore StaticMemberInGenericType
 
 		public readonly T* Data;
 		public readonly int Count;
 		public readonly int ByteSize;
 
+		internal readonly INativeAllocator Allocator;
+		internal readonly int AlignedSize;
+
 		private readonly object _freeLock = new();
 		private readonly bool _zeroOnFree;
-		private readonly int _alignedSize;
+
+#if DEBUG
+		private readonly string _allocationStacktrace;
+#endif
 
 		private bool _valid;
 
 		int IReadOnlyCollection<T>.Count => Count;
 
-		public NativeArray(int size, bool zeroMemory = true, bool zeroOnFree = false) : this(size, DefaultMemoryAlignment, zeroMemory, zeroOnFree) { }
+		public NativeArray(ReadOnlySpan<T> data, bool zeroOnFree = false, INativeAllocator allocator = null)
+			: this(data, DefaultMemoryAlignment, zeroOnFree, allocator)
+		{
+		}
 
-		public NativeArray(int size, int alignment, bool zeroMemory = true, bool zeroOnFree = false)
+		public NativeArray(ReadOnlySpan<T> data, int alignment, bool zeroOnFree = false, INativeAllocator allocator = null)
+			: this(data.Length, alignment, false, zeroOnFree, allocator)
+		{
+			data.CopyTo(AsSpan());
+		}
+
+		public NativeArray(int size, bool zeroMemory = true, bool zeroOnFree = false, INativeAllocator allocator = null)
+			: this(size, DefaultMemoryAlignment, zeroMemory, zeroOnFree, allocator)
+		{
+		}
+
+		public NativeArray(int size, int alignment, bool zeroMemory = true, bool zeroOnFree = false, INativeAllocator allocator = null)
 		{
 			if (size < 0)
 				throw new ArgumentOutOfRangeException(nameof(size), size, "Allocation size must be positive");
 			if (alignment < sizeof(T))
 				throw new ArgumentOutOfRangeException(nameof(alignment), alignment, "Alignment must be at least the element size");
+			if (size > MaxSize)
+				throw new ArgumentOutOfRangeException(nameof(size), size, "Allocation size must be below 2GB");
 			Count = size;
 			ByteSize = size * sizeof(T);
-			_alignedSize = ByteSize == 0 ? 0 : MathUtils.Align(ByteSize, alignment);
-			Data = (T*)Marshal.AllocCoTaskMem(_alignedSize).ToPointer();
+			Allocator = allocator ?? DefaultAllocator;
+			AlignedSize = ByteSize == 0 ? 0 : (int)System.Math.Min((uint)MathUtils.Align(ByteSize, alignment), int.MaxValue);
+			Data = (T*)Allocator.Allocate(AlignedSize).ToPointer();
 			_valid = Data != null;
 
-			if (_alignedSize == 0)
+			if (AlignedSize == 0)
 				return;
-			GC.AddMemoryPressure(_alignedSize);
+			GC.AddMemoryPressure(AlignedSize);
 			if (zeroMemory)
 				Clear();
 			_zeroOnFree = zeroOnFree;
+
+#if DEBUG
+			_allocationStacktrace = Environment.StackTrace;
+#endif
 		}
 
 		public T this[int index]
@@ -55,14 +87,14 @@ namespace Poltergeist.Core
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			get
 			{
-				if (index >= Count)
+				if (index >= Count || index < 0)
 					ThrowHelper.IndexOutOfRange();
 				return Data[index];
 			}
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			set
 			{
-				if (index >= Count)
+				if (index >= Count || index < 0)
 					ThrowHelper.IndexOutOfRange();
 				Data[index] = value;
 			}
@@ -71,13 +103,19 @@ namespace Poltergeist.Core
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void CopyTo(Span<T> destination)
 		{
-			AsSpan().CopyTo(destination);
+			AsReadOnlySpan().CopyTo(destination);
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public bool TryCopyTo(Span<T> destination)
 		{
-			return AsSpan().TryCopyTo(destination);
+			return AsReadOnlySpan().TryCopyTo(destination);
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public void Fill(T value)
+		{
+			AsSpan().Fill(value);
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -109,6 +147,7 @@ namespace Poltergeist.Core
 			return destination;
 		}
 
+		#region MemoryOwner
 		protected override void Dispose(bool disposing) => Dispose();
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public override Span<T> GetSpan() => AsSpan();
@@ -122,7 +161,17 @@ namespace Poltergeist.Core
 			segment = default;
 			return false;
 		}
+		#endregion
 
+		#region IEnumerable
+		public NativeMemoryEnumerator GetEnumerator() => new(this);
+		// ReSharper disable HeapView.BoxingAllocation
+		IEnumerator<T> IEnumerable<T>.GetEnumerator() => GetEnumerator();
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+		// ReSharper restore HeapView.BoxingAllocation
+		#endregion
+
+		#region IDisposeable
 		private void Free()
 		{
 			lock (_freeLock)
@@ -131,9 +180,9 @@ namespace Poltergeist.Core
 					return;
 				if (_zeroOnFree)
 					Clear();
-				Marshal.FreeCoTaskMem(new IntPtr(Data));
-				if (_alignedSize > 0)
-					GC.RemoveMemoryPressure(_alignedSize);
+				Allocator.Free(new IntPtr(Data));
+				if (AlignedSize > 0)
+					GC.RemoveMemoryPressure(AlignedSize);
 				_valid = false;
 			}
 		}
@@ -147,15 +196,13 @@ namespace Poltergeist.Core
 #pragma warning disable CA2015
 		~NativeArray()
 		{
+#if DEBUG
+			Debug.WriteLine($"NativeArray leaked to the GC, this might lead to use after free with spans. Allocation stacktrace: {_allocationStacktrace}");
+#endif
 			Free();
 		}
 #pragma warning restore CA2015
-
-		public NativeMemoryEnumerator GetEnumerator() => new(this);
-		// ReSharper disable HeapView.BoxingAllocation
-		IEnumerator<T> IEnumerable<T>.GetEnumerator() => GetEnumerator();
-		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-		// ReSharper restore HeapView.BoxingAllocation
+		#endregion
 
 		public struct NativeMemoryEnumerator : IEnumerator<T>
 		{

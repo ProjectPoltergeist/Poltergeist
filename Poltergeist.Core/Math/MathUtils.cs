@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace Poltergeist.Core
+namespace Poltergeist.Core.Math
 {
 	public static class MathUtils
 	{
