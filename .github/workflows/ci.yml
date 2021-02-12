@@ -27,7 +27,7 @@ jobs:
         dotnet-version: 5.0.x
 
     - name: Restore dependencies
-      run: dotnet restore -c ${{matrix.configuration}} -r ${{matrix.runtime}}
+      run: dotnet restore -r ${{matrix.runtime}}
 
     - name: Build editor
       run: dotnet publish -c ${{matrix.configuration}} -r ${{matrix.runtime}} --no-restore Poltergeist.Editor
