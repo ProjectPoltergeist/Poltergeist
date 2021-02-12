@@ -23,7 +23,7 @@ namespace Poltergeist.Core.Tests
 				Assert.Equal(size * sizeof(int), nativeArray.ByteSize);
 				Assert.True(nativeArray.AlignedSize >= nativeArray.ByteSize);
 				// ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local
-				Assert.True(nativeArray.All(i => i == 0));
+				Assert.True(nativeArray.All(v => v == 0));
 			}
 		}
 
