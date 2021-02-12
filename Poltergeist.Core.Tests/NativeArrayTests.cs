@@ -15,15 +15,15 @@ namespace Poltergeist.Core.Tests
 		[InlineData(1024)]
 		public void CreateTest(int size)
 		{
-			using (NativeArray<int> a = new(size))
+			using (NativeArray<int> nativeArray = new(size))
 			{
-				Assert.True(a.Data != null);
-				Assert.NotNull(a.Allocator);
-				Assert.Equal(size, a.Count);
-				Assert.Equal(size * sizeof(int), a.ByteSize);
-				Assert.True(a.AlignedSize >= a.ByteSize);
+				Assert.True(nativeArray.Data != null);
+				Assert.NotNull(nativeArray.Allocator);
+				Assert.Equal(size, nativeArray.Count);
+				Assert.Equal(size * sizeof(int), nativeArray.ByteSize);
+				Assert.True(nativeArray.AlignedSize >= nativeArray.ByteSize);
 				// ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local
-				Assert.True(a.All(i => i == 0));
+				Assert.True(nativeArray.All(i => i == 0));
 			}
 		}
 
@@ -34,17 +34,17 @@ namespace Poltergeist.Core.Tests
 		[InlineData(1024)]
 		public void CreateWithDataTest(int size)
 		{
-			int[] arr = new int[size];
-			new Random().NextBytes(MemoryMarshal.AsBytes(arr.AsSpan()));
-			using (NativeArray<int> a = new(arr))
+			int[] array = new int[size];
+			new Random().NextBytes(MemoryMarshal.AsBytes(array.AsSpan()));
+			using (NativeArray<int> nativeArray = new(array))
 			{
-				Assert.True(a.Data != null);
-				Assert.NotNull(a.Allocator);
-				Assert.Equal(arr.Length, a.Count);
-				Assert.Equal(arr.Length * sizeof(int), a.ByteSize);
-				Assert.True(a.AlignedSize >= a.ByteSize);
+				Assert.True(nativeArray.Data != null);
+				Assert.NotNull(nativeArray.Allocator);
+				Assert.Equal(array.Length, nativeArray.Count);
+				Assert.Equal(array.Length * sizeof(int), nativeArray.ByteSize);
+				Assert.True(nativeArray.AlignedSize >= nativeArray.ByteSize);
 				// ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local
-				Assert.True(arr.SequenceEqual(a));
+				Assert.True(array.SequenceEqual(nativeArray));
 			}
 		}
 
@@ -63,12 +63,12 @@ namespace Poltergeist.Core.Tests
 		[Fact]
 		public void SpanTest()
 		{
-			using (NativeArray<int> a = new(1024))
+			using (NativeArray<int> nativeArray = new(1024))
 			{
-				Assert.Equal(a.Count, a.AsSpan().Length);
-				Assert.Equal(a.Count, a.AsReadOnlySpan().Length);
-				Assert.True(a.AsSpan().SequenceEqual(new ReadOnlySpan<int>(a.Data, a.Count)));
-				Assert.True(a.AsReadOnlySpan().SequenceEqual(new ReadOnlySpan<int>(a.Data, a.Count)));
+				Assert.Equal(nativeArray.Count, nativeArray.AsSpan().Length);
+				Assert.Equal(nativeArray.Count, nativeArray.AsReadOnlySpan().Length);
+				Assert.True(nativeArray.AsSpan().SequenceEqual(new ReadOnlySpan<int>(nativeArray.Data, nativeArray.Count)));
+				Assert.True(nativeArray.AsReadOnlySpan().SequenceEqual(new ReadOnlySpan<int>(nativeArray.Data, nativeArray.Count)));
 			}
 		}
 
@@ -79,23 +79,23 @@ namespace Poltergeist.Core.Tests
 		[InlineData(int.MaxValue)]
 		public void FillTest(int value)
 		{
-			using (NativeArray<int> a = new(1024, false))
+			using (NativeArray<int> nativeArray = new(1024, false))
 			{
-				a.Fill(value);
+				nativeArray.Fill(value);
 				// ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local
-				Assert.True(a.All(i => i == value));
+				Assert.True(nativeArray.All(v => v == value));
 			}
 		}
 
 		[Fact]
 		public void ClearTest()
 		{
-			using (NativeArray<uint> a = new(1024, false))
+			using (NativeArray<uint> nativeArray = new(1024, false))
 			{
-				a.Fill(uint.MaxValue);
-				a.Clear();
+				nativeArray.Fill(uint.MaxValue);
+				nativeArray.Clear();
 				// ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local
-				Assert.True(a.All(i => i == 0));
+				Assert.True(nativeArray.All(v => v == 0));
 			}
 		}
 
@@ -105,13 +105,13 @@ namespace Poltergeist.Core.Tests
 		[InlineData(128)]
 		public void EnumerableTest(int length)
 		{
-			using (NativeArray<uint> a = new(length))
+			using (NativeArray<uint> nativeArray = new(length))
 			{
-				a.Fill(uint.MaxValue);
+				nativeArray.Fill(uint.MaxValue);
 				// ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local
-				Assert.True(a.All(i => i == uint.MaxValue));
+				Assert.True(nativeArray.All(v => v == uint.MaxValue));
 #pragma warning disable CA1826
-				Assert.Equal(a.Count, a.Count());
+				Assert.Equal(nativeArray.Count, nativeArray.Count());
 #pragma warning restore CA1826
 			}
 		}
@@ -122,13 +122,13 @@ namespace Poltergeist.Core.Tests
 		[InlineData(128)]
 		public void ToArrayTest(int length)
 		{
-			using (NativeArray<uint> a = new(length))
+			using (NativeArray<uint> nativeArray = new(length))
 			{
-				a.Fill(uint.MaxValue);
-				uint[] ar = a.ToArray();
+				nativeArray.Fill(uint.MaxValue);
+				uint[] array = nativeArray.ToArray();
 
-				Assert.True(a.SequenceEqual(ar));
-				Assert.Equal(a.Count, ar.Length);
+				Assert.True(nativeArray.SequenceEqual(array));
+				Assert.Equal(nativeArray.Count, array.Length);
 			}
 		}
 
@@ -138,13 +138,13 @@ namespace Poltergeist.Core.Tests
 		[InlineData(128)]
 		public void IterationTest(int length)
 		{
-			using (NativeArray<uint> a = new(length))
+			using (NativeArray<uint> nativeArray = new(length))
 			{
-				for (int i = 0; i < a.Count; i++)
-					a[i] = uint.MaxValue;
-				for (int i = 0; i < a.Count; i++)
-					Assert.Equal(uint.MaxValue, a[i]);
-				foreach (uint u in a)
+				for (int i = 0; i < nativeArray.Count; i++)
+					nativeArray[i] = uint.MaxValue;
+				for (int i = 0; i < nativeArray.Count; i++)
+					Assert.Equal(uint.MaxValue, nativeArray[i]);
+				foreach (uint u in nativeArray)
 					Assert.Equal(uint.MaxValue, u);
 			}
 		}
@@ -155,14 +155,14 @@ namespace Poltergeist.Core.Tests
 		[InlineData(128)]
 		public void IndexerTest(int length)
 		{
-			using (NativeArray<uint> a = new(length))
+			using (NativeArray<uint> nativeArray = new(length))
 			{
-				Assert.Throws<IndexOutOfRangeException>(() => { _ = a[-1]; });
-				Assert.Throws<IndexOutOfRangeException>(() => { _ = a[a.Count]; });
-				if (a.Count == 0)
+				Assert.Throws<IndexOutOfRangeException>(() => { _ = nativeArray[-1]; });
+				Assert.Throws<IndexOutOfRangeException>(() => { _ = nativeArray[nativeArray.Count]; });
+				if (nativeArray.Count == 0)
 					return;
-				_ = a[0];
-				_ = a[a.Count - 1];
+				_ = nativeArray[0];
+				_ = nativeArray[nativeArray.Count - 1];
 			}
 		}
 	}
