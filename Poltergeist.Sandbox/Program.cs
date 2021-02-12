@@ -38,7 +38,7 @@ namespace Poltergeist.Sandbox
 
 				GlfwNative.MakeContextCurrent(window);
 
-				var openGl = new OpenGlNative(&GlfwNative.GetProcessAddress);
+				var openGl = new OpenGl3Native(&GlfwNative.GetProcessAddress);
 
 				var vertexArrayObjects = stackalloc uint[1];
 
