@@ -1,24 +1,28 @@
-﻿namespace Poltergeist.Core.Bindings.OpenGl
+﻿using Poltergeist.Core.Bindings.Glfw;
+
+namespace Poltergeist.Core.Bindings.OpenGl
 {
-	public unsafe class OpenGl1Native
+	public abstract unsafe class OpenGl1Native
 	{
-		public readonly delegate* unmanaged[Cdecl]<int, uint*, void> GenerateBuffers;
-		public readonly delegate* unmanaged[Cdecl]<int, uint*, void> DeleteBuffers;
-		public readonly delegate* unmanaged[Cdecl]<int, uint, void> BindBuffer;
-		public readonly delegate* unmanaged[Cdecl]<int, long, void*, int, void> BufferData;
-		public readonly delegate* unmanaged[Cdecl]<int, void> Clear;
-		public readonly delegate* unmanaged[Cdecl]<float, float, float, float, void> ClearColor;
-		public readonly delegate* unmanaged[Cdecl]<int, int, int, void> DrawArrays;
-	
-		public OpenGl1Native(delegate*<string, void*> loader)
-		{
-			GenerateBuffers = (delegate* unmanaged[Cdecl]<int, uint*, void>)loader("glGenBuffers");
-			DeleteBuffers = (delegate* unmanaged[Cdecl]<int, uint*, void>)loader("glDeleteBuffers");
-			BindBuffer = (delegate* unmanaged[Cdecl]<int, uint, void>)loader("glBindBuffer");
-			BufferData = (delegate* unmanaged[Cdecl]<int, long, void*, int, void>)loader("glBufferData");
-			Clear = (delegate* unmanaged[Cdecl]<int, void>)loader("glClear");
-			ClearColor = (delegate* unmanaged[Cdecl]<float, float, float, float, void>)loader("glClearColor");
-			DrawArrays = (delegate* unmanaged[Cdecl]<int, int, int, void>)loader("glDrawArrays");
-		}
+		public static readonly delegate* unmanaged[Cdecl]<int, uint*, void> GenerateBuffers =
+			(delegate* unmanaged[Cdecl]<int, uint*, void>)GlfwNative.GetProcessAddress("glGenBuffers");
+
+		public static readonly delegate* unmanaged[Cdecl]<int, uint*, void> DeleteBuffers =
+			(delegate* unmanaged[Cdecl]<int, uint*, void>)GlfwNative.GetProcessAddress("glDeleteBuffers");
+
+		public static readonly delegate* unmanaged[Cdecl]<int, uint, void> BindBuffer =
+			(delegate* unmanaged[Cdecl]<int, uint, void>)GlfwNative.GetProcessAddress("glBindBuffer");
+
+		public static readonly delegate* unmanaged[Cdecl]<int, long, void*, int, void> BufferData =
+			(delegate* unmanaged[Cdecl]<int, long, void*, int, void>)GlfwNative.GetProcessAddress("glBufferData");
+
+		public static readonly delegate* unmanaged[Cdecl]<int, void> Clear =
+			(delegate* unmanaged[Cdecl]<int, void>)GlfwNative.GetProcessAddress("glClear");
+
+		public static readonly delegate* unmanaged[Cdecl]<float, float, float, float, void> ClearColor =
+			(delegate* unmanaged[Cdecl]<float, float, float, float, void>)GlfwNative.GetProcessAddress("glClearColor");
+
+		public static readonly delegate* unmanaged[Cdecl]<int, int, int, void> DrawArrays =
+			(delegate* unmanaged[Cdecl]<int, int, int, void>)GlfwNative.GetProcessAddress("glDrawArrays");
 	}
 }
