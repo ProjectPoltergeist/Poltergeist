@@ -11,32 +11,32 @@ namespace Poltergeist.Core.Tests
 		[InlineData(0, null, null, 0)]
 		[InlineData(int.MaxValue, "abcde", "fghij", int.MaxValue)]
 		[InlineData(-1, "abc\tde", "fgh\tij", -1)]
-		public unsafe void DataTest(int i, string a, string b, int p)
+		public unsafe void DataTest(int integer, string utf8String, string wideString, int ptr)
 		{
-			TestStruct ts = new() { a = a, b = b, i = i, p = new IntPtr(p) };
-			using (NativeStruct<TestStruct> nativeStruct = new(ts))
+			TestStruct testStruct = new() { integer = integer, utf8String = utf8String, wideString = wideString, ptr = new IntPtr(ptr) };
+			using (NativeStruct<TestStruct> nativeStruct = new(testStruct))
 			{
 				Assert.True(nativeStruct.Data != null);
 				Assert.NotNull(nativeStruct.Allocator);
 				Assert.Equal(Marshal.SizeOf<TestStruct>(), nativeStruct.Size);
-				Assert.Equal(ts.i, *(int*)nativeStruct.Data);
-				Assert.Equal(ts, Marshal.PtrToStructure<TestStruct>(new IntPtr(nativeStruct.Data)));
+				Assert.Equal(testStruct.integer, *(int*)nativeStruct.Data);
+				Assert.Equal(testStruct, Marshal.PtrToStructure<TestStruct>(new IntPtr(nativeStruct.Data)));
 			}
 		}
 
 		[StructLayout(LayoutKind.Sequential)]
 		private struct TestStruct : IEquatable<TestStruct>
 		{
-			public int i;
+			public int integer;
 			[MarshalAs(UnmanagedType.LPUTF8Str)]
-			public string a;
+			public string utf8String;
 			[MarshalAs(UnmanagedType.LPWStr)]
-			public string b;
-			public IntPtr p;
+			public string wideString;
+			public IntPtr ptr;
 
 			public bool Equals(TestStruct other)
 			{
-				return i == other.i && a == other.a && b == other.b && p.Equals(other.p);
+				return integer == other.integer && utf8String == other.utf8String && wideString == other.wideString && ptr == other.ptr;
 			}
 
 			public override bool Equals(object obj)
@@ -47,7 +47,7 @@ namespace Poltergeist.Core.Tests
 			public override int GetHashCode()
 			{
 				// ReSharper disable NonReadonlyMemberInGetHashCode
-				return HashCode.Combine(i, a, b, p);
+				return HashCode.Combine(integer, utf8String, wideString, ptr);
 				// ReSharper restore NonReadonlyMemberInGetHashCode
 			}
 
@@ -64,7 +64,7 @@ namespace Poltergeist.Core.Tests
 			public override string ToString()
 			{
 				// ReSharper disable HeapView.BoxingAllocation
-				return $"({i}) ({a}) ({b}) ({p})";
+				return $"({integer}) ({utf8String}) ({wideString}) ({ptr})";
 				// ReSharper restore HeapView.BoxingAllocation
 			}
 		}
