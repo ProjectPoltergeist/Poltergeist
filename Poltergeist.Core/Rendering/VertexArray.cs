@@ -12,42 +12,30 @@ namespace Poltergeist.Core.Rendering
 			_vertexArrayId = vertexArrayId;
 		}
 
-		public static VertexArray Create()
+		public static unsafe VertexArray Create()
 		{
 			uint vertexArrayId;
 			
-			unsafe
-			{
-				OpenGl3Native.GenerateVertexArrays(1, &vertexArrayId);
-			}
+			OpenGl3Native.GenerateVertexArrays(1, &vertexArrayId);
 
 			return new VertexArray(vertexArrayId);
 		}
 		
-		public void Bind()
+		public unsafe void Bind()
 		{
-			unsafe
-			{
-				OpenGl3Native.BindVertexArray(_vertexArrayId);
-			}
+			OpenGl3Native.BindVertexArray(_vertexArrayId);
 		}
 
-		public void Unbind()
+		public unsafe void Unbind()
 		{
-			unsafe
-			{
-				OpenGl3Native.BindVertexArray(0);
-			}
+			OpenGl3Native.BindVertexArray(0);
 		}
 
-		public void Dispose()
+		public unsafe void Dispose()
 		{
-			unsafe
+			fixed (uint* vertexArrayIdPointer = &_vertexArrayId)
 			{
-				fixed (uint* vertexArrayIdPointer = &_vertexArrayId)
-				{
-					OpenGl3Native.DeleteVertexArrays(1, vertexArrayIdPointer);
-				}
+				OpenGl3Native.DeleteVertexArrays(1, vertexArrayIdPointer);
 			}
 		}
 	}
