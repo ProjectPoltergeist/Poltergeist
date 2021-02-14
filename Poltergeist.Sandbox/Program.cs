@@ -51,7 +51,7 @@ namespace Poltergeist.Sandbox
 					new(OpenGlType.Float, 3)	
 				};
 
-				using (var vertexBuffer = VertexBuffer.Create(vertices, layout)) {}
+				using (var vertexBuffer = VertexBuffer.Create<float>(vertices, layout)) {}
 
 				while (GlfwNative.WindowShouldClose(window) == glfwFalse)
 				{
