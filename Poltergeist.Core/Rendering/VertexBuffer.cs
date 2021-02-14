@@ -67,9 +67,7 @@ namespace Poltergeist.Core.Rendering
 		public unsafe void Dispose()
 		{
 			fixed (uint* vertexBufferIdPointer = &_vertexBufferId)
-			{
 				OpenGl3Native.DeleteBuffers(1, vertexBufferIdPointer);
-			}
 		}
 	}
 }
