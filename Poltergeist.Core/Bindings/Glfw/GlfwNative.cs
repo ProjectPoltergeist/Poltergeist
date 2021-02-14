@@ -26,11 +26,18 @@ namespace Poltergeist.Core.Bindings.Glfw
 			}
 		}
 
+		#region Basic
 		[DllImport(GlfwLibrary, EntryPoint = "glfwInit", CallingConvention = Convention)]
 		public static extern int Init();
-
+		#endregion
 		[DllImport(GlfwLibrary, EntryPoint = "glfwWindowHint", CallingConvention = Convention)]
 		public static extern void WindowHint(int hint, int value);
+
+		[DllImport(GlfwLibrary, EntryPoint = "glfwWindowHintString", CallingConvention = Convention)]
+		public static extern void WindowHint(int hint, [MarshalAs(UnmanagedType.LPUTF8Str)] string value);
+
+		[DllImport(GlfwLibrary, EntryPoint = "glfwDefaultWindowHints", CallingConvention = Convention)]
+		public static extern void DefaultWindowHints(int hint, int value);
 
 		[DllImport(GlfwLibrary, EntryPoint = "glfwGetProcAddress", CallingConvention = Convention, BestFitMapping = false)]
 		public static extern void* GetProcessAddress([MarshalAs(UnmanagedType.LPUTF8Str)] string processName);
@@ -50,6 +57,9 @@ namespace Poltergeist.Core.Bindings.Glfw
 		[DllImport(GlfwLibrary, EntryPoint = "glfwWindowShouldClose", CallingConvention = Convention)]
 		public static extern int WindowShouldClose(GlfwWindow* window);
 
+		[DllImport(GlfwLibrary, EntryPoint = "glfwSetWindowTitle", CallingConvention = Convention)]
+		public static extern void SetWindowTitle(GlfwWindow* window, [MarshalAs(UnmanagedType.LPUTF8Str)] string title);
+
 		[DllImport(GlfwLibrary, EntryPoint = "glfwPollEvents", CallingConvention = Convention)]
 		public static extern void PollEvents();
 
@@ -58,5 +68,11 @@ namespace Poltergeist.Core.Bindings.Glfw
 
 		[DllImport(GlfwLibrary, EntryPoint = "glfwGetVersion", CallingConvention = Convention)]
 		public static extern void GetVersion(out int major, out int minor, out int rev);
+
+		#region Input
+		[DllImport(GlfwLibrary, EntryPoint = "glfwSetKeyCallback", CallingConvention = Convention)]
+		public static extern void SetKeyCallback(GlfwWindow* window);
+
+		#endregion
 	}
 }

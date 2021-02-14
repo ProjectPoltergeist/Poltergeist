@@ -1,4 +1,4 @@
-﻿namespace Poltergeist.Core.Bindings.Glfw.Macros
+﻿namespace Poltergeist.Core.Bindings.Glfw
 {
 	public enum GlfwHint : int
 	{
