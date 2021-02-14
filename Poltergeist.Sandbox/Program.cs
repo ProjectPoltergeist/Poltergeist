@@ -1,9 +1,9 @@
 ﻿using System;
 using Poltergeist.Core;
 using Poltergeist.Core.Bindings.Glfw;
-using Poltergeist.Core.Bindings.Glfw.Structures;
 using Poltergeist.Core.Bindings.OpenGl;
 using Poltergeist.Core.Rendering;
+using Poltergeist.Core.Windowing;
 
 namespace Poltergeist.Sandbox
 {
@@ -32,43 +32,42 @@ namespace Poltergeist.Sandbox
 				GlfwNative.WindowHint(glfwOpenGlForwardCompat, glfwTrue);
 				GlfwNative.WindowHint(glfwResizable, glfwFalse);
 
-				GlfwWindow* window = GlfwNative.CreateWindow(800, 600, "Poltergeist Editor", null, null);
-
-				GlfwNative.MakeContextCurrent(window);
-
-				using (var vertexArray = VertexArray.Create())
+				using (var window = new Window("Poltergeist Editor"))
 				{
-					vertexArray.Bind();
-
-					Span<float> vertices = stackalloc float[]
+					using (var vertexArray = VertexArray.Create())
 					{
-						-0.5f, -0.5f, 0.0f,
-						0.5f, -0.5f, 0.0f,
-						0.0f, 0.5f, 0.0f
-					};
+						vertexArray.Bind();
 
-					Span<VertexBufferElement> layout = stackalloc VertexBufferElement[]
-					{
-						new(OpenGlType.Float, 3)
-					};
+						Span<float> vertices = stackalloc float[]
+						{
+							-0.5f, -0.5f, 0.0f,
+							0.5f, -0.5f, 0.0f,
+							0.0f, 0.5f, 0.0f
+						};
 
-					using (var vertexBuffer = VertexBuffer.Create<float>(vertices, layout))  {}
+						Span<VertexBufferElement> layout = stackalloc VertexBufferElement[]
+						{
+							new(OpenGlType.Float, 3)
+						};
 
-					while (GlfwNative.WindowShouldClose(window) == glfwFalse)
-					{
-						GlfwNative.PollEvents();
+						using (var vertexBuffer = VertexBuffer.Create<float>(vertices, layout))  {}
 
-						OpenGl3Native.ClearColor(0.3f, 0.3f, 0.3f, 1.0f);
-						OpenGl3Native.Clear(glColorBufferBit);
-						OpenGl3Native.DrawArrays(glTriangles, 0, 3);
+						while (window.IsOpen)
+						{
+							window.PollEvents();
 
-						GlfwNative.SwapBuffers(window);
+							OpenGl3Native.ClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+							OpenGl3Native.Clear(glColorBufferBit);
+							OpenGl3Native.DrawArrays(glTriangles, 0, 3);
+
+							window.SwapBuffers();
+						}
+
+						vertexArray.Unbind();
 					}
 
-					vertexArray.Unbind();
 				}
 
-				GlfwNative.DestroyWindow(window);
 				GlfwNative.Terminate();
 			}
 		}
