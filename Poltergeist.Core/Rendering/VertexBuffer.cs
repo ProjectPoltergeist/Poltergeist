@@ -16,7 +16,7 @@ namespace Poltergeist.Core.Rendering
 			_vertexBufferId = vertexBufferId;
 		}
 
-		public static unsafe VertexBuffer Create<T>(Span<T> data, VertexBufferElement[] layout) where T : unmanaged
+		public static unsafe VertexBuffer Create<T>(ReadOnlySpan<T> data, ReadOnlySpan<VertexBufferElement> layout) where T : unmanaged
 		{
 			uint vertexBufferId;
 		
