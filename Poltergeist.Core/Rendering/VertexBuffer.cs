@@ -46,7 +46,7 @@ namespace Poltergeist.Core.Rendering
 				OpenGl3Native.VertexAttributePointer(i, element.Count, (int)element.Type, glFalse, size, offset);
 				OpenGl3Native.EnableVertexAttributeArray(i);
 					
-				offset = (void*)((long)offset + size);
+				offset = (void*)((nuint)offset + size);
 			}
 
 			vertexBuffer.Unbind();
