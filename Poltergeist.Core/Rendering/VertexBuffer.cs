@@ -31,7 +31,7 @@ namespace Poltergeist.Core.Rendering
 				OpenGl3Native.BufferData(glArrayBuffer, data.Length * sizeof(T), dataPointer, glStaticDraw);
 			}
 
-			nuint offset;
+			nuint offset = 0;
 				
 			for (uint i = 0; i < layout.Length; i++)
 			{
