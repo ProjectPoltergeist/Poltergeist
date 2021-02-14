@@ -9,7 +9,7 @@ namespace Poltergeist.Core.Windowing
 		private readonly GlfwWindow* _window;
 		private readonly object _lock = new();
 		
-		private boolean _disposed = false;
+		private bool _disposed;
 
 		public bool IsOpen => GlfwNative.WindowShouldClose(_window) == 0;
 
