@@ -34,11 +34,10 @@ namespace Poltergeist.Core.Windowing
 		{
 			lock (_lock)
 			{
-				if (!_disposed)
-				{
-					GlfwNative.DestroyWindow(_window);
-					_disposed - true;
-				}
+				if (_disposed)
+					return;
+				GlfwNative.DestroyWindow(_window);
+				_disposed = true;
 			}
 		}
 
