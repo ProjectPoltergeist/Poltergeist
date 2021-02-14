@@ -1,4 +1,5 @@
-﻿using Poltergeist.Core;
+﻿using System;
+using Poltergeist.Core;
 using Poltergeist.Core.Bindings.Glfw;
 using Poltergeist.Core.Bindings.Glfw.Structures;
 using Poltergeist.Core.Bindings.OpenGl;
@@ -20,11 +21,7 @@ namespace Poltergeist.Sandbox
 				const int glfwOpenGlCoreProfile = 0x00032001;
 				const int glfwOpenGlForwardCompat = 0x00022006;
 				const int glfwResizable = 0x00020003;
-
-				const int glFalse = 0;
-				const int glFloat = 0x1406;
-				const int glArrayBuffer = 0x8892;
-				const int glStaticDraw = 0x88E4;
+				
 				const int glColorBufferBit = 0x00004000;
 				const int glTriangles = 0x0004;
 
@@ -42,22 +39,19 @@ namespace Poltergeist.Sandbox
 				var vertexArray = VertexArray.Create();
 				vertexArray.Bind();
 
-				var vertexBufferObjects = stackalloc uint[1];
-
-				OpenGl3Native.GenerateBuffers(1, vertexBufferObjects);
-				OpenGl3Native.BindBuffer(glArrayBuffer, vertexBufferObjects[0]);
-
-				var vertices = stackalloc float[]
+				Span<float> vertices = stackalloc float[]
 				{
 					-0.5f, -0.5f, 0.0f,
 					0.5f, -0.5f, 0.0f,
 					0.0f, 0.5f, 0.0f
 				};
 				
-				OpenGl3Native.BufferData(glArrayBuffer, 9 * sizeof(float), vertices, glStaticDraw);
+				var layout = new VertexBufferElement[]
+				{
+					new(OpenGlType.Float, 3)	
+				};
 
-				OpenGl3Native.VertexAttributePointer(0, 3, glFloat, glFalse, 3 * sizeof(float), null);
-				OpenGl3Native.EnableVertexAttributeArray(0);
+				using (var vertexBuffer = VertexBuffer.Create(vertices, layout)) {}
 
 				while (GlfwNative.WindowShouldClose(window) == glfwFalse)
 				{
@@ -72,7 +66,6 @@ namespace Poltergeist.Sandbox
 
 				vertexArray.Unbind();
 				vertexArray.Dispose();
-				OpenGl3Native.DeleteBuffers(1, vertexBufferObjects);
 
 				GlfwNative.DestroyWindow(window);
 				GlfwNative.Terminate();
