@@ -5,7 +5,7 @@ namespace Poltergeist.Core.Rendering
 {
 	public struct VertexArray : IDisposable
 	{
-		private readonly uint _vertexArrayId;
+		private uint _vertexArrayId;
 		
 		private VertexArray(uint vertexArrayId)
 		{

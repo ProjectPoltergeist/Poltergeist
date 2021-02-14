@@ -5,7 +5,7 @@ namespace Poltergeist.Core.Rendering
 {
 	public struct VertexBuffer : IDisposable
 	{
-		private readonly uint _vertexBufferId;
+		private uint _vertexBufferId;
 		
 		private const int glArrayBuffer = 0x8892;
 		private const int glStaticDraw = 0x88E4;
