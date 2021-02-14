@@ -31,11 +31,11 @@ namespace Poltergeist.Core.Rendering
 				OpenGl3Native.BufferData(glArrayBuffer, data.Length * sizeof(T), dataPointer, glStaticDraw);
 			}
 
-			void* offset = null;
+			nuint offset;
 				
 			for (uint i = 0; i < layout.Length; i++)
 			{
-				var element = layout[i];
+				var element = layout[(int)i];
 				var typeSize = element.Type switch
 				{
 					OpenGlType.Float => sizeof(float),
@@ -45,8 +45,8 @@ namespace Poltergeist.Core.Rendering
 					
 				OpenGl3Native.VertexAttributePointer(i, element.Count, (int)element.Type, glFalse, size, offset);
 				OpenGl3Native.EnableVertexAttributeArray(i);
-					
-				offset = (void*)((nuint)offset + size);
+
+				offset += (nuint)size;
 			}
 
 			vertexBuffer.Unbind();
