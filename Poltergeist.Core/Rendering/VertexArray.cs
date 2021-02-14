@@ -3,7 +3,7 @@ using Poltergeist.Core.Bindings.OpenGl;
 
 namespace Poltergeist.Core.Rendering
 {
-	public struct VertexArray : IDisposable
+	public unsafe struct VertexArray : IDisposable
 	{
 		private uint _vertexArrayId;
 		
@@ -12,7 +12,7 @@ namespace Poltergeist.Core.Rendering
 			_vertexArrayId = vertexArrayId;
 		}
 
-		public static unsafe VertexArray Create()
+		public static VertexArray Create()
 		{
 			uint vertexArrayId;
 			
@@ -21,17 +21,17 @@ namespace Poltergeist.Core.Rendering
 			return new VertexArray(vertexArrayId);
 		}
 		
-		public unsafe void Bind()
+		public void Bind()
 		{
 			OpenGl3Native.BindVertexArray(_vertexArrayId);
 		}
 
-		public unsafe void Unbind()
+		public void Unbind()
 		{
 			OpenGl3Native.BindVertexArray(0);
 		}
 
-		public unsafe void Dispose()
+		public void Dispose()
 		{
 			fixed (uint* vertexArrayIdPointer = &_vertexArrayId)
 				OpenGl3Native.DeleteVertexArrays(1, vertexArrayIdPointer);

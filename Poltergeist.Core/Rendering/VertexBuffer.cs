@@ -3,7 +3,7 @@ using Poltergeist.Core.Bindings.OpenGl;
 
 namespace Poltergeist.Core.Rendering
 {
-	public struct VertexBuffer : IDisposable
+	public unsafe struct VertexBuffer : IDisposable
 	{
 		private uint _vertexBufferId;
 		
@@ -16,7 +16,7 @@ namespace Poltergeist.Core.Rendering
 			_vertexBufferId = vertexBufferId;
 		}
 
-		public static unsafe VertexBuffer Create<T>(ReadOnlySpan<T> data, ReadOnlySpan<VertexBufferElement> layout) where T : unmanaged
+		public static VertexBuffer Create<T>(ReadOnlySpan<T> data, ReadOnlySpan<VertexBufferElement> layout) where T : unmanaged
 		{
 			uint vertexBufferId;
 		
@@ -52,17 +52,17 @@ namespace Poltergeist.Core.Rendering
 			return vertexBuffer;
 		}
 		
-		public unsafe void Bind()
+		public void Bind()
 		{
 			OpenGl3Native.BindBuffer(glArrayBuffer, _vertexBufferId);
 		}
 
-		public unsafe void Unbind()
+		public void Unbind()
 		{
 			OpenGl3Native.BindBuffer(glArrayBuffer, 0);
 		}
 
-		public unsafe void Dispose()
+		public void Dispose()
 		{
 			fixed (uint* vertexBufferIdPointer = &_vertexBufferId)
 				OpenGl3Native.DeleteBuffers(1, vertexBufferIdPointer);
