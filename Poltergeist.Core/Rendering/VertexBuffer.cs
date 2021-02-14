@@ -27,9 +27,7 @@ namespace Poltergeist.Core.Rendering
 			vertexBuffer.Bind();
 
 			fixed (T* dataPointer = data)
-			{
 				OpenGl3Native.BufferData(glArrayBuffer, data.Length * sizeof(T), dataPointer, glStaticDraw);
-			}
 
 			nuint offset = 0;
 				
