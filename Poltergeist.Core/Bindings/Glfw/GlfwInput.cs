@@ -2,390 +2,402 @@
 {
 	public enum GlfwInput : int
 	{
-		HAT_CENTERED = 0,
+		#region Hat
+		HatCentered = 0,
 
-		HAT_UP = 1,
+		HatUp = 1,
 
-		HAT_RIGHT = 2,
+		HatRight = 2,
 
-		HAT_DOWN = 4,
+		HatDown = 4,
 
-		HAT_LEFT = 8,
+		HatLeft = 8,
 
-		HAT_RIGHT_UP = (HAT_RIGHT | HAT_UP),
+		HatRightUp = (HatRight | HatUp),
 
-		HAT_RIGHT_DOWN = (HAT_RIGHT | HAT_DOWN),
+		HatRightDown = (HatRight | HatDown),
 
-		HAT_LEFT_UP = (HAT_LEFT | HAT_UP),
+		HatLeftUp = (HatLeft | HatUp),
 
-		HAT_LEFT_DOWN = (HAT_LEFT | HAT_DOWN),
+		HatLeftDown = (HatLeft | HatDown),
+		#endregion
 
-		KEY_UNKNOWN = -1,
+		#region Keyboard
+		KeyUnknown = -1,
 
-		KEY_SPACE = 32,
+		KeySpace = 32,
 
-		KEY_APOSTROPHE = 39, /* ' */
+		KeyApostrophe = 39,
 
-		KEY_COMMA = 44, /* , */
+		KeyComma = 44,
 
-		KEY_MINUS = 45, /* - */
+		KeyMinus = 45,
 
-		KEY_PERIOD = 46, /* . */
+		KeyPeriod = 46,
 
-		KEY_SLASH = 47, /* / */
+		KeySlash = 47,
 
-		KEY_0 = 48,
+		Key0 = 48,
 
-		KEY_1 = 49,
+		Key1 = 49,
 
-		KEY_2 = 50,
+		Key2 = 50,
 
-		KEY_3 = 51,
+		Key3 = 51,
 
-		KEY_4 = 52,
+		Key4 = 52,
 
-		KEY_5 = 53,
+		Key5 = 53,
 
-		KEY_6 = 54,
+		Key6 = 54,
 
-		KEY_7 = 55,
+		Key7 = 55,
 
-		KEY_8 = 56,
+		Key8 = 56,
 
-		KEY_9 = 57,
+		Key9 = 57,
 
-		KEY_SEMICOLON = 59, /* ; */
+		KeySemicolon = 59, /* ; */
 
-		KEY_EQUAL = 61, /* = */
+		KeyEqual = 61, /* = */
 
-		KEY_A = 65,
+		KeyA = 65,
 
-		KEY_B = 66,
+		KeyB = 66,
 
-		KEY_C = 67,
+		KeyC = 67,
 
-		KEY_D = 68,
+		KeyD = 68,
 
-		KEY_E = 69,
+		KeyE = 69,
 
-		KEY_F = 70,
+		KeyF = 70,
 
-		KEY_G = 71,
+		KeyG = 71,
 
-		KEY_H = 72,
+		KeyH = 72,
 
-		KEY_I = 73,
+		KeyI = 73,
 
-		KEY_J = 74,
+		KeyJ = 74,
 
-		KEY_K = 75,
+		KeyK = 75,
 
-		KEY_L = 76,
+		KeyL = 76,
 
-		KEY_M = 77,
+		KeyM = 77,
 
-		KEY_N = 78,
+		KeyN = 78,
 
-		KEY_O = 79,
+		KeyO = 79,
 
-		KEY_P = 80,
+		KeyP = 80,
 
-		KEY_Q = 81,
+		KeyQ = 81,
 
-		KEY_R = 82,
+		KeyR = 82,
 
-		KEY_S = 83,
+		KeyS = 83,
 
-		KEY_T = 84,
+		KeyT = 84,
 
-		KEY_U = 85,
+		KeyU = 85,
 
-		KEY_V = 86,
+		KeyV = 86,
 
-		KEY_W = 87,
+		KeyW = 87,
 
-		KEY_X = 88,
+		KeyX = 88,
 
-		KEY_Y = 89,
+		KeyY = 89,
 
-		KEY_Z = 90,
+		KeyZ = 90,
 
-		KEY_LEFT_BRACKET = 91, /* [ */
+		KeyLeftBracket = 91,
 
-		KEY_BACKSLASH = 92, /* \ */
+		KeyBackslash = 92,
 
-		KEY_RIGHT_BRACKET = 93, /* ] */
+		KeyRightBracket = 93,
 
-		KEY_GRAVE_ACCENT = 96, /* ` */
+		KeyGraveAccent = 96,
 
-		KEY_WORLD_1 = 161, /* non-US #1 */
+		KeyWorld1 = 161,
 
-		KEY_WORLD_2 = 162, /* non-US #2 */
+		KeyWorld2 = 162,
 
-		KEY_ESCAPE = 256,
+		KeyEscape = 256,
 
-		KEY_ENTER = 257,
+		KeyEnter = 257,
 
-		KEY_TAB = 258,
+		KeyTab = 258,
 
-		KEY_BACKSPACE = 259,
+		KeyBackspace = 259,
 
-		KEY_INSERT = 260,
+		KeyInsert = 260,
 
-		KEY_DELETE = 261,
+		KeyDelete = 261,
 
-		KEY_RIGHT = 262,
+		KeyRight = 262,
 
-		KEY_LEFT = 263,
+		KeyLeft = 263,
 
-		KEY_DOWN = 264,
+		KeyDown = 264,
 
-		KEY_UP = 265,
+		KeyUp = 265,
 
-		KEY_PAGE_UP = 266,
+		KeyPageUp = 266,
 
-		KEY_PAGE_DOWN = 267,
+		KeyPageDown = 267,
 
-		KEY_HOME = 268,
+		KeyHome = 268,
 
-		KEY_END = 269,
+		KeyEnd = 269,
 
-		KEY_CAPS_LOCK = 280,
+		KeyCapsLock = 280,
 
-		KEY_SCROLL_LOCK = 281,
+		KeyScrollLock = 281,
 
-		KEY_NUM_LOCK = 282,
+		KeyNumLock = 282,
 
-		KEY_PRINT_SCREEN = 283,
+		KeyPrintScreen = 283,
 
-		KEY_PAUSE = 284,
+		KeyPause = 284,
 
-		KEY_F1 = 290,
+		KeyF1 = 290,
 
-		KEY_F2 = 291,
+		KeyF2 = 291,
 
-		KEY_F3 = 292,
+		KeyF3 = 292,
 
-		KEY_F4 = 293,
+		KeyF4 = 293,
 
-		KEY_F5 = 294,
+		KeyF5 = 294,
 
-		KEY_F6 = 295,
+		KeyF6 = 295,
 
-		KEY_F7 = 296,
+		KeyF7 = 296,
 
-		KEY_F8 = 297,
+		KeyF8 = 297,
 
-		KEY_F9 = 298,
+		KeyF9 = 298,
 
-		KEY_F10 = 299,
+		KeyF10 = 299,
 
-		KEY_F11 = 300,
+		KeyF11 = 300,
 
-		KEY_F12 = 301,
+		KeyF12 = 301,
 
-		KEY_F13 = 302,
+		KeyF13 = 302,
 
-		KEY_F14 = 303,
+		KeyF14 = 303,
 
-		KEY_F15 = 304,
+		KeyF15 = 304,
 
-		KEY_F16 = 305,
+		KeyF16 = 305,
 
-		KEY_F17 = 306,
+		KeyF17 = 306,
 
-		KEY_F18 = 307,
+		KeyF18 = 307,
 
-		KEY_F19 = 308,
+		KeyF19 = 308,
 
-		KEY_F20 = 309,
+		KeyF20 = 309,
 
-		KEY_F21 = 310,
+		KeyF21 = 310,
 
-		KEY_F22 = 311,
+		KeyF22 = 311,
 
-		KEY_F23 = 312,
+		KeyF23 = 312,
 
-		KEY_F24 = 313,
+		KeyF24 = 313,
 
-		KEY_F25 = 314,
+		KeyF25 = 314,
 
-		KEY_KP_0 = 320,
+		KeyKp0 = 320,
 
-		KEY_KP_1 = 321,
+		KeyKp1 = 321,
 
-		KEY_KP_2 = 322,
+		KeyKp2 = 322,
 
-		KEY_KP_3 = 323,
+		KeyKp3 = 323,
 
-		KEY_KP_4 = 324,
+		KeyKp4 = 324,
 
-		KEY_KP_5 = 325,
+		KeyKp5 = 325,
 
-		KEY_KP_6 = 326,
+		KeyKp6 = 326,
 
-		KEY_KP_7 = 327,
+		KeyKp7 = 327,
 
-		KEY_KP_8 = 328,
+		KeyKp8 = 328,
 
-		KEY_KP_9 = 329,
+		KeyKp9 = 329,
 
-		KEY_KP_DECIMAL = 330,
+		KeyKpDecimal = 330,
 
-		KEY_KP_DIVIDE = 331,
+		KeyKpDivide = 331,
 
-		KEY_KP_MULTIPLY = 332,
+		KeyKpMultiply = 332,
 
-		KEY_KP_SUBTRACT = 333,
+		KeyKpSubtract = 333,
 
-		KEY_KP_ADD = 334,
+		KeyKpAdd = 334,
 
-		KEY_KP_ENTER = 335,
+		KeyKpEnter = 335,
 
-		KEY_KP_EQUAL = 336,
+		KeyKpEqual = 336,
 
-		KEY_LEFT_SHIFT = 340,
+		KeyLeftShift = 340,
 
-		KEY_LEFT_CONTROL = 341,
+		KeyLeftControl = 341,
 
-		KEY_LEFT_ALT = 342,
+		KeyLeftAlt = 342,
 
-		KEY_LEFT_SUPER = 343,
+		KeyLeftSuper = 343,
 
-		KEY_RIGHT_SHIFT = 344,
+		KeyRightShift = 344,
 
-		KEY_RIGHT_CONTROL = 345,
+		KeyRightControl = 345,
 
-		KEY_RIGHT_ALT = 346,
+		KeyRightAlt = 346,
 
-		KEY_RIGHT_SUPER = 347,
+		KeyRightSuper = 347,
 
-		KEY_MENU = 348,
+		KeyMenu = 348,
 
-		KEY_LAST = KEY_MENU,
+		KeyLast = KeyMenu,
+		#endregion
 
-		MOD_SHIFT = 0x0001,
+		#region Modifier keys
+		ModShift = 0x0001,
 
-		MOD_CONTROL = 0x0002,
+		ModControl = 0x0002,
 
-		MOD_ALT = 0x0004,
+		ModAlt = 0x0004,
 
-		MOD_SUPER = 0x0008,
+		ModSuper = 0x0008,
 
-		MOD_CAPS_LOCK = 0x0010,
+		ModCapsLock = 0x0010,
 
-		MOD_NUM_LOCK = 0x0020,
+		ModNumLock = 0x0020,
+		#endregion
 
-		MOUSE_BUTTON_1 = 0,
+		#region Mouse
+		MouseButton1 = 0,
 
-		MOUSE_BUTTON_2 = 1,
+		MouseButton2 = 1,
 
-		MOUSE_BUTTON_3 = 2,
+		MouseButton3 = 2,
 
-		MOUSE_BUTTON_4 = 3,
+		MouseButton4 = 3,
 
-		MOUSE_BUTTON_5 = 4,
+		MouseButton5 = 4,
 
-		MOUSE_BUTTON_6 = 5,
+		MouseButton6 = 5,
 
-		MOUSE_BUTTON_7 = 6,
+		MouseButton7 = 6,
 
-		MOUSE_BUTTON_8 = 7,
+		MouseButton8 = 7,
 
-		MOUSE_BUTTON_LAST = MOUSE_BUTTON_8,
+		MouseButtonLast = MouseButton8,
 
-		MOUSE_BUTTON_LEFT = MOUSE_BUTTON_1,
+		MouseButtonLeft = MouseButton1,
 
-		MOUSE_BUTTON_RIGHT = MOUSE_BUTTON_2,
+		MouseButtonRight = MouseButton2,
 
-		MOUSE_BUTTON_MIDDLE = MOUSE_BUTTON_3,
+		MouseButtonMiddle = MouseButton3,
+		#endregion
 
-		JOYSTICK_1 = 0,
+		#region Joystick
+		Joystick1 = 0,
 
-		JOYSTICK_2 = 1,
+		Joystick2 = 1,
 
-		JOYSTICK_3 = 2,
+		Joystick3 = 2,
 
-		JOYSTICK_4 = 3,
+		Joystick4 = 3,
 
-		JOYSTICK_5 = 4,
+		Joystick5 = 4,
 
-		JOYSTICK_6 = 5,
+		Joystick6 = 5,
 
-		JOYSTICK_7 = 6,
+		Joystick7 = 6,
 
-		JOYSTICK_8 = 7,
+		Joystick8 = 7,
 
-		JOYSTICK_9 = 8,
+		Joystick9 = 8,
 
-		JOYSTICK_10 = 9,
+		Joystick10 = 9,
 
-		JOYSTICK_11 = 10,
+		Joystick11 = 10,
 
-		JOYSTICK_12 = 11,
+		Joystick12 = 11,
 
-		JOYSTICK_13 = 12,
+		Joystick13 = 12,
 
-		JOYSTICK_14 = 13,
+		Joystick14 = 13,
 
-		JOYSTICK_15 = 14,
+		Joystick15 = 14,
 
-		JOYSTICK_16 = 15,
+		Joystick16 = 15,
 
-		JOYSTICK_LAST = JOYSTICK_16,
+		JoystickLast = Joystick16,
+		#endregion
 
-		GAMEPAD_BUTTON_A = 0,
+		#region Gamepad
+		GamepadButtonA = 0,
 
-		GAMEPAD_BUTTON_B = 1,
+		GamepadButtonB = 1,
 
-		GAMEPAD_BUTTON_X = 2,
+		GamepadButtonX = 2,
 
-		GAMEPAD_BUTTON_Y = 3,
+		GamepadButtonY = 3,
 
-		GAMEPAD_BUTTON_LEFT_BUMPER = 4,
+		GamepadButtonLeftBumper = 4,
 
-		GAMEPAD_BUTTON_RIGHT_BUMPER = 5,
+		GamepadButtonRightBumper = 5,
 
-		GAMEPAD_BUTTON_BACK = 6,
+		GamepadButtonBack = 6,
 
-		GAMEPAD_BUTTON_START = 7,
+		GamepadButtonStart = 7,
 
-		GAMEPAD_BUTTON_GUIDE = 8,
+		GamepadButtonGuide = 8,
 
-		GAMEPAD_BUTTON_LEFT_THUMB = 9,
+		GamepadButtonLeftThumb = 9,
 
-		GAMEPAD_BUTTON_RIGHT_THUMB = 10,
+		GamepadButtonRightThumb = 10,
 
-		GAMEPAD_BUTTON_DPAD_UP = 11,
+		GamepadButtonDpadUp = 11,
 
-		GAMEPAD_BUTTON_DPAD_RIGHT = 12,
+		GamepadButtonDpadRight = 12,
 
-		GAMEPAD_BUTTON_DPAD_DOWN = 13,
+		GamepadButtonDpadDown = 13,
 
-		GAMEPAD_BUTTON_DPAD_LEFT = 14,
+		GamepadButtonDpadLeft = 14,
 
-		GAMEPAD_BUTTON_LAST = GAMEPAD_BUTTON_DPAD_LEFT,
+		GamepadButtonLast = GamepadButtonDpadLeft,
 
-		GAMEPAD_BUTTON_CROSS = GAMEPAD_BUTTON_A,
+		GamepadButtonCross = GamepadButtonA,
 
-		GAMEPAD_BUTTON_CIRCLE = GAMEPAD_BUTTON_B,
+		GamepadButtonCircle = GamepadButtonB,
 
-		GAMEPAD_BUTTON_SQUARE = GAMEPAD_BUTTON_X,
+		GamepadButtonSquare = GamepadButtonX,
 
-		GAMEPAD_BUTTON_TRIANGLE = GAMEPAD_BUTTON_Y,
+		GamepadButtonTriangle = GamepadButtonY,
 
-		GAMEPAD_AXIS_LEFT_X = 0,
+		GamepadAxisLeftX = 0,
 
-		GAMEPAD_AXIS_LEFT_Y = 1,
+		GamepadAxisLeftY = 1,
 
-		GAMEPAD_AXIS_RIGHT_X = 2,
+		GamepadAxisRightX = 2,
 
-		GAMEPAD_AXIS_RIGHT_Y = 3,
+		GamepadAxisRightY = 3,
 
-		GAMEPAD_AXIS_LEFT_TRIGGER = 4,
+		GamepadAxisLeftTrigger = 4,
 
-		GAMEPAD_AXIS_RIGHT_TRIGGER = 5,
+		GamepadAxisRightTrigger = 5,
 
-		GAMEPAD_AXIS_LAST = GAMEPAD_AXIS_RIGHT_TRIGGER
+		GamepadAxisLast = GamepadAxisRightTrigger
+		#endregion
 	}
 }
