@@ -21,9 +21,6 @@ namespace Poltergeist.Core.Windowing
 		
 		public void SwapBuffers() => GlfwNative.SwapBuffers(_window);
 		
-		public void Dispose()
-		{
-			GlfwNative.DestroyWindow(_window);
-		}
+		public void Dispose() => GlfwNative.DestroyWindow(_window);
 	}
 }
