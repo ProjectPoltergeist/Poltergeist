@@ -7,6 +7,7 @@ namespace Poltergeist.Core.Windowing
 	public sealed unsafe class Window : IDisposable
 	{
 		private readonly GlfwWindow* _window;
+		private readonly object _lock = new();
 
 		public bool IsOpen => GlfwNative.WindowShouldClose(_window) == 0;
 
@@ -29,7 +30,10 @@ namespace Poltergeist.Core.Windowing
 
 		private void ReleaseUnmanagedResources()
 		{
-			GlfwNative.DestroyWindow(_window);
+			lock (_lock)
+			{
+				GlfwNative.DestroyWindow(_window);
+			}
 		}
 
 		~Window()
