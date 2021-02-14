@@ -34,9 +34,7 @@ namespace Poltergeist.Core.Rendering
 		public unsafe void Dispose()
 		{
 			fixed (uint* vertexArrayIdPointer = &_vertexArrayId)
-			{
 				OpenGl3Native.DeleteVertexArrays(1, vertexArrayIdPointer);
-			}
 		}
 	}
 }
