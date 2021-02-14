@@ -4,10 +4,9 @@ namespace Poltergeist.Core.Bindings.OpenGl
 {
 	public abstract unsafe class OpenGl2Native : OpenGl1Native
 	{
-		public static readonly delegate* unmanaged[Cdecl]<int, int*, void> GetIntegerV
-			= (delegate* unmanaged[Cdecl]<int, int*, void>)GlfwNative.GetProcessAddress("glGetIntegerv");
+		public new static readonly bool IsSupported;
 
-		public new static readonly bool IsSupported = OpenGl1Native.IsSupported && GetIntegerV != null;
+		public static readonly delegate* unmanaged[Cdecl]<int, int*, void> GetIntegerV;
 
 		public static readonly delegate* unmanaged[Cdecl]<uint, int, int, int, int, nuint, void> VertexAttributePointer
 			= (delegate* unmanaged[Cdecl]<uint, int, int, int, int, nuint, void>)GlfwNative.GetProcessAddress(
@@ -15,6 +14,12 @@ namespace Poltergeist.Core.Bindings.OpenGl
 
 		public static readonly delegate* unmanaged[Cdecl]<uint, void> EnableVertexAttributeArray
 			= (delegate* unmanaged[Cdecl]<uint, void>)GlfwNative.GetProcessAddress("glEnableVertexAttribArray");
+
+		static OpenGl2Native()
+		{
+			GetIntegerV = (delegate* unmanaged[Cdecl]<int, int*, void>)GlfwNative.GetProcessAddress("glGetIntegerv");
+			IsSupported = OpenGl1Native.IsSupported && GetIntegerV != null;
+		}
 
 		public static (int major, int minor) GetVersion()
 		{
