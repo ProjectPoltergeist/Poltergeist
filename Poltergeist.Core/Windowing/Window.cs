@@ -6,9 +6,9 @@ namespace Poltergeist.Core.Windowing
 {
 	public sealed unsafe class Window : IDisposable
 	{
-		public bool IsOpen => GlfwNative.WindowShouldClose(_window) == 0;
-	
 		private readonly GlfwWindow* _window;
+		
+		public bool IsOpen => GlfwNative.WindowShouldClose(_window) == 0;
 		
 		public Window(string title, int width = 800, int height = 600)
 		{
