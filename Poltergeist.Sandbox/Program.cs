@@ -2,6 +2,7 @@
 using Poltergeist.Core.Bindings.Glfw;
 using Poltergeist.Core.Bindings.Glfw.Structures;
 using Poltergeist.Core.Bindings.OpenGl;
+using Poltergeist.Core.Rendering;
 
 namespace Poltergeist.Sandbox
 {
@@ -38,10 +39,8 @@ namespace Poltergeist.Sandbox
 
 				GlfwNative.MakeContextCurrent(window);
 
-				var vertexArrayObjects = stackalloc uint[1];
-
-				OpenGl3Native.GenerateVertexArrays(1, vertexArrayObjects);
-				OpenGl3Native.BindVertexArray(vertexArrayObjects[0]);
+				var vertexArray = VertexArray.Create();
+				vertexArray.Bind();
 
 				var vertexBufferObjects = stackalloc uint[1];
 
@@ -71,7 +70,8 @@ namespace Poltergeist.Sandbox
 					GlfwNative.SwapBuffers(window);
 				}
 
-				OpenGl3Native.DeleteVertexArrays(1, vertexArrayObjects);
+				vertexArray.Unbind();
+				vertexArray.Dispose();
 				OpenGl3Native.DeleteBuffers(1, vertexBufferObjects);
 
 				GlfwNative.DestroyWindow(window);
