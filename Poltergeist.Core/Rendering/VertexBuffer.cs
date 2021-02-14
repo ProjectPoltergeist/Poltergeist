@@ -3,7 +3,7 @@ using Poltergeist.Core.Bindings.OpenGl;
 
 namespace Poltergeist.Core.Rendering
 {
-	public readonly struct VertexBuffer : IDisposable
+	public struct VertexBuffer : IDisposable
 	{
 		private readonly uint _vertexBufferId;
 		
