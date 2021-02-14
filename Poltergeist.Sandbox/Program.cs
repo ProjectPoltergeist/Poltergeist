@@ -46,7 +46,7 @@ namespace Poltergeist.Sandbox
 					0.0f, 0.5f, 0.0f
 				};
 				
-				var layout = new VertexBufferElement[]
+				Span<VertexBufferElement> layout = stackalloc VertexBufferElement[]
 				{
 					new(OpenGlType.Float, 3)	
 				};
