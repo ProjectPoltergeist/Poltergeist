@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Poltergeist.Core.Bindings.Glfw.Enums
+﻿namespace Poltergeist.Core.Bindings.Glfw.Macros
 {
 	public enum Mouse : int
 	{

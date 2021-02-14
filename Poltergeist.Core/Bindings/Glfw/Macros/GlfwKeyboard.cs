@@ -1,4 +1,4 @@
-﻿namespace Poltergeist.Core.Bindings.Glfw.Enums
+﻿namespace Poltergeist.Core.Bindings.Glfw.Macros
 {
 	public enum GlfwKeyboard : int
 	{
