@@ -4,7 +4,7 @@ using Poltergeist.Core.Bindings.Glfw.Structures;
 
 namespace Poltergeist.Core.Windowing
 {
-	public unsafe class Window : IDisposable
+	public sealed unsafe class Window : IDisposable
 	{
 		public bool IsOpen => GlfwNative.WindowShouldClose(_window) == 0;
 	
