@@ -32,7 +32,7 @@ namespace Poltergeist.Sandbox
 				GlfwNative.WindowHint(glfwOpenGlForwardCompat, glfwTrue);
 				GlfwNative.WindowHint(glfwResizable, glfwFalse);
 
-				using (var window = new Window("Poltergeist Editor"))
+				using (var window = new Window("Poltergeist Sandbox"))
 				{
 					using (var vertexArray = VertexArray.Create())
 					{
@@ -50,22 +50,22 @@ namespace Poltergeist.Sandbox
 							new VertexBufferElement(OpenGlType.Float, 3)
 						};
 
-						using (VertexBuffer.Create<float>(vertices, layout)) { }
-
-						while (window.IsOpen)
+						using (VertexBuffer.Create<float>(vertices, layout))
 						{
-							window.PollEvents();
+							while (window.IsOpen)
+							{
+								window.PollEvents();
 
-							OpenGl3Native.ClearColor(0.3f, 0.3f, 0.3f, 1.0f);
-							OpenGl3Native.Clear(glColorBufferBit);
-							OpenGl3Native.DrawArrays(glTriangles, 0, 3);
+								OpenGl3Native.ClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+								OpenGl3Native.Clear(glColorBufferBit);
+								OpenGl3Native.DrawArrays(glTriangles, 0, 3);
 
-							window.SwapBuffers();
+								window.SwapBuffers();
+							}
+
+							vertexArray.Unbind();
 						}
-
-						vertexArray.Unbind();
 					}
-
 				}
 
 				GlfwNative.Terminate();
