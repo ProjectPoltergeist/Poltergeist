@@ -26,11 +26,11 @@ namespace Poltergeist.Core.Windowing
 
 		public void Dispose()
 		{
-			ReleaseUnmanagedResources();
+			Release();
 			GC.SuppressFinalize(this);
 		}
 
-		private void ReleaseUnmanagedResources()
+		private void Release()
 		{
 			lock (_lock)
 			{
@@ -43,7 +43,7 @@ namespace Poltergeist.Core.Windowing
 
 		~Window()
 		{
-			ReleaseUnmanagedResources();
+			Release();
 		}
 	}
 }
