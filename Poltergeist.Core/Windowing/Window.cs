@@ -4,13 +4,13 @@ using Poltergeist.Core.Bindings.Glfw.Structures;
 
 namespace Poltergeist.Core.Windowing
 {
-	public class Window : IDisposable
+	public unsafe class Window : IDisposable
 	{
-		public unsafe bool IsOpen => GlfwNative.WindowShouldClose(_window) == 0;
+		public bool IsOpen => GlfwNative.WindowShouldClose(_window) == 0;
 	
-		private readonly unsafe GlfwWindow* _window;
+		private readonly GlfwWindow* _window;
 		
-		public unsafe Window(string title, int width = 800, int height = 600)
+		public Window(string title, int width = 800, int height = 600)
 		{
 			_window = GlfwNative.CreateWindow(width, height, title, null, null);
 			
@@ -19,9 +19,9 @@ namespace Poltergeist.Core.Windowing
 
 		public void PollEvents() => GlfwNative.PollEvents();
 		
-		public unsafe void SwapBuffers() => GlfwNative.SwapBuffers(_window);
+		public void SwapBuffers() => GlfwNative.SwapBuffers(_window);
 		
-		public unsafe void Dispose()
+		public void Dispose()
 		{
 			GlfwNative.DestroyWindow(_window);
 		}
