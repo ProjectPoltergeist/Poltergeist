@@ -11,7 +11,7 @@ namespace Poltergeist.Sandbox
 	{
 		public static unsafe void Main()
 		{
-			using (ExitHandler.LifetimeHandle _ = new())
+			using (new ExitHandler.LifetimeHandle())
 			{
 				const int glfwTrue = 1;
 				const int glfwFalse = 0;
@@ -21,7 +21,7 @@ namespace Poltergeist.Sandbox
 				const int glfwOpenGlCoreProfile = 0x00032001;
 				const int glfwOpenGlForwardCompat = 0x00022006;
 				const int glfwResizable = 0x00020003;
-				
+
 				const int glColorBufferBit = 0x00004000;
 				const int glTriangles = 0x0004;
 
@@ -47,10 +47,10 @@ namespace Poltergeist.Sandbox
 
 						Span<VertexBufferElement> layout = stackalloc VertexBufferElement[]
 						{
-							new(OpenGlType.Float, 3)
+							new VertexBufferElement(OpenGlType.Float, 3)
 						};
 
-						using (var vertexBuffer = VertexBuffer.Create<float>(vertices, layout))  {}
+						using (VertexBuffer.Create<float>(vertices, layout)) { }
 
 						while (window.IsOpen)
 						{

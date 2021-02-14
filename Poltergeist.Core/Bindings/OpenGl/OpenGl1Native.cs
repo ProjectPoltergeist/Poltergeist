@@ -4,6 +4,8 @@ namespace Poltergeist.Core.Bindings.OpenGl
 {
 	public abstract unsafe class OpenGl1Native
 	{
+		public static readonly bool IsSupported = true;
+
 		public static readonly delegate* unmanaged[Cdecl]<int, uint*, void> GenerateBuffers =
 			(delegate* unmanaged[Cdecl]<int, uint*, void>)GlfwNative.GetProcessAddress("glGenBuffers");
 
