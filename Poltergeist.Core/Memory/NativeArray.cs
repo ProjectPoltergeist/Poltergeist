@@ -164,7 +164,7 @@ namespace Poltergeist.Core.Memory
 		#endregion
 
 		#region IEnumerable
-		public NativeMemoryEnumerator GetEnumerator() => new(this);
+		public NativeArrayEnumerator GetEnumerator() => new(this);
 		// ReSharper disable HeapView.BoxingAllocation
 		IEnumerator<T> IEnumerable<T>.GetEnumerator() => GetEnumerator();
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
@@ -204,7 +204,7 @@ namespace Poltergeist.Core.Memory
 #pragma warning restore CA2015
 		#endregion
 
-		public struct NativeMemoryEnumerator : IEnumerator<T>
+		public struct NativeArrayEnumerator : IEnumerator<T>
 		{
 			private readonly NativeArray<T> _array;
 			private int _currentIndex;
@@ -213,7 +213,7 @@ namespace Poltergeist.Core.Memory
 			// ReSharper disable once HeapView.BoxingAllocation
 			object IEnumerator.Current => Current;
 
-			public NativeMemoryEnumerator(NativeArray<T> array)
+			internal NativeArrayEnumerator(NativeArray<T> array)
 			{
 				_array = array;
 				_currentIndex = -1;
