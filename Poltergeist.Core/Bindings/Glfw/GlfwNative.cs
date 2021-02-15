@@ -154,5 +154,19 @@ namespace Poltergeist.Core.Bindings.Glfw
 		public static extern void SwapBuffers(GlfwWindow* window);
 		#endregion
 
+		[DllImport(GlfwLibrary, EntryPoint = "glfwSetWindowPosCallback", CallingConvention = Convention)]
+		public static extern GlfwWindowPosFun SetWindowPosCallback(GlfwWindow* window, GlfwWindowPosFun callback);
+
+		[DllImport(GlfwLibrary, EntryPoint = "glfwGetMonitorContentScale", CallingConvention = Convention)]
+		public static extern void GetMonitorContentScale(GlfwMonitor* monitor, out float xscale, out float yscale);
+
+		[DllImport(GlfwLibrary, EntryPoint = "glfwGetPrimaryMonitor", CallingConvention = Convention)]
+		public static extern GlfwMonitor* GetPrimaryMonitor();
+
+		[DllImport(GlfwLibrary, EntryPoint = "glfwGetMonitorPos", CallingConvention = Convention)]
+		public static extern void GetMonitorPos(GlfwMonitor* monitor, out int xpos, out int ypos);
+
+		[DllImport(GlfwLibrary, EntryPoint = "glfwGetMonitorWorkarea", CallingConvention = Convention)]
+		public static extern void GetMonitorWorkarea(GlfwMonitor* monitor, out int xpos, out int ypos, out int width, out int height);
 	}
 }
