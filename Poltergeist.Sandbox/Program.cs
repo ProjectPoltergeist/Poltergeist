@@ -15,22 +15,17 @@ namespace Poltergeist.Sandbox
 			{
 				const int glfwTrue = 1;
 				const int glfwFalse = 0;
-				const int glfwContextVersionMajor = 0x00022002;
-				const int glfwContextVersionMinor = 0x00022003;
-				const int glfwOpenGlProfile = 0x00022008;
 				const int glfwOpenGlCoreProfile = 0x00032001;
-				const int glfwOpenGlForwardCompat = 0x00022006;
-				const int glfwResizable = 0x00020003;
 
 				const int glColorBufferBit = 0x00004000;
 				const int glTriangles = 0x0004;
 
 				GlfwNative.Init();
-				GlfwNative.WindowHint(glfwContextVersionMajor, 3);
-				GlfwNative.WindowHint(glfwContextVersionMinor, 3);
-				GlfwNative.WindowHint(glfwOpenGlProfile, glfwOpenGlCoreProfile);
-				GlfwNative.WindowHint(glfwOpenGlForwardCompat, glfwTrue);
-				GlfwNative.WindowHint(glfwResizable, glfwFalse);
+				GlfwNative.WindowHint(GlfwHint.ContextVersionMajor, 3);
+				GlfwNative.WindowHint(GlfwHint.ContextVersionMinor, 3);
+				GlfwNative.WindowHint(GlfwHint.OpenglProfile, glfwOpenGlCoreProfile);
+				GlfwNative.WindowHint(GlfwHint.OpenglForwardCompat, glfwTrue);
+				GlfwNative.WindowHint(GlfwHint.Resizable, glfwFalse);
 
 				using (var window = new Window("Poltergeist Editor"))
 				{
