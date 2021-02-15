@@ -127,10 +127,10 @@ namespace Poltergeist.Core.Bindings.Glfw
 		public static extern void SetWindowMonitor(GlfwWindow* window, GlfwMonitor* monitor, int xpos, int ypos, int width, int height, int refreshRate);
 
 		[DllImport(GlfwLibrary, EntryPoint = "glfwGetWindowAttrib", CallingConvention = Convention)]
-		public static extern int GetWindowAttrib(GlfwWindow* window, int attrib);
+		public static extern int GetWindowAttrib(GlfwWindow* window, [MarshalAs(UnmanagedType.I4)] GlfwHint attrib);
 
 		[DllImport(GlfwLibrary, EntryPoint = "glfwSetWindowAttrib", CallingConvention = Convention)]
-		public static extern void SetWindowAttrib(GlfwWindow* window, int attrib, int value);
+		public static extern void SetWindowAttrib(GlfwWindow* window, [MarshalAs(UnmanagedType.I4)] GlfwHint attrib, int value);
 
 		[DllImport(GlfwLibrary, EntryPoint = "glfwSetWindowUserPointer", CallingConvention = Convention)]
 		public static extern void SetWindowUserPointer(GlfwWindow* window, void* pointer);

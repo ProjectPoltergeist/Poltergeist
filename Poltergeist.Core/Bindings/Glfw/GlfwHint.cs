@@ -62,7 +62,7 @@
 		Doublebuffer = 0x00021010,
 		#endregion
 
-		#region Context client API
+		#region Context
 		ClientApi = 0x00022001,
 
 		ContextVersionMajor = 0x00022002,
@@ -73,11 +73,11 @@
 
 		ContextRobustness = 0x00022005,
 
-		OpenglForwardCompat = 0x00022006,
+		OpenGLForwardCompat = 0x00022006,
 
-		OpenglDebugContext = 0x00022007,
+		OpenGLDebugContext = 0x00022007,
 
-		OpenglProfile = 0x00022008,
+		OpenGLProfile = 0x00022008,
 
 		ContextReleaseBehavior = 0x00022009,
 
@@ -86,6 +86,16 @@
 		ContextCreationApi = 0x0002200B,
 
 		ScaleToMonitor = 0x0002200C,
+
+		CocoaRetinaFramebuffer = 0x00023001,
+
+		CocoaFrameName = 0x00023002,
+
+		CocoaGraphicsSwitching = 0x00023003,
+
+		X11ClassName = 0x00024001,
+
+		X11InstanceName = 0x00024002
 		#endregion
 	}
 }

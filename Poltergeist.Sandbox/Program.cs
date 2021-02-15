@@ -24,8 +24,8 @@ namespace Poltergeist.Sandbox
 				GlfwNative.Init();
 				GlfwNative.WindowHint(GlfwHint.ContextVersionMajor, 3);
 				GlfwNative.WindowHint(GlfwHint.ContextVersionMinor, 3);
-				GlfwNative.WindowHint(GlfwHint.OpenglProfile, glfwOpenGlCoreProfile);
-				GlfwNative.WindowHint(GlfwHint.OpenglForwardCompat, glfwTrue);
+				GlfwNative.WindowHint(GlfwHint.OpenGLProfile, glfwOpenGlCoreProfile);
+				GlfwNative.WindowHint(GlfwHint.OpenGLForwardCompat, glfwTrue);
 				GlfwNative.WindowHint(GlfwHint.Resizable, glfwFalse);
 
 				using (var window = new Window("Poltergeist Sandbox"))

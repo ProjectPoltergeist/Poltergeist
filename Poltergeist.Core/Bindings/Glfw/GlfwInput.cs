@@ -397,7 +397,45 @@
 
 		GamepadAxisRightTrigger = 5,
 
-		GamepadAxisLast = GamepadAxisRightTrigger
+		GamepadAxisLast = GamepadAxisRightTrigger,
+		#endregion
+
+		#region Cursor
+		Cursor = 0x00033001,
+
+		StickyKeys = 0x00033002,
+
+		StickyMouseButtons = 0x00033003,
+
+		LockKeyMods = 0x00033004,
+
+		RawMouseMotion = 0x00033005,
+
+		CursorNormal = 0x00034001,
+
+		CursorHidden = 0x00034002,
+
+		CursorDisabled = 0x00034003,
+
+		ArrowCursor = 0x00036001,
+
+		IbeamCursor = 0x00036002,
+
+		CrosshairCursor = 0x00036003,
+
+		HandCursor = 0x00036004,
+
+		HresizeCursor = 0x00036005,
+
+		VresizeCursor = 0x00036006,
+		#endregion
+
+		#region  State
+		Release = 0,
+
+		Press = 1,
+
+		Repeat = 2,
 		#endregion
 	}
 }
