@@ -1,6 +1,6 @@
 ﻿namespace Poltergeist.Core.Bindings.Glfw
 {
-	public enum GlfwInput : int
+	public enum GlfwInput
 	{
 		#region Hat
 		HatCentered = 0,

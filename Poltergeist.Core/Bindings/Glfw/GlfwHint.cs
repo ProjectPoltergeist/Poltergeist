@@ -1,6 +1,6 @@
 ﻿namespace Poltergeist.Core.Bindings.Glfw
 {
-	public enum GlfwHint : int
+	public enum GlfwHint
 	{
 		#region Window
 		Focused = 0x00020001,

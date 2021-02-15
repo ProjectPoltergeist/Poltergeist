@@ -48,7 +48,7 @@ namespace Poltergeist.Core.Bindings.Glfw
 		[DllImport(GlfwLibrary, EntryPoint = "glfwWindowHint", CallingConvention = Convention)]
 		public static extern void WindowHint([MarshalAs(UnmanagedType.I4)] GlfwHint hint, int value);
 
-		[DllImport(GlfwLibrary, EntryPoint = "GlfwWindowHintString", CallingConvention = Convention)]
+		[DllImport(GlfwLibrary, EntryPoint = "glfwWindowHintString", CallingConvention = Convention, BestFitMapping = false)]
 		public static extern void WindowHint([MarshalAs(UnmanagedType.I4)] GlfwHint hint, [MarshalAs(UnmanagedType.LPUTF8Str)] string value);
 
 		[DllImport(GlfwLibrary, EntryPoint = "glfwCreateWindow", CallingConvention = Convention, BestFitMapping = false)]
