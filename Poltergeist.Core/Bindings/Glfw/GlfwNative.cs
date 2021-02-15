@@ -1,6 +1,7 @@
 ﻿using System;
 using Poltergeist.Core.Bindings.Glfw.Structures;
 using System.Runtime.InteropServices;
+using Poltergeist.Core.Bindings.Glfw.Callbacks;
 
 namespace Poltergeist.Core.Bindings.Glfw
 {
