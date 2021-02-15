@@ -40,9 +40,10 @@ namespace Poltergeist.Sandbox
 
 						Span<float> vertices = stackalloc float[]
 						{
-							-0.5f, -0.5f, 0.0f,
+							0.5f, 0.5f, 0.0f,
 							0.5f, -0.5f, 0.0f,
-							0.0f, 0.5f, 0.0f
+							-0.5f, -0.5f, 0.0f,
+							-0.5f, 0.5f, 0.0f
 						};
 
 						Span<VertexBufferElement> layout = stackalloc VertexBufferElement[]
@@ -52,18 +53,29 @@ namespace Poltergeist.Sandbox
 
 						using (VertexBuffer.Create<float>(vertices, layout))
 						{
-							while (window.IsOpen)
+							Span<int> indices = stackalloc int[]
 							{
-								window.PollEvents();
+								0, 1, 3, 1, 2, 3	
+							};
 
-								OpenGl3Native.ClearColor(0.3f, 0.3f, 0.3f, 1.0f);
-								OpenGl3Native.Clear(glColorBufferBit);
-								OpenGl3Native.DrawArrays(glTriangles, 0, 3);
+							using (var indexBuffer = IndexBuffer.Create<int>(indices))
+							{
+								indexBuffer.Bind();
+								
+								while (window.IsOpen)
+								{
+									window.PollEvents();
 
-								window.SwapBuffers();
+									OpenGl3Native.ClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+									OpenGl3Native.Clear(glColorBufferBit);
+									OpenGl3Native.DrawElements(glTriangles, 6, (int)OpenGlType.UnsignedInt, null);
+
+									window.SwapBuffers();
+								}
+								
+								vertexArray.Unbind();
+								indexBuffer.Unbind();
 							}
-
-							vertexArray.Unbind();
 						}
 					}
 				}

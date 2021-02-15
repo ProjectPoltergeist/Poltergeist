@@ -26,5 +26,8 @@ namespace Poltergeist.Core.Bindings.OpenGl
 
 		public static readonly delegate* unmanaged[Cdecl]<int, int, int, void> DrawArrays =
 			(delegate* unmanaged[Cdecl]<int, int, int, void>)GlfwNative.GetProcessAddress("glDrawArrays");
+		
+		public static readonly delegate* unmanaged[Cdecl]<int, int, int, void*, void> DrawElements =
+			(delegate* unmanaged[Cdecl]<int, int, int, void*, void>)GlfwNative.GetProcessAddress("glDrawElements");
 	}
 }
