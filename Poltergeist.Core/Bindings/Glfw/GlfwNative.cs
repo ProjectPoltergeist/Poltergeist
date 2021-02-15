@@ -31,13 +31,13 @@ namespace Poltergeist.Core.Bindings.Glfw
 		public static extern int Init();
 		#endregion
 		[DllImport(GlfwLibrary, EntryPoint = "glfwWindowHint", CallingConvention = Convention)]
-		public static extern void WindowHint(int hint, int value);
+		public static extern void WindowHint([MarshalAs(UnmanagedType.I4)] GlfwHint hint, int value);
 
 		[DllImport(GlfwLibrary, EntryPoint = "glfwWindowHintString", CallingConvention = Convention)]
-		public static extern void WindowHint(int hint, [MarshalAs(UnmanagedType.LPUTF8Str)] string value);
+		public static extern void WindowHint([MarshalAs(UnmanagedType.I4)] GlfwHint hint, [MarshalAs(UnmanagedType.LPUTF8Str)] string value);
 
 		[DllImport(GlfwLibrary, EntryPoint = "glfwDefaultWindowHints", CallingConvention = Convention)]
-		public static extern void DefaultWindowHints(int hint, int value);
+		public static extern void DefaultWindowHints();
 
 		[DllImport(GlfwLibrary, EntryPoint = "glfwGetProcAddress", CallingConvention = Convention, BestFitMapping = false)]
 		public static extern void* GetProcessAddress([MarshalAs(UnmanagedType.LPUTF8Str)] string processName);
