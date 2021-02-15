@@ -75,7 +75,7 @@ namespace Poltergeist.Core.IO
 					continue;
 				}
 
-				if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+				if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && OutHandle != IntPtr.Zero)
 				{
 					foreach (ReadOnlyMemory<char> chunk in Buffer.GetChunks())
 					{
