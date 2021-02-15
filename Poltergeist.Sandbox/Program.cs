@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using Poltergeist.Core;
 using Poltergeist.Core.Bindings.Glfw;
 using Poltergeist.Core.Bindings.OpenGl;
@@ -29,6 +30,7 @@ namespace Poltergeist.Sandbox
 
 				using (var window = new Window("Poltergeist Editor"))
 				{
+					window.SetWindowTitle("( ͡° ͜ʖ ͡°)");
 					using (var vertexArray = VertexArray.Create())
 					{
 						vertexArray.Bind();

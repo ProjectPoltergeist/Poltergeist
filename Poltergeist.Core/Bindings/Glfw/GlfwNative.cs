@@ -45,7 +45,7 @@ namespace Poltergeist.Core.Bindings.Glfw
 		[DllImport(GlfwLibrary, EntryPoint = "glfwDefaultWindowHints", CallingConvention = Convention)]
 		public static extern void DefaultWindowHints();
 
-		[DllImport(GlfwLibrary, EntryPoint = "GlfwWindowHint", CallingConvention = Convention)]
+		[DllImport(GlfwLibrary, EntryPoint = "glfwWindowHint", CallingConvention = Convention)]
 		public static extern void WindowHint([MarshalAs(UnmanagedType.I4)] GlfwHint hint, int value);
 
 		[DllImport(GlfwLibrary, EntryPoint = "GlfwWindowHintString", CallingConvention = Convention)]
@@ -57,13 +57,13 @@ namespace Poltergeist.Core.Bindings.Glfw
 		[DllImport(GlfwLibrary, EntryPoint = "glfwDestroyWindow", CallingConvention = Convention)]
 		public static extern void DestroyWindow(GlfwWindow* window);
 
-		[DllImport(GlfwLibrary, EntryPoint = "GlfwWindowShouldClose", CallingConvention = Convention)]
+		[DllImport(GlfwLibrary, EntryPoint = "glfwWindowShouldClose", CallingConvention = Convention)]
 		public static extern int WindowShouldClose(GlfwWindow* window);
 
 		[DllImport(GlfwLibrary, EntryPoint = "glfwSetWindowShouldClose", CallingConvention = Convention)]
 		public static extern int SetWindowShouldClose(GlfwWindow* window, int value);
 
-		[DllImport(GlfwLibrary, EntryPoint = "glfwSetWindowTitle", CallingConvention = Convention)]
+		[DllImport(GlfwLibrary, EntryPoint = "glfwSetWindowTitle", CallingConvention = Convention, BestFitMapping = false)]
 		public static extern void SetWindowTitle(GlfwWindow* window, [MarshalAs(UnmanagedType.LPUTF8Str)] string title);
 
 		[DllImport(GlfwLibrary, EntryPoint = "glfwSetWindowIcon", CallingConvention = Convention)]
