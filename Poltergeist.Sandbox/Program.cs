@@ -22,9 +22,6 @@ namespace Poltergeist.Sandbox
 				const int glfwOpenGlForwardCompat = 0x00022006;
 				const int glfwResizable = 0x00020003;
 
-				const int glColorBufferBit = 0x00004000;
-				const int glTriangles = 0x0004;
-
 				GlfwNative.Init();
 				GlfwNative.WindowHint(glfwContextVersionMajor, 3);
 				GlfwNative.WindowHint(glfwContextVersionMinor, 3);
@@ -67,8 +64,8 @@ namespace Poltergeist.Sandbox
 									window.PollEvents();
 
 									OpenGl3Native.ClearColor(0.3f, 0.3f, 0.3f, 1.0f);
-									OpenGl3Native.Clear(glColorBufferBit);
-									OpenGl3Native.DrawElements(glTriangles, 6, (int)OpenGlType.UnsignedInt, null);
+									OpenGl3Native.Clear(OpenGlClearMask.ColorBufferBit);
+									OpenGl3Native.DrawElements(OpenGlPrimitive.Triangles, 6, OpenGlType.UnsignedInt, null);
 
 									window.SwapBuffers();
 								}

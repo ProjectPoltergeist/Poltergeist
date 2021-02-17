@@ -5,9 +5,6 @@ namespace Poltergeist.Core.Rendering
 {
 	public unsafe struct IndexBuffer : IDisposable
 	{
-		private const int glElementArrayBuffer = 0x8893;
-		private const int glStaticDraw = 0x88E4;
-		
 		private uint _indexBufferId;
 
 		private IndexBuffer(uint indexBufferId)
@@ -26,7 +23,7 @@ namespace Poltergeist.Core.Rendering
 			indexBuffer.Bind();
 			
 			fixed (T* dataPointer = indices)
-				OpenGl3Native.BufferData(glElementArrayBuffer, indices.Length * sizeof(T), dataPointer, glStaticDraw);
+				OpenGl3Native.BufferData(OpenGlBufferType.ElementArray, indices.Length * sizeof(T), dataPointer, OpenGlUsageHint.StaticDraw);
 
 			indexBuffer.Unbind();
 
@@ -35,12 +32,12 @@ namespace Poltergeist.Core.Rendering
 		
 		public void Bind()
 		{
-			OpenGl3Native.BindBuffer(glElementArrayBuffer, _indexBufferId);
+			OpenGl3Native.BindBuffer(OpenGlBufferType.ElementArray, _indexBufferId);
 		}
 
 		public void Unbind()
 		{
-			OpenGl3Native.BindBuffer(glElementArrayBuffer, 0);
+			OpenGl3Native.BindBuffer(OpenGlBufferType.ElementArray, 0);
 		}
 		
 		public void Dispose()
