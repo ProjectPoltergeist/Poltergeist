@@ -10,7 +10,6 @@ namespace Poltergeist.Sandbox
 	public sealed class Program
 	{
 		private static float colorR, colorB;
-		private static int xscale, yscale;
 
 		public static unsafe void Main()
 		{
