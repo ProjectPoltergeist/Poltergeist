@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using Poltergeist.Core.Bindings.Glfw.Structures;
 using System.Runtime.InteropServices;
-using Poltergeist.Core.Memory;
+
+using Poltergeist.Core.Bindings.Glfw.Structures;
 
 namespace Poltergeist.Core.Bindings.Glfw
 {
@@ -32,6 +31,9 @@ namespace Poltergeist.Core.Bindings.Glfw
 		#region Function Pointers
 		[UnmanagedFunctionPointer(Convention)]
 		public delegate void GlfwGlProc();
+
+		[UnmanagedFunctionPointer(Convention)]
+		public delegate void GlfwVkProc();
 
 		[UnmanagedFunctionPointer(Convention)]
 		public delegate void GlfwErrorFun(int errorcode, string description);
@@ -108,7 +110,7 @@ namespace Poltergeist.Core.Bindings.Glfw
 		public static extern void GetVersion(out int major, out int minor, out int rev);
 
 		[DllImport(GlfwLibrary, EntryPoint = "glfwGetVersionString", CallingConvention = Convention)]
-		public static extern IntPtr GetVersionString();
+		public static extern char* GetVersionString();
 
 		[DllImport(GlfwLibrary, EntryPoint = "glfwGetError", CallingConvention = Convention)]
 		[return: MarshalAs(UnmanagedType.I4)]
@@ -118,7 +120,7 @@ namespace Poltergeist.Core.Bindings.Glfw
 		public static extern GlfwErrorFun SetErrorCallback(GlfwErrorFun callback);
 
 		[DllImport(GlfwLibrary, EntryPoint = "glfwGetMonitors", CallingConvention = Convention)]
-		public static extern IntPtr GetMonitors(out int count);
+		public static extern GlfwMonitor** GetMonitors(out int count);
 
 		[DllImport(GlfwLibrary, EntryPoint = "glfwGetPrimaryMonitor", CallingConvention = Convention)]
 		public static extern GlfwMonitor* GetPrimaryMonitor();
@@ -136,7 +138,7 @@ namespace Poltergeist.Core.Bindings.Glfw
 		public static extern void GetMonitorContentScale(GlfwMonitor* monitor, out float xscale, out float yscale);
 
 		[DllImport(GlfwLibrary, EntryPoint = "glfwGetMonitorName", CallingConvention = Convention)]
-		public static extern IntPtr GetMonitorName(GlfwMonitor* monitor);
+		public static extern char* GetMonitorName(GlfwMonitor* monitor);
 
 		[DllImport(GlfwLibrary, EntryPoint = "glfwSetMonitorUserPointer", CallingConvention = Convention)]
 		public static extern void SetMonitorUserPointer(GlfwMonitor* monitor, void* pointer);
@@ -343,84 +345,133 @@ namespace Poltergeist.Core.Bindings.Glfw
 
 		[DllImport(GlfwLibrary, EntryPoint = "glfwSetCursor", CallingConvention = Convention)]
 		public static extern void SetCursor(GlfwWindow* window, GlfwCursor* cursor);
-		/* TODO:
-GLFWkeyfun 	glfwSetKeyCallback (GLFWwindow *window, GLFWkeyfun callback)
- 
-GLFWcharfun 	glfwSetCharCallback (GLFWwindow *window, GLFWcharfun callback)
- 
-GLFWcharmodsfun 	glfwSetCharModsCallback (GLFWwindow *window, GLFWcharmodsfun callback)
- 
-GLFWmousebuttonfun 	glfwSetMouseButtonCallback (GLFWwindow *window, GLFWmousebuttonfun callback)
- 
-GLFWcursorposfun 	glfwSetCursorPosCallback (GLFWwindow *window, GLFWcursorposfun callback)
- 
-GLFWcursorenterfun 	glfwSetCursorEnterCallback (GLFWwindow *window, GLFWcursorenterfun callback)
- 
-GLFWscrollfun 	glfwSetScrollCallback (GLFWwindow *window, GLFWscrollfun callback)
- 
-GLFWdropfun 	glfwSetDropCallback (GLFWwindow *window, GLFWdropfun callback)
- 
-int 	glfwJoystickPresent (int jid)
- 
-const float * 	glfwGetJoystickAxes (int jid, int *count)
- 
-const unsigned char * 	glfwGetJoystickButtons (int jid, int *count)
- 
-const unsigned char * 	glfwGetJoystickHats (int jid, int *count)
- 
-const char * 	glfwGetJoystickName (int jid)
- 
-const char * 	glfwGetJoystickGUID (int jid)
- 
-void 	glfwSetJoystickUserPointer (int jid, void *pointer)
- 
-void * 	glfwGetJoystickUserPointer (int jid)
- 
-int 	glfwJoystickIsGamepad (int jid)
- 
-GLFWjoystickfun 	glfwSetJoystickCallback (GLFWjoystickfun callback)
- 
-int 	glfwUpdateGamepadMappings (const char *string)
- 
-const char * 	glfwGetGamepadName (int jid)
- 
-int 	glfwGetGamepadState (int jid, GLFWgamepadstate *state)
- 
-void 	glfwSetClipboardString (GLFWwindow *window, const char *string)
- 
-const char * 	glfwGetClipboardString (GLFWwindow *window)
- 
-double 	glfwGetTime (void)
- 
-void 	glfwSetTime (double time)
- 
-uint64_t 	glfwGetTimerValue (void)
- 
-uint64_t 	glfwGetTimerFrequency (void).
- 
-void 	glfwMakeContextCurrent (GLFWwindow *window)
- 
-GLFWwindow * 	glfwGetCurrentContext (void)
- 
-void 	glfwSwapBuffers (GLFWwindow *window)
- 
-void 	glfwSwapInterval (int interval)
- 
-int 	glfwExtensionSupported (const char *extension)
- 
-GLFWglproc 	glfwGetProcAddress (const char *procname)
- 
-int 	glfwVulkanSupported (void)
- 
-const char ** 	glfwGetRequiredInstanceExtensions (uint32_t *count)
- 
-GLFWvkproc 	glfwGetInstanceProcAddress (VkInstance instance, const char *procname).
- 
-int 	glfwGetPhysicalDevicePresentationSupport (VkInstance instance, VkPhysicalDevice device, uint32_t queuefamily)
- 
-VkResult 	glfwCreateWindowSurface (VkInstance instance, GLFWwindow *window, const VkAllocationCallbacks *allocator, VkSurfaceKHR *surface)
-		*/
 
+		[DllImport(GlfwLibrary, EntryPoint = "glfwSetKeyCallback", CallingConvention = Convention)]
+		public static extern GlfwKeyFun SetKeyCallback(GlfwWindow* window, GlfwKeyFun callback);
+
+		[DllImport(GlfwLibrary, EntryPoint = "glfwSetCharCallback", CallingConvention = Convention)]
+		public static extern GlfwCharFun SetCharCallback(GlfwWindow* window, GlfwCharFun callback);
+
+		[DllImport(GlfwLibrary, EntryPoint = "glfwSetCharModsCallback", CallingConvention = Convention)]
+		public static extern GlfwCharModsFun SetCharModsCallback(GlfwWindow* window, GlfwCharModsFun callback);
+
+		[DllImport(GlfwLibrary, EntryPoint = "glfwSetMouseButtonCallback", CallingConvention = Convention)]
+		public static extern GlfwMouseButtonFun SetMouseButtonCallback(GlfwWindow* window, GlfwMouseButtonFun callback);
+
+		[DllImport(GlfwLibrary, EntryPoint = "glfwSetMouseButtonCallback", CallingConvention = Convention)]
+		public static extern GlfwCursorPosFun SetCursorPosCallback(GlfwWindow* window, GlfwCursorPosFun callback);
+
+		[DllImport(GlfwLibrary, EntryPoint = "glfwSetCursorEnterCallback", CallingConvention = Convention)]
+		public static extern GlfwCursorEnterFun SetCursorEnterCallback(GlfwWindow* window, GlfwCursorEnterFun callback);
+
+		[DllImport(GlfwLibrary, EntryPoint = "glfwSetScrollCallback", CallingConvention = Convention)]
+		public static extern GlfwScrollFun SetScrollCallback(GlfwWindow* window, GlfwScrollFun callback);
+
+		[DllImport(GlfwLibrary, EntryPoint = "glfwSetDropCallback", CallingConvention = Convention)]
+		public static extern GlfwDropFun SetDropCallback(GlfwWindow* window, GlfwDropFun callback);
+
+		[DllImport(GlfwLibrary, EntryPoint = "glfwJoystickPresent", CallingConvention = Convention)]
+		[return: MarshalAs(UnmanagedType.I4)]
+		public static extern GlfwArg JoystickPresent(GlfwInput jid);
+
+		[DllImport(GlfwLibrary, EntryPoint = "glfwGetJoystickAxes", CallingConvention = Convention)]
+		public static extern float* GetJoystickAxes([MarshalAs(UnmanagedType.I4)] GlfwInput jid, out int count);
+
+		[DllImport(GlfwLibrary, EntryPoint = "glfwGetJoystickButtons", CallingConvention = Convention)]
+		[return: MarshalAs(UnmanagedType.U1)]
+		public static extern GlfwArg* GetJoystickButtons([MarshalAs(UnmanagedType.I4)] GlfwInput jid, out int count);
+
+		[DllImport(GlfwLibrary, EntryPoint = "glfwGetJoystickHats", CallingConvention = Convention)]
+		[return: MarshalAs(UnmanagedType.U1)]
+		public static extern GlfwInput* GetJoystickHats([MarshalAs(UnmanagedType.I4)] GlfwInput jid, out int count);
+
+		[DllImport(GlfwLibrary, EntryPoint = "glfwGetJoystickName", CallingConvention = Convention)]
+		public static extern char* GetJoystickName([MarshalAs(UnmanagedType.I4)] GlfwInput jid);
+
+		[DllImport(GlfwLibrary, EntryPoint = "glfwGetJoystickGUID", CallingConvention = Convention)]
+		public static extern char* GetJoystickGUID([MarshalAs(UnmanagedType.I4)] GlfwInput jid);
+
+		[DllImport(GlfwLibrary, EntryPoint = "glfwSetJoystickUserPointer", CallingConvention = Convention)]
+		public static extern void SetJoystickUserPointer([MarshalAs(UnmanagedType.I4)] GlfwInput jid, void* pointer);
+
+		[DllImport(GlfwLibrary, EntryPoint = "glfwGetJoystickUserPointer", CallingConvention = Convention)]
+		[return: MarshalAs(UnmanagedType.I4)]
+		public static extern GlfwArg GetJoystickUserPointer([MarshalAs(UnmanagedType.I4)] GlfwInput jid);
+
+		[DllImport(GlfwLibrary, EntryPoint = "glfwJoystickIsGamepad", CallingConvention = Convention)]
+		[return: MarshalAs(UnmanagedType.I4)]
+		public static extern GlfwArg JoystickIsGamepad([MarshalAs(UnmanagedType.I4)] GlfwInput jid);
+
+		[DllImport(GlfwLibrary, EntryPoint = "glfwSetJoystickCallback", CallingConvention = Convention)]
+		public static extern GlfwJoystickFun SetJoystickCallback(GlfwJoystickFun callback);
+
+		[DllImport(GlfwLibrary, EntryPoint = "glfwUpdateGamepadMappings", CallingConvention = Convention)]
+		[return: MarshalAs(UnmanagedType.I4)]
+		public static extern GlfwArg UpdateGamepadMappings([MarshalAs(UnmanagedType.LPUTF8Str)] string @string);
+
+		[DllImport(GlfwLibrary, EntryPoint = "glfwGetGamepadName", CallingConvention = Convention)]
+		[return: MarshalAs(UnmanagedType.I4)]
+		public static extern char* GetGamepadName([MarshalAs(UnmanagedType.I4)] GlfwInput jid);
+
+		[DllImport(GlfwLibrary, EntryPoint = "glfwGetGamepadState", CallingConvention = Convention)]
+		[return: MarshalAs(UnmanagedType.I4)]
+		public static extern GlfwArg GetGamepadState([MarshalAs(UnmanagedType.I4)] GlfwInput jid, GlfwGamepadState* state);
+
+		[DllImport(GlfwLibrary, EntryPoint = "glfwSetClipboardString", CallingConvention = Convention)]
+		public static extern void SetClipboardString(GlfwWindow* window, [MarshalAs(UnmanagedType.LPUTF8Str)] string @string);
+
+		[DllImport(GlfwLibrary, EntryPoint = "glfwGetClipboardString", CallingConvention = Convention)]
+		public static extern char* GetClipboardString(GlfwWindow* window);
+
+		[DllImport(GlfwLibrary, EntryPoint = "glfwGetTime", CallingConvention = Convention)]
+		public static extern double GetTime();
+
+		[DllImport(GlfwLibrary, EntryPoint = "glfwSetTime", CallingConvention = Convention)]
+		public static extern void SetTime(double time);
+
+		[DllImport(GlfwLibrary, EntryPoint = "glfwGetTimerValue", CallingConvention = Convention)]
+		public static extern ulong GetTimerValue();
+
+		[DllImport(GlfwLibrary, EntryPoint = "glfwGetTimerFrequency", CallingConvention = Convention)]
+		public static extern ulong GetTimerFrequency();
+
+		[DllImport(GlfwLibrary, EntryPoint = "glfwMakeContextCurrent", CallingConvention = Convention)]
+		public static extern void MakeContextCurrent(GlfwWindow* window);
+
+		[DllImport(GlfwLibrary, EntryPoint = "glfwGetCurrentContext", CallingConvention = Convention)]
+		public static extern GlfwWindow* GetCurrentContext();
+
+		[DllImport(GlfwLibrary, EntryPoint = "glfwSwapBuffers", CallingConvention = Convention)]
+		public static extern void SwapBuffers(GlfwWindow* window);
+
+		[DllImport(GlfwLibrary, EntryPoint = "glfwSwapInterval", CallingConvention = Convention)]
+		public static extern void SwapInterval(int interval);
+
+		[DllImport(GlfwLibrary, EntryPoint = "glfwExtensionSupported", CallingConvention = Convention)]
+		[return: MarshalAs(UnmanagedType.I4)]
+		public static extern GlfwArg ExtensionSupported([MarshalAs(UnmanagedType.LPUTF8Str)] string extension);
+
+		[DllImport(GlfwLibrary, EntryPoint = "glfwGetProcAddress", CallingConvention = Convention)]
+		public static extern GlfwGlProc GetProcAddress([MarshalAs(UnmanagedType.LPUTF8Str)] string procname);
+		/*
+		[DllImport(GlfwLibrary, EntryPoint = "glfwVulkanSupported", CallingConvention = Convention)]
+		[return: MarshalAs(UnmanagedType.I4)]
+		public static extern GlfwArg VulkanSupported();
+
+		[DllImport(GlfwLibrary, EntryPoint = "glfwGetRequiredInstanceExtensions", CallingConvention = Convention)]
+		public static extern char** GetRequiredInstanceExtensions(out uint count);
+
+		[DllImport(GlfwLibrary, EntryPoint = "glfwGetInstanceProcAddress", CallingConvention = Convention)]
+		public static extern GlfwVkProc GetInstanceProcAddress(VkInstance instance, [MarshalAs(UnmanagedType.LPUTF8Str)] string procname);
+
+		[DllImport(GlfwLibrary, EntryPoint = "glfwGetPhysicalDevicePresentationSupport", CallingConvention = Convention)]
+		[return: MarshalAs(UnmanagedType.I4)]
+		public static extern GlfwArg GetPhysicalDevicePresentationSupport(VkInstance instance, VkPhysicalDevice device, uint queuefamily);
+
+		[DllImport(GlfwLibrary, EntryPoint = "glfwCreateWindowSurface", CallingConvention = Convention)]
+		[return: MarshalAs(UnmanagedType.I4)]
+		public static extern VkResult CreateWindowSurface (VkInstance instance, GlfwWindow* window, VkAllocationCallbacks* allocator, VkSurfaceKHR* surface);
+		*/
 		#endregion
 	}
 }
