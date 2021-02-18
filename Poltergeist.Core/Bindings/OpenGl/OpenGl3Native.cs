@@ -24,7 +24,7 @@ namespace Poltergeist.Core.Bindings.OpenGl
 				Console.WriteLine($"[{nameof(GenerateVertexArrays)}]: Function is not supported.");
 				return;
 			}
-			
+
 			if (count <= 0)
 			{
 				Console.WriteLine($"[{nameof(GenerateVertexArrays)}]: Count must be greater than 0.");
@@ -44,7 +44,7 @@ namespace Poltergeist.Core.Bindings.OpenGl
 			}
 
 			_generateVertexArrays(count, vertexArrayIds);
-			
+
 			HandleOpenGlErrors(nameof(GenerateVertexArrays));
 		}
 
@@ -55,7 +55,7 @@ namespace Poltergeist.Core.Bindings.OpenGl
 				Console.WriteLine($"[{nameof(DeleteVertexArrays)}]: Function is not supported.");
 				return;
 			}
-			
+
 			if (count <= 0)
 			{
 				Console.WriteLine($"[{nameof(DeleteVertexArrays)}]: Count must be greater than 0.");
@@ -73,9 +73,9 @@ namespace Poltergeist.Core.Bindings.OpenGl
 				Console.WriteLine("[DeleteVertexArrays]: VertexArrayIds must point to a valid memory region.");
 				return;
 			}
-			
+
 			_deleteVertexArrays(count, vertexArrayIds);
-			
+
 			HandleOpenGlErrors("DeleteVertexArrays");
 		}
 
@@ -88,7 +88,7 @@ namespace Poltergeist.Core.Bindings.OpenGl
 			}
 
 			_bindVertexArray(vertexArrayId);
-			
+
 			HandleOpenGlErrors("BindVertexArray");
 		}
 	}

@@ -17,9 +17,9 @@ namespace Poltergeist.Core.Bindings.OpenGl
 		private static readonly delegate* unmanaged[Cdecl]<uint, void> _enableVertexAttributeArray
 			= (delegate* unmanaged[Cdecl]<uint, void>)GlfwNative.GetProcessAddress("glEnableVertexAttribArray");
 
-		private static readonly delegate* unmanaged[Cdecl]<uint> _createProgram 
+		private static readonly delegate* unmanaged[Cdecl]<uint> _createProgram
 			= (delegate* unmanaged[Cdecl]<uint>)GlfwNative.GetProcessAddress("glCreateProgram");
-		
+
 		private static readonly delegate* unmanaged[Cdecl]<uint, void> _deleteProgram
 			= (delegate* unmanaged[Cdecl]<uint, void>)GlfwNative.GetProcessAddress("glDeleteProgram");
 
@@ -32,14 +32,14 @@ namespace Poltergeist.Core.Bindings.OpenGl
 		private static readonly delegate* unmanaged[Cdecl]<uint, OpenGlParameter, int*, void> _getProgramIntegerValue
 			= (delegate* unmanaged[Cdecl]<uint, OpenGlParameter, int*, void>) GlfwNative.GetProcessAddress(
 				"glGetProgramiv");
-		
+
 		private static readonly delegate* unmanaged[Cdecl]<uint, long, long*, byte*, void> _getProgramInfoLog
 			= (delegate* unmanaged[Cdecl]<uint, long, long*, byte*, void>) GlfwNative.GetProcessAddress(
 				"glGetProgramInfoLog");
 
 		private static readonly delegate* unmanaged[Cdecl]<OpenGlShaderType, uint> _createShader
 			= (delegate* unmanaged[Cdecl]<OpenGlShaderType, uint>)GlfwNative.GetProcessAddress("glCreateShader");
-		
+
 		private static readonly delegate* unmanaged[Cdecl]<uint, void> _deleteShader
 			= (delegate* unmanaged[Cdecl]<uint, void>)GlfwNative.GetProcessAddress("glDeleteShader");
 
@@ -48,22 +48,22 @@ namespace Poltergeist.Core.Bindings.OpenGl
 
 		private static readonly delegate* unmanaged[Cdecl]<uint, uint, void> _detachShader
 			= (delegate* unmanaged[Cdecl]<uint, uint, void>)GlfwNative.GetProcessAddress("glDetachShader");
-		
+
 		private static readonly delegate* unmanaged[Cdecl]<uint, long, byte**, int*, void> _shaderSource
 			= (delegate* unmanaged[Cdecl]<uint, long, byte**, int*, void>)GlfwNative.GetProcessAddress(
 				"glShaderSource");
-		
+
 		private static readonly delegate* unmanaged[Cdecl]<uint, void> _compileShader
 			= (delegate* unmanaged[Cdecl]<uint, void>)GlfwNative.GetProcessAddress("glCompileShader");
 
 		private static readonly delegate* unmanaged[Cdecl]<uint, OpenGlParameter, int*, void> _getShaderIntegerValue
 			= (delegate* unmanaged[Cdecl]<uint, OpenGlParameter, int*, void>) GlfwNative.GetProcessAddress(
 				"glGetShaderiv");
-		
+
 		private static readonly delegate* unmanaged[Cdecl]<uint, long, long*, byte*, void> _getShaderInfoLog
 			= (delegate* unmanaged[Cdecl]<uint, long, long*, byte*, void>)GlfwNative.GetProcessAddress(
 				"glGetShaderInfoLog");
-		
+
 		static OpenGl2Native()
 		{
 			_getIntegerV = (delegate* unmanaged[Cdecl]<int, int*, void>)GlfwNative.GetProcessAddress("glGetIntegerv");
@@ -88,9 +88,9 @@ namespace Poltergeist.Core.Bindings.OpenGl
 				Console.WriteLine($"[{nameof(GetIntegerV)}]: Function is not supported.");
 				return;
 			}
-			
+
 			_getIntegerV(parameter, results);
-			
+
 			HandleOpenGlErrors(nameof(GetIntegerV));
 		}
 
@@ -111,7 +111,7 @@ namespace Poltergeist.Core.Bindings.OpenGl
 			switch (type)
 			{
 				case OpenGlType.UnsignedByte:
-				case OpenGlType.Short: 
+				case OpenGlType.Short:
 				case OpenGlType.UnsignedShort:
 				case OpenGlType.Int:
 				case OpenGlType.UnsignedInt:
@@ -122,9 +122,9 @@ namespace Poltergeist.Core.Bindings.OpenGl
 					Console.WriteLine($"[{nameof(VertexAttributePointer)}]: Type must be unsigned byte, short, unsigned short, int, unsigned int, float or double.");
 					return;
 			}
-			
+
 			_vertexAttributePointer(index, size, type, normalized, stride, offset);
-			
+
 			HandleOpenGlErrors(nameof(VertexAttributePointer));
 		}
 
@@ -137,7 +137,7 @@ namespace Poltergeist.Core.Bindings.OpenGl
 			}
 
 			_enableVertexAttributeArray(index);
-			
+
 			HandleOpenGlErrors(nameof(EnableVertexAttributeArray));
 		}
 
@@ -148,11 +148,11 @@ namespace Poltergeist.Core.Bindings.OpenGl
 				Console.WriteLine($"[{nameof(CreateProgram)}]: Function is not supported.");
 				return 0;
 			}
-			
+
 			var programId = _createProgram();
 
 			HandleOpenGlErrors(nameof(CreateProgram));
-			
+
 			return programId;
 		}
 
@@ -165,7 +165,7 @@ namespace Poltergeist.Core.Bindings.OpenGl
 			}
 
 			_deleteProgram(programId);
-			
+
 			HandleOpenGlErrors(nameof(DeleteProgram));
 		}
 
@@ -178,7 +178,7 @@ namespace Poltergeist.Core.Bindings.OpenGl
 			}
 
 			_useProgram(programId);
-			
+
 			HandleOpenGlErrors(nameof(UseProgram));
 		}
 
@@ -256,7 +256,7 @@ namespace Poltergeist.Core.Bindings.OpenGl
 			}
 
 			_deleteShader(shaderId);
-			
+
 			HandleOpenGlErrors(nameof(DeleteShader));
 		}
 
@@ -267,7 +267,7 @@ namespace Poltergeist.Core.Bindings.OpenGl
 				Console.WriteLine($"[{nameof(AttachShader)}]: Function is not supported.");
 				return;
 			}
-		
+
 			_attachShader(programId, shaderId);
 
 			HandleOpenGlErrors(nameof(AttachShader));
@@ -280,9 +280,9 @@ namespace Poltergeist.Core.Bindings.OpenGl
 				Console.WriteLine($"[{nameof(DetachShader)}]: Function is not supported.");
 				return;
 			}
-			
+
 			_detachShader(programId, shaderId);
-			
+
 			HandleOpenGlErrors(nameof(DetachShader));
 		}
 
@@ -325,16 +325,16 @@ namespace Poltergeist.Core.Bindings.OpenGl
 					Console.WriteLine($"[{nameof(ShaderSource)}]: Source doesn't contain enough elements.");
 					return;
 				}
-				
+
 				if (lengths != null && !PointerUtils.IsReadable(lengths + i))
 				{
 					Console.WriteLine($"[{nameof(ShaderSource)}]: Lengths don't contain enough elements.");
 					return;
 				}
 			}
-		
+
 			_shaderSource(shaderId, count, source, lengths);
-			
+
 			HandleOpenGlErrors(nameof(ShaderSource));
 		}
 

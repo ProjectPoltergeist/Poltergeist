@@ -6,7 +6,7 @@ namespace Poltergeist.Core.Rendering
 	{
 		public readonly OpenGlType Type;
 		public readonly int Count;
-		
+
 		public VertexBufferElement(OpenGlType type, int count)
 		{
 			Type = type;

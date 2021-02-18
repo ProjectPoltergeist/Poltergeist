@@ -8,7 +8,7 @@ namespace Poltergeist.Core.Bindings.OpenGl
 	{
 		public static readonly bool IsSupported = true;
 
-		private static readonly delegate* unmanaged[Cdecl]<OpenGlError> _getError = 
+		private static readonly delegate* unmanaged[Cdecl]<OpenGlError> _getError =
 			(delegate* unmanaged[Cdecl]<OpenGlError>)GlfwNative.GetProcessAddress("glGetError");
 
 		private static readonly delegate* unmanaged[Cdecl]<int, uint*, void> _generateBuffers =
@@ -31,7 +31,7 @@ namespace Poltergeist.Core.Bindings.OpenGl
 
 		private static readonly delegate* unmanaged[Cdecl]<OpenGlPrimitive, int, int, void> _drawArrays =
 			(delegate* unmanaged[Cdecl]<OpenGlPrimitive, int, int, void>)GlfwNative.GetProcessAddress("glDrawArrays");
-		
+
 		private static readonly delegate* unmanaged[Cdecl]<OpenGlPrimitive, int, OpenGlType, void*, void> _drawElements =
 			(delegate* unmanaged[Cdecl]<OpenGlPrimitive, int, OpenGlType, void*, void>)GlfwNative.GetProcessAddress("glDrawElements");
 
@@ -42,7 +42,7 @@ namespace Poltergeist.Core.Bindings.OpenGl
 				Console.WriteLine($"[{nameof(GetError)}]: Function is not supported.");
 				return OpenGlError.None;
 			}
-			
+
 			return _getError();
 		}
 
@@ -53,13 +53,13 @@ namespace Poltergeist.Core.Bindings.OpenGl
 				Console.WriteLine($"[{nameof(GenerateBuffers)}]: Function is not supported.");
 				return;
 			}
-			
+
 			if (count <= 0)
 			{
 				Console.WriteLine($"[{nameof(GenerateBuffers)}]: Count must be greater than 0.");
 				return;
 			}
-			
+
 			if (bufferIds == null)
 			{
 				Console.WriteLine($"[{nameof(GenerateBuffers)}]: BufferIds must not be null.");
@@ -73,7 +73,7 @@ namespace Poltergeist.Core.Bindings.OpenGl
 			}
 
 			_generateBuffers(count, bufferIds);
-			
+
 			HandleOpenGlErrors(nameof(GenerateBuffers));
 		}
 
@@ -84,13 +84,13 @@ namespace Poltergeist.Core.Bindings.OpenGl
 				Console.WriteLine($"[{nameof(DeleteBuffers)}]: Function is not supported.");
 				return;
 			}
-			
+
 			if (count <= 0)
 			{
 				Console.WriteLine($"[{nameof(DeleteBuffers)}]: Count must be greater than 0.");
 				return;
 			}
-			
+
 			if (bufferIds == null)
 			{
 				Console.WriteLine($"[{nameof(DeleteBuffers)}]: BufferIds must not be null.");
@@ -104,7 +104,7 @@ namespace Poltergeist.Core.Bindings.OpenGl
 			}
 
 			_deleteBuffers(count, bufferIds);
-			
+
 			HandleOpenGlErrors(nameof(DeleteBuffers));
 		}
 
@@ -115,9 +115,9 @@ namespace Poltergeist.Core.Bindings.OpenGl
 				Console.WriteLine($"[{nameof(BindBuffer)}]: Function is not supported.");
 				return;
 			}
-			
+
 			_bindBuffer(bufferType, bufferId);
-			
+
 			HandleOpenGlErrors(nameof(BindBuffer));
 		}
 
@@ -136,7 +136,7 @@ namespace Poltergeist.Core.Bindings.OpenGl
 			}
 
 			_bufferData(bufferType, size, data, usageHint);
-			
+
 			HandleOpenGlErrors(nameof(BufferData));
 		}
 
@@ -178,7 +178,7 @@ namespace Poltergeist.Core.Bindings.OpenGl
 				Console.WriteLine($"[{nameof(ClearColor)}]: Blue is out of range.");
 				return;
 			}
-			
+
 			if (a < 0 || a > 1)
 			{
 				Console.WriteLine($"[{nameof(ClearColor)}]: Alpha is out of range.");
@@ -186,7 +186,7 @@ namespace Poltergeist.Core.Bindings.OpenGl
 			}
 
 			_clearColor(r, g, b, a);
-			
+
 			HandleOpenGlErrors(nameof(ClearColor));
 		}
 
@@ -238,11 +238,11 @@ namespace Poltergeist.Core.Bindings.OpenGl
 
 			HandleOpenGlErrors(nameof(DrawElements));
 		}
-		
+
 		protected static void HandleOpenGlErrors(string function)
 		{
 			var error = GetError();
-		
+
 			while (error != OpenGlError.None)
 			{
 				switch (error)
