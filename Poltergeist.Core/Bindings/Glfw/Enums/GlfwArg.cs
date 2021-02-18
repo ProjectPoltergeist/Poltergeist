@@ -1,4 +1,4 @@
-﻿namespace Poltergeist.Core.Bindings.Glfw
+﻿namespace Poltergeist.Core.Bindings.Glfw.Enums
 {
 	public enum GlfwArg
 	{
@@ -12,22 +12,12 @@
 
 		OpenGLCompatProfile = 0x00032002,
 
-		Connected = 0x00040001,
-
-		Disconnected = 0x00040002,
-
-		DontCare = -1,
-
-		Release = 0,
-
-		Press = 1,
-
-		Repeat = 2,
-
 		CursorNormal = 0x00034001,
 
 		CursorHidden = 0x00034002,
 
 		CursorDisabled = 0x00034003,
+
+		DontCare = -1,
 	}
 }

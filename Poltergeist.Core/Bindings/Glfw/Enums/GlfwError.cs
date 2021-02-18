@@ -1,4 +1,4 @@
-﻿namespace Poltergeist.Core.Bindings.Glfw
+﻿namespace Poltergeist.Core.Bindings.Glfw.Enums
 {
 	public enum GlfwError
 	{

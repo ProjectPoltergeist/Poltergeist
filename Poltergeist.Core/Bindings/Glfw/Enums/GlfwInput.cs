@@ -1,4 +1,4 @@
-﻿namespace Poltergeist.Core.Bindings.Glfw
+﻿namespace Poltergeist.Core.Bindings.Glfw.Enums
 {
 	public enum GlfwInput
 	{
@@ -268,20 +268,6 @@
 		KeyLast = KeyMenu,
 		#endregion
 
-		#region Modifier keys
-		ModShift = 0x0001,
-
-		ModControl = 0x0002,
-
-		ModAlt = 0x0004,
-
-		ModSuper = 0x0008,
-
-		ModCapsLock = 0x0010,
-
-		ModNumLock = 0x0020,
-		#endregion
-
 		#region Mouse
 		MouseButton1 = 0,
 
@@ -398,32 +384,6 @@
 		GamepadAxisRightTrigger = 5,
 
 		GamepadAxisLast = GamepadAxisRightTrigger,
-		#endregion
-
-		#region Cursor Shapes
-		ArrowCursor = 0x00036001,
-
-		IbeamCursor = 0x00036002,
-
-		CrosshairCursor = 0x00036003,
-
-		HandCursor = 0x00036004,
-
-		HresizeCursor = 0x00036005,
-
-		VresizeCursor = 0x00036006,
-		#endregion
-
-		#region InputMode
-		Cursor = 0x00033001,
-
-		StickyKeys = 0x00033002,
-
-		StickyMouseButtons = 0x00033003,
-
-		LockKeyMods = 0x00033004,
-
-		RawMouseMotion = 0x00033005,
 		#endregion
 	}
 }
