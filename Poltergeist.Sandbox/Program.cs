@@ -17,9 +17,6 @@ namespace Poltergeist.Sandbox
 			using (new ExitHandler.LifetimeHandle())
 			{
 
-				const int glColorBufferBit = 0x00004000;
-				const int glTriangles = 0x0004;
-
 				GlfwNative.Init();
 				GlfwNative.WindowHint(GlfwHint.ContextVersionMajor, 3);
 				GlfwNative.WindowHint(GlfwHint.ContextVersionMinor, 3);
@@ -38,9 +35,10 @@ namespace Poltergeist.Sandbox
 
 						Span<float> vertices = stackalloc float[]
 						{
-							-0.5f, -0.5f, 0.0f,
+							0.5f, 0.5f, 0.0f,
 							0.5f, -0.5f, 0.0f,
-							0.0f, 0.5f, 0.0f
+							-0.5f, -0.5f, 0.0f,
+							-0.5f, 0.5f, 0.0f
 						};
 
 						Span<VertexBufferElement> layout = stackalloc VertexBufferElement[]
@@ -50,18 +48,29 @@ namespace Poltergeist.Sandbox
 
 						using (VertexBuffer.Create<float>(vertices, layout))
 						{
-							while (window.IsOpen)
+							Span<int> indices = stackalloc int[]
 							{
-								window.PollEvents();
-								Console.WriteLine(yscale);
-								OpenGl3Native.ClearColor(colorR, colorB, 0f,1f);
-								OpenGl3Native.Clear(glColorBufferBit);
-								OpenGl3Native.DrawArrays(glTriangles, 0, 3);
+								0, 1, 3, 1, 2, 3	
+							};
 
-								window.SwapBuffers();
+							using (var indexBuffer = IndexBuffer.Create<int>(indices))
+							{
+								indexBuffer.Bind();
+								
+								while (window.IsOpen)
+								{
+									window.PollEvents();
+
+									OpenGl3Native.ClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+									OpenGl3Native.Clear(OpenGlClearMask.ColorBufferBit);
+									OpenGl3Native.DrawElements(OpenGlPrimitive.Triangles, 6, OpenGlType.UnsignedInt, null);
+
+									window.SwapBuffers();
+								}
+								
+								vertexArray.Unbind();
+								indexBuffer.Unbind();
 							}
-
-							vertexArray.Unbind();
 						}
 					}
 				}
