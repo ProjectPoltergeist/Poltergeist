@@ -15,9 +15,9 @@ namespace Poltergeist.Core.Rendering
 		public static VertexBuffer Create<T>(ReadOnlySpan<T> data, ReadOnlySpan<VertexBufferElement> layout) where T : unmanaged
 		{
 			uint vertexBufferId;
-		
+
 			OpenGl3Native.GenerateBuffers(1, &vertexBufferId);
-			
+
 			var vertexBuffer = new VertexBuffer(vertexBufferId);
 
 			vertexBuffer.Bind();
@@ -26,7 +26,7 @@ namespace Poltergeist.Core.Rendering
 				OpenGl3Native.BufferData(OpenGlBufferType.Array, data.Length * sizeof(T), dataPointer, OpenGlUsageHint.StaticDraw);
 
 			nuint offset = 0;
-				
+
 			for (uint i = 0; i < layout.Length; i++)
 			{
 				var element = layout[(int)i];
@@ -36,7 +36,7 @@ namespace Poltergeist.Core.Rendering
 					_ => throw new ArgumentOutOfRangeException()
 				};
 				var size = element.Count * typeSize;
-					
+
 				OpenGl3Native.VertexAttributePointer(i, element.Count, element.Type, false, size, offset);
 				OpenGl3Native.EnableVertexAttributeArray(i);
 
@@ -44,10 +44,10 @@ namespace Poltergeist.Core.Rendering
 			}
 
 			vertexBuffer.Unbind();
-			
+
 			return vertexBuffer;
 		}
-		
+
 		public void Bind()
 		{
 			OpenGl3Native.BindBuffer(OpenGlBufferType.Array, _vertexBufferId);

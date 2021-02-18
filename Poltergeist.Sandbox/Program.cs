@@ -34,7 +34,7 @@ namespace Poltergeist.Sandbox
 				{
 					var fragmentShaderSource = File.ReadAllText("core.frag");
 					var vertexShaderSource = File.ReadAllText("core.vert");
-					
+
 					using (var shader = Shader.Create(fragmentShaderSource, vertexShaderSource))
 					{
 						shader.Bind();
@@ -60,13 +60,13 @@ namespace Poltergeist.Sandbox
 							{
 								Span<int> indices = stackalloc int[]
 								{
-									0, 1, 3, 1, 2, 3	
+									0, 1, 3, 1, 2, 3
 								};
 
 								using (var indexBuffer = IndexBuffer.Create<int>(indices))
 								{
 									indexBuffer.Bind();
-								
+
 									while (window.IsOpen)
 									{
 										window.PollEvents();
@@ -77,7 +77,7 @@ namespace Poltergeist.Sandbox
 
 										window.SwapBuffers();
 									}
-								
+
 									vertexArray.Unbind();
 									indexBuffer.Unbind();
 								}

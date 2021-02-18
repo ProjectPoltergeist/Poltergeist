@@ -11,7 +11,7 @@ namespace Poltergeist.Core.Rendering
 		{
 			_indexBufferId = indexBufferId;
 		}
-		
+
 		public static IndexBuffer Create<T>(ReadOnlySpan<T> indices) where T : unmanaged
 		{
 			uint indexBufferId;
@@ -21,7 +21,7 @@ namespace Poltergeist.Core.Rendering
 			var indexBuffer = new IndexBuffer(indexBufferId);
 
 			indexBuffer.Bind();
-			
+
 			fixed (T* dataPointer = indices)
 				OpenGl3Native.BufferData(OpenGlBufferType.ElementArray, indices.Length * sizeof(T), dataPointer, OpenGlUsageHint.StaticDraw);
 
@@ -29,7 +29,7 @@ namespace Poltergeist.Core.Rendering
 
 			return indexBuffer;
 		}
-		
+
 		public void Bind()
 		{
 			OpenGl3Native.BindBuffer(OpenGlBufferType.ElementArray, _indexBufferId);
@@ -39,7 +39,7 @@ namespace Poltergeist.Core.Rendering
 		{
 			OpenGl3Native.BindBuffer(OpenGlBufferType.ElementArray, 0);
 		}
-		
+
 		public void Dispose()
 		{
 			fixed (uint* indexBufferIdPointer = &_indexBufferId)

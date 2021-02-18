@@ -6,7 +6,7 @@ namespace Poltergeist.Core.Rendering
 	public unsafe struct VertexArray : IDisposable
 	{
 		private uint _vertexArrayId;
-		
+
 		private VertexArray(uint vertexArrayId)
 		{
 			_vertexArrayId = vertexArrayId;
@@ -15,12 +15,12 @@ namespace Poltergeist.Core.Rendering
 		public static VertexArray Create()
 		{
 			uint vertexArrayId;
-			
+
 			OpenGl3Native.GenerateVertexArrays(1, &vertexArrayId);
 
 			return new VertexArray(vertexArrayId);
 		}
-		
+
 		public void Bind()
 		{
 			OpenGl3Native.BindVertexArray(_vertexArrayId);
