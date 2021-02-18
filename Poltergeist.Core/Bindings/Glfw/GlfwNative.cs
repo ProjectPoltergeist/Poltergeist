@@ -112,7 +112,7 @@ namespace Poltergeist.Core.Bindings.Glfw
 		[DllImport(GlfwLibrary, EntryPoint = "glfwGetVersionString", CallingConvention = Convention)]
 		public static extern char* GetVersionString();
 
-		[DllImport(GlfwLibrary, EntryPoint = "glfwGetError", CallingConvention = Convention)]
+		[DllImport(GlfwLibrary, EntryPoint = "glfwGetError", CallingConvention = Convention, BestFitMapping = false)]
 		[return: MarshalAs(UnmanagedType.I4)]
 		public static extern GlfwError GetError([MarshalAs(UnmanagedType.LPUTF8Str)] ref string description);
 
@@ -405,7 +405,7 @@ namespace Poltergeist.Core.Bindings.Glfw
 		[DllImport(GlfwLibrary, EntryPoint = "glfwSetJoystickCallback", CallingConvention = Convention)]
 		public static extern GlfwJoystickFun SetJoystickCallback(GlfwJoystickFun callback);
 
-		[DllImport(GlfwLibrary, EntryPoint = "glfwUpdateGamepadMappings", CallingConvention = Convention)]
+		[DllImport(GlfwLibrary, EntryPoint = "glfwUpdateGamepadMappings", CallingConvention = Convention, BestFitMapping = false)]
 		[return: MarshalAs(UnmanagedType.I4)]
 		public static extern GlfwArg UpdateGamepadMappings([MarshalAs(UnmanagedType.LPUTF8Str)] string @string);
 
@@ -417,7 +417,7 @@ namespace Poltergeist.Core.Bindings.Glfw
 		[return: MarshalAs(UnmanagedType.I4)]
 		public static extern GlfwArg GetGamepadState([MarshalAs(UnmanagedType.I4)] GlfwInput jid, GlfwGamepadState* state);
 
-		[DllImport(GlfwLibrary, EntryPoint = "glfwSetClipboardString", CallingConvention = Convention)]
+		[DllImport(GlfwLibrary, EntryPoint = "glfwSetClipboardString", CallingConvention = Convention, BestFitMapping = false)]
 		public static extern void SetClipboardString(GlfwWindow* window, [MarshalAs(UnmanagedType.LPUTF8Str)] string @string);
 
 		[DllImport(GlfwLibrary, EntryPoint = "glfwGetClipboardString", CallingConvention = Convention)]
@@ -447,12 +447,12 @@ namespace Poltergeist.Core.Bindings.Glfw
 		[DllImport(GlfwLibrary, EntryPoint = "glfwSwapInterval", CallingConvention = Convention)]
 		public static extern void SwapInterval(int interval);
 
-		[DllImport(GlfwLibrary, EntryPoint = "glfwExtensionSupported", CallingConvention = Convention)]
+		[DllImport(GlfwLibrary, EntryPoint = "glfwExtensionSupported", CallingConvention = Convention, BestFitMapping = false)]
 		[return: MarshalAs(UnmanagedType.I4)]
 		public static extern GlfwArg ExtensionSupported([MarshalAs(UnmanagedType.LPUTF8Str)] string extension);
 
-		[DllImport(GlfwLibrary, EntryPoint = "glfwGetProcAddress", CallingConvention = Convention)]
-		public static extern GlfwGlProc GetProcAddress([MarshalAs(UnmanagedType.LPUTF8Str)] string procname);
+		[DllImport(GlfwLibrary, EntryPoint = "glfwGetProcAddress", CallingConvention = Convention, BestFitMapping = false)]
+		public static extern void* GetProcessAddress([MarshalAs(UnmanagedType.LPUTF8Str)] string procname);
 		/*
 		[DllImport(GlfwLibrary, EntryPoint = "glfwVulkanSupported", CallingConvention = Convention)]
 		[return: MarshalAs(UnmanagedType.I4)]
@@ -461,7 +461,7 @@ namespace Poltergeist.Core.Bindings.Glfw
 		[DllImport(GlfwLibrary, EntryPoint = "glfwGetRequiredInstanceExtensions", CallingConvention = Convention)]
 		public static extern char** GetRequiredInstanceExtensions(out uint count);
 
-		[DllImport(GlfwLibrary, EntryPoint = "glfwGetInstanceProcAddress", CallingConvention = Convention)]
+		[DllImport(GlfwLibrary, EntryPoint = "glfwGetInstanceProcAddress", CallingConvention = Convention, BestFitMapping = false)]
 		public static extern GlfwVkProc GetInstanceProcAddress(VkInstance instance, [MarshalAs(UnmanagedType.LPUTF8Str)] string procname);
 
 		[DllImport(GlfwLibrary, EntryPoint = "glfwGetPhysicalDevicePresentationSupport", CallingConvention = Convention)]
