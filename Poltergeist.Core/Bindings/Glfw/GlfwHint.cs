@@ -99,22 +99,6 @@
 		#endregion
 
 		#region Input
-		Cursor = 0x00033001,
-
-		StickyKeys = 0x00033002,
-
-		StickyMouseButtons = 0x00033003,
-
-		LockKeyMods = 0x00033004,
-
-		RawMouseMotion = 0x00033005,
-
-		CursorNormal = 0x00034001,
-
-		CursorHidden = 0x00034002,
-
-		CursorDisabled = 0x00034003,
-
 		JoystickHatButtons = 0x00050001,
 
 		CocoaChdirResources = 0x00051001,
