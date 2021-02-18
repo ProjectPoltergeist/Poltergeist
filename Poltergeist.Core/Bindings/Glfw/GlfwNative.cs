@@ -106,6 +106,9 @@ namespace Poltergeist.Core.Bindings.Glfw
 		[DllImport(GlfwLibrary, EntryPoint = "glfwInitHint", CallingConvention = Convention)]
 		public static extern void InitHint([MarshalAs(UnmanagedType.I4)] GlfwHint hint, [MarshalAs(UnmanagedType.I4)] GlfwArg value);
 
+		[DllImport(GlfwLibrary, EntryPoint = "glfwInitHint", CallingConvention = Convention)]
+		public static extern void InitHint([MarshalAs(UnmanagedType.I4)] GlfwHint hint, int value);
+
 		[DllImport(GlfwLibrary, EntryPoint = "glfwGetVersion", CallingConvention = Convention)]
 		public static extern void GetVersion(out int major, out int minor, out int rev);
 
@@ -170,8 +173,11 @@ namespace Poltergeist.Core.Bindings.Glfw
 		[DllImport(GlfwLibrary, EntryPoint = "glfwWindowHint", CallingConvention = Convention)]
 		public static extern void WindowHint([MarshalAs(UnmanagedType.I4)] GlfwHint hint, int value);
 
+		[DllImport(GlfwLibrary, EntryPoint = "glfwWindowHint", CallingConvention = Convention)]
+		public static extern void WindowHint([MarshalAs(UnmanagedType.I4)] GlfwHint hint, [MarshalAs(UnmanagedType.I4)] GlfwArg value);
+
 		[DllImport(GlfwLibrary, EntryPoint = "glfwWindowHintString", CallingConvention = Convention, BestFitMapping = false)]
-		public static extern void WindowHint([MarshalAs(UnmanagedType.I4)] GlfwHint hint, [MarshalAs(UnmanagedType.LPUTF8Str)] string value);
+		public static extern void WindowHintString([MarshalAs(UnmanagedType.I4)] GlfwHint hint, [MarshalAs(UnmanagedType.LPUTF8Str)] string value);
 
 		[DllImport(GlfwLibrary, EntryPoint = "glfwCreateWindow", CallingConvention = Convention, BestFitMapping = false)]
 		public static extern GlfwWindow* CreateWindow(int width, int height, [MarshalAs(UnmanagedType.LPUTF8Str)] string title, GlfwMonitor* monitor, GlfwWindow* share);
