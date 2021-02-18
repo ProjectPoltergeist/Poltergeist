@@ -1,5 +1,6 @@
 ﻿using System;
 using Poltergeist.Core.Bindings.Glfw;
+using Poltergeist.Core.Memory;
 
 namespace Poltergeist.Core.Bindings.OpenGl
 {
@@ -36,11 +37,7 @@ namespace Poltergeist.Core.Bindings.OpenGl
 				return;
 			}
 
-			try
-			{
-				_ = *vertexArrayIds;
-			}
-			catch (AccessViolationException)
+			if (!PointerUtils.IsReadable(vertexArrayIds))
 			{
 				Console.WriteLine($"[{nameof(GenerateVertexArrays)}]: VertexArrayIds must point to a valid memory region.");
 				return;
@@ -71,11 +68,7 @@ namespace Poltergeist.Core.Bindings.OpenGl
 				return;
 			}
 
-			try
-			{
-				_ = *vertexArrayIds;
-			}
-			catch (AccessViolationException)
+			if (!PointerUtils.IsReadable(vertexArrayIds))
 			{
 				Console.WriteLine("[DeleteVertexArrays]: VertexArrayIds must point to a valid memory region.");
 				return;
