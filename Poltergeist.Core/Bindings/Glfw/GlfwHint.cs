@@ -73,11 +73,11 @@
 
 		ContextRobustness = 0x00022005,
 
-		OpenGLForwardCompat = 0x00022006,
+		OpenGlForwardCompat = 0x00022006,
 
-		OpenGLDebugContext = 0x00022007,
+		OpenGlDebugContext = 0x00022007,
 
-		OpenGLProfile = 0x00022008,
+		OpenGlProfile = 0x00022008,
 
 		ContextReleaseBehavior = 0x00022009,
 
@@ -95,7 +95,31 @@
 
 		X11ClassName = 0x00024001,
 
-		X11InstanceName = 0x00024002
+		X11InstanceName = 0x00024002,
+		#endregion
+
+		#region Input
+		Cursor = 0x00033001,
+
+		StickyKeys = 0x00033002,
+
+		StickyMouseButtons = 0x00033003,
+
+		LockKeyMods = 0x00033004,
+
+		RawMouseMotion = 0x00033005,
+
+		CursorNormal = 0x00034001,
+
+		CursorHidden = 0x00034002,
+
+		CursorDisabled = 0x00034003,
+
+		JoystickHatButtons = 0x00050001,
+
+		CocoaChdirResources = 0x00051001,
+
+		CocoaMenubar = 0x00051002,
 		#endregion
 	}
 }
