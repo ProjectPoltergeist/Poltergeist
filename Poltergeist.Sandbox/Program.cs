@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Poltergeist.Core;
 using Poltergeist.Core.Bindings.Glfw;
 using Poltergeist.Core.Bindings.OpenGl;
@@ -31,49 +32,59 @@ namespace Poltergeist.Sandbox
 
 				using (var window = new Window("Poltergeist Sandbox"))
 				{
-					using (var vertexArray = VertexArray.Create())
+					var fragmentShaderSource = File.ReadAllText("core.frag");
+					var vertexShaderSource = File.ReadAllText("core.vert");
+					
+					using (var shader = Shader.Create(fragmentShaderSource, vertexShaderSource))
 					{
-						vertexArray.Bind();
+						shader.Bind();
 
-						Span<float> vertices = stackalloc float[]
+						using (var vertexArray = VertexArray.Create())
 						{
-							0.5f, 0.5f, 0.0f,
-							0.5f, -0.5f, 0.0f,
-							-0.5f, -0.5f, 0.0f,
-							-0.5f, 0.5f, 0.0f
-						};
+							vertexArray.Bind();
 
-						Span<VertexBufferElement> layout = stackalloc VertexBufferElement[]
-						{
-							new VertexBufferElement(OpenGlType.Float, 3)
-						};
-
-						using (VertexBuffer.Create<float>(vertices, layout))
-						{
-							Span<int> indices = stackalloc int[]
+							Span<float> vertices = stackalloc float[]
 							{
-								0, 1, 3, 1, 2, 3	
+								0.5f, 0.5f, 0.0f,
+								0.5f, -0.5f, 0.0f,
+								-0.5f, -0.5f, 0.0f,
+								-0.5f, 0.5f, 0.0f
 							};
 
-							using (var indexBuffer = IndexBuffer.Create<int>(indices))
+							Span<VertexBufferElement> layout = stackalloc VertexBufferElement[]
 							{
-								indexBuffer.Bind();
-								
-								while (window.IsOpen)
+								new VertexBufferElement(OpenGlType.Float, 3)
+							};
+
+							using (VertexBuffer.Create<float>(vertices, layout))
+							{
+								Span<int> indices = stackalloc int[]
 								{
-									window.PollEvents();
+									0, 1, 3, 1, 2, 3	
+								};
 
-									OpenGl3Native.ClearColor(0.3f, 0.3f, 0.3f, 1.0f);
-									OpenGl3Native.Clear(OpenGlClearMask.ColorBufferBit);
-									OpenGl3Native.DrawElements(OpenGlPrimitive.Triangles, 6, OpenGlType.UnsignedInt, null);
-
-									window.SwapBuffers();
-								}
+								using (var indexBuffer = IndexBuffer.Create<int>(indices))
+								{
+									indexBuffer.Bind();
 								
-								vertexArray.Unbind();
-								indexBuffer.Unbind();
+									while (window.IsOpen)
+									{
+										window.PollEvents();
+
+										OpenGl3Native.ClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+										OpenGl3Native.Clear(OpenGlClearMask.ColorBufferBit);
+										OpenGl3Native.DrawElements(OpenGlPrimitive.Triangles, 6, OpenGlType.UnsignedInt, null);
+
+										window.SwapBuffers();
+									}
+								
+									vertexArray.Unbind();
+									indexBuffer.Unbind();
+								}
 							}
 						}
+
+						shader.Unbind();
 					}
 				}
 
