@@ -27,8 +27,6 @@ namespace Poltergeist.Sandbox
 
 				using (var window = new Window("Poltergeist Sandbox"))
 				{
-					window.SetWindowTitle("( ͡° ͜ʖ ͡°)");
-
 					using (var vertexArray = VertexArray.Create())
 					{
 						vertexArray.Bind();
