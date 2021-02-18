@@ -4,7 +4,7 @@ using Xunit;
 
 namespace Poltergeist.Core.Tests
 {
-	public unsafe class PointerUtilsTest
+	public unsafe class PointerUtilsTests
 	{
 		[Fact]
 		public void NullTest()
