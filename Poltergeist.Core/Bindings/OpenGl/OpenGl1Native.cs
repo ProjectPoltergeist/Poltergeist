@@ -1,5 +1,6 @@
 ﻿using System;
 using Poltergeist.Core.Bindings.Glfw;
+using Poltergeist.Core.Memory;
 
 namespace Poltergeist.Core.Bindings.OpenGl
 {
@@ -65,11 +66,7 @@ namespace Poltergeist.Core.Bindings.OpenGl
 				return;
 			}
 
-			try
-			{
-				_ = *bufferIds;
-			}
-			catch (AccessViolationException)
+			if (!PointerUtils.IsReadable(bufferIds))
 			{
 				Console.WriteLine($"[{nameof(GenerateBuffers)}]: BufferIds must point to a valid memory region.");
 				return;
@@ -100,11 +97,7 @@ namespace Poltergeist.Core.Bindings.OpenGl
 				return;
 			}
 
-			try
-			{
-				_ = *bufferIds;
-			}
-			catch (AccessViolationException)
+			if (!PointerUtils.IsReadable(bufferIds))
 			{
 				Console.WriteLine($"[{nameof(DeleteBuffers)}]: BufferIds must point to a valid memory region.");
 				return;

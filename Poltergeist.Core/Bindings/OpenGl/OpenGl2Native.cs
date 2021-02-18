@@ -1,5 +1,6 @@
 ﻿using System;
 using Poltergeist.Core.Bindings.Glfw;
+using Poltergeist.Core.Memory;
 
 namespace Poltergeist.Core.Bindings.OpenGl
 {
@@ -220,11 +221,7 @@ namespace Poltergeist.Core.Bindings.OpenGl
 				Console.WriteLine($"[{nameof(GetProgramInfoLog)}]: Info log must not be null.");
 			}
 
-			try
-			{
-				_ = *infoLog;
-			}
-			catch (AccessViolationException)
+			if (!PointerUtils.IsReadable(infoLog))
 			{
 				Console.WriteLine($"[{nameof(GetProgramInfoLog)}]: Info log must point to a valid memory region.");
 				return;
@@ -309,52 +306,30 @@ namespace Poltergeist.Core.Bindings.OpenGl
 				return;
 			}
 
-			try
-			{
-				_ = *source;
-			}
-			catch (AccessViolationException)
+			if (!PointerUtils.IsReadable(source))
 			{
 				Console.WriteLine($"[{nameof(ShaderSource)}]: Source must point to a valid memory region.");
 				return;
 			}
 
-			if (lengths != null)
+			if (lengths != null && !PointerUtils.IsReadable(lengths))
 			{
-				try
-				{
-					_ = *lengths;
-				}
-				catch (AccessViolationException)
-				{
-					Console.WriteLine($"[{nameof(ShaderSource)}]: Lengths must point to a valid memory region.");
-					return;
-				}
+				Console.WriteLine($"[{nameof(ShaderSource)}]: Lengths must point to a valid memory region.");
+				return;
 			}
 
 			for (long i = 0; i < count; i++)
 			{
-				try
-				{
-					_ = *(source + i);
-				}
-				catch (AccessViolationException)
+				if (!PointerUtils.IsReadable(source + i))
 				{
 					Console.WriteLine($"[{nameof(ShaderSource)}]: Source doesn't contain enough elements.");
 					return;
 				}
 				
-				if (lengths != null)
+				if (lengths != null && !PointerUtils.IsReadable(lengths + i))
 				{
-					try
-					{
-						_ = *(lengths + i);
-					}
-					catch (AccessViolationException)
-					{
-						Console.WriteLine($"[{nameof(ShaderSource)}]: Lengths don't contain enough elements.");
-						return;
-					}
+					Console.WriteLine($"[{nameof(ShaderSource)}]: Lengths don't contain enough elements.");
+					return;
 				}
 			}
 		
@@ -402,11 +377,7 @@ namespace Poltergeist.Core.Bindings.OpenGl
 				Console.WriteLine($"[{nameof(GetShaderInfoLog)}]: Info log must not be null.");
 			}
 
-			try
-			{
-				_ = *infoLog;
-			}
-			catch (AccessViolationException)
+			if (!PointerUtils.IsReadable(infoLog))
 			{
 				Console.WriteLine($"[{nameof(GetShaderInfoLog)}]: Info log must point to a valid memory region.");
 				return;
