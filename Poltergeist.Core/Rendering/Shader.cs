@@ -91,7 +91,7 @@ namespace Poltergeist.Core.Rendering
 
 		public void Unbind()
 		{
-			OpenGl3Native.UseProgram(_shaderId);
+			OpenGl3Native.UseProgram(0);
 		}
 
 		public void Dispose()
