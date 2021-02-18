@@ -6,11 +6,7 @@ namespace Poltergeist.Core.Rendering
 	public unsafe struct VertexBuffer : IDisposable
 	{
 		private uint _vertexBufferId;
-		
-		private const int glArrayBuffer = 0x8892;
-		private const int glStaticDraw = 0x88E4;
-		private const int glFalse = 0;
-		
+
 		private VertexBuffer(uint vertexBufferId)
 		{
 			_vertexBufferId = vertexBufferId;
@@ -27,7 +23,7 @@ namespace Poltergeist.Core.Rendering
 			vertexBuffer.Bind();
 
 			fixed (T* dataPointer = data)
-				OpenGl3Native.BufferData(glArrayBuffer, data.Length * sizeof(T), dataPointer, glStaticDraw);
+				OpenGl3Native.BufferData(OpenGlBufferType.Array, data.Length * sizeof(T), dataPointer, OpenGlUsageHint.StaticDraw);
 
 			nuint offset = 0;
 				
@@ -41,7 +37,7 @@ namespace Poltergeist.Core.Rendering
 				};
 				var size = element.Count * typeSize;
 					
-				OpenGl3Native.VertexAttributePointer(i, element.Count, (int)element.Type, glFalse, size, offset);
+				OpenGl3Native.VertexAttributePointer(i, element.Count, element.Type, false, size, offset);
 				OpenGl3Native.EnableVertexAttributeArray(i);
 
 				offset += (nuint)size;
@@ -54,12 +50,12 @@ namespace Poltergeist.Core.Rendering
 		
 		public void Bind()
 		{
-			OpenGl3Native.BindBuffer(glArrayBuffer, _vertexBufferId);
+			OpenGl3Native.BindBuffer(OpenGlBufferType.Array, _vertexBufferId);
 		}
 
 		public void Unbind()
 		{
-			OpenGl3Native.BindBuffer(glArrayBuffer, 0);
+			OpenGl3Native.BindBuffer(OpenGlBufferType.Array, 0);
 		}
 
 		public void Dispose()

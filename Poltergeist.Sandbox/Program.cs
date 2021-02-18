@@ -1,24 +1,20 @@
-﻿using Poltergeist.Core;
+using System;
+using System.IO;
+
+using Poltergeist.Core;
 using Poltergeist.Core.Bindings.Glfw;
 using Poltergeist.Core.Bindings.OpenGl;
 using Poltergeist.Core.Rendering;
 using Poltergeist.Core.Windowing;
-using System;
 
 namespace Poltergeist.Sandbox
 {
 	public sealed class Program
 	{
-		private static float colorR, colorB;
-		private static int xscale, yscale;
-
 		public static unsafe void Main()
 		{
 			using (new ExitHandler.LifetimeHandle())
 			{
-
-				const int glColorBufferBit = 0x00004000;
-				const int glTriangles = 0x0004;
 
 				GlfwNative.Init();
 				GlfwNative.WindowHint(GlfwHint.ContextVersionMajor, 3);
@@ -30,39 +26,59 @@ namespace Poltergeist.Sandbox
 
 				using (var window = new Window("Poltergeist Sandbox"))
 				{
-					window.SetWindowTitle("( ͡° ͜ʖ ͡°)");
-
-					using (var vertexArray = VertexArray.Create())
+					var fragmentShaderSource = File.ReadAllText("core.frag");
+					var vertexShaderSource = File.ReadAllText("core.vert");
+					
+					using (var shader = Shader.Create(fragmentShaderSource, vertexShaderSource))
 					{
-						vertexArray.Bind();
+						shader.Bind();
 
-						Span<float> vertices = stackalloc float[]
+						using (var vertexArray = VertexArray.Create())
 						{
-							-0.5f, -0.5f, 0.0f,
-							0.5f, -0.5f, 0.0f,
-							0.0f, 0.5f, 0.0f
-						};
+							vertexArray.Bind();
 
-						Span<VertexBufferElement> layout = stackalloc VertexBufferElement[]
-						{
-							new VertexBufferElement(OpenGlType.Float, 3)
-						};
-
-						using (VertexBuffer.Create<float>(vertices, layout))
-						{
-							while (window.IsOpen)
+							Span<float> vertices = stackalloc float[]
 							{
-								window.PollEvents();
-								Console.WriteLine(yscale);
-								OpenGl3Native.ClearColor(colorR, colorB, 0f,1f);
-								OpenGl3Native.Clear(glColorBufferBit);
-								OpenGl3Native.DrawArrays(glTriangles, 0, 3);
+								0.5f, 0.5f, 0.0f,
+								0.5f, -0.5f, 0.0f,
+								-0.5f, -0.5f, 0.0f,
+								-0.5f, 0.5f, 0.0f
+							};
 
-								window.SwapBuffers();
+							Span<VertexBufferElement> layout = stackalloc VertexBufferElement[]
+							{
+								new VertexBufferElement(OpenGlType.Float, 3)
+							};
+
+							using (VertexBuffer.Create<float>(vertices, layout))
+							{
+								Span<int> indices = stackalloc int[]
+								{
+									0, 1, 3, 1, 2, 3	
+								};
+
+								using (var indexBuffer = IndexBuffer.Create<int>(indices))
+								{
+									indexBuffer.Bind();
+								
+									while (window.IsOpen)
+									{
+										window.PollEvents();
+
+										OpenGl3Native.ClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+										OpenGl3Native.Clear(OpenGlClearMask.ColorBufferBit);
+										OpenGl3Native.DrawElements(OpenGlPrimitive.Triangles, 6, OpenGlType.UnsignedInt, null);
+
+										window.SwapBuffers();
+									}
+								
+									vertexArray.Unbind();
+									indexBuffer.Unbind();
+								}
 							}
-
-							vertexArray.Unbind();
 						}
+
+						shader.Unbind();
 					}
 				}
 
