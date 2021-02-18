@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers;
 using System.Text;
 using Poltergeist.Core.Bindings.OpenGl;
 
@@ -7,12 +8,12 @@ namespace Poltergeist.Core.Rendering
 	public readonly unsafe struct Shader : IDisposable
 	{
 		private readonly uint _shaderId;
-		
+
 		private Shader(uint shaderId)
 		{
 			_shaderId = shaderId;
 		}
-		
+
 		public static Shader Create(string fragmentShaderSource, string vertexShaderSource)
 		{
 			uint programId = OpenGl3Native.CreateProgram();
@@ -32,18 +33,16 @@ namespace Poltergeist.Core.Rendering
 
 			if (success == 0)
 			{
-				byte[] infoLogBuffer = new byte[512];
+				byte* buf = stackalloc byte[1024];
 				long length;
-				
-				fixed (byte* infoLogPointer = infoLogBuffer)
-					OpenGl3Native.GetProgramInfoLog(programId, 512, &length, infoLogPointer);
 
-				string infoLog = Encoding.UTF8.GetString(infoLogBuffer, 0, (int)length);
+				OpenGl3Native.GetProgramInfoLog(programId, 1024, &length, buf);
 
-				Console.WriteLine($"[{nameof(Shader)}::{nameof(Create)}]: Failed to link.");
-				Console.WriteLine(infoLog);
+				string infoLog = Encoding.UTF8.GetString(buf, (int)length);
+
+				Console.WriteLine($"[{nameof(Shader)}::{nameof(Create)}]: Failed to link.\n{infoLog}");
 			}
-			
+
 			return new Shader(programId);
 		}
 
@@ -51,15 +50,16 @@ namespace Poltergeist.Core.Rendering
 		{
 			uint shaderId = OpenGl3Native.CreateShader(shaderType);
 
-			byte[] sourceBytes = Encoding.UTF8.GetBytes(source);
-			int[] lengths = { sourceBytes.Length };
-			
-			fixed (byte* sourceBytesPointer = sourceBytes)
-			fixed (int* lengthsPointer = lengths)
+			byte[] sourceBytes = ArrayPool<byte>.Shared.Rent(Encoding.UTF8.GetMaxByteCount(source.Length));
+			try
 			{
-				byte** sources = stackalloc byte*[1] { sourceBytesPointer };
-
-				OpenGl3Native.ShaderSource(shaderId, 1, sources, lengthsPointer);
+				int length = Encoding.UTF8.GetBytes(source, sourceBytes);
+				fixed (byte* sourceBytesPointer = sourceBytes)
+					OpenGl3Native.ShaderSource(shaderId, 1, &sourceBytesPointer, &length);
+			}
+			finally
+			{
+				ArrayPool<byte>.Shared.Return(sourceBytes);
 			}
 
 			OpenGl3Native.CompileShader(shaderId);
@@ -69,16 +69,14 @@ namespace Poltergeist.Core.Rendering
 
 			if (success == 0)
 			{
-				byte[] infoLogBuffer = new byte[512];
+				byte* buf = stackalloc byte[1024];
 				long length;
-				
-				fixed (byte* infoLogPointer = infoLogBuffer)
-					OpenGl3Native.GetShaderInfoLog(shaderId, 512, &length, infoLogPointer);
 
-				string infoLog = Encoding.UTF8.GetString(infoLogBuffer, 0, (int)length);
+				OpenGl3Native.GetShaderInfoLog(shaderId, 1024, &length, buf);
 
-				Console.WriteLine($"[{nameof(Shader)}::{nameof(CompileShader)}]: Failed to compile.");
-				Console.WriteLine(infoLog);
+				string infoLog = Encoding.UTF8.GetString(buf, (int)length);
+
+				Console.WriteLine($"[{nameof(Shader)}::{nameof(CompileShader)}]: Failed to compile.\n{infoLog}");
 			}
 
 			return shaderId;
