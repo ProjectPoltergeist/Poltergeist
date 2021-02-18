@@ -69,12 +69,12 @@ namespace Poltergeist.Core.Rendering
 
 			if (success == 0)
 			{
-				byte* buf = stackalloc byte[1024];
+				byte* buffer = stackalloc byte[1024];
 				long length;
 
-				OpenGl3Native.GetShaderInfoLog(shaderId, 1024, &length, buf);
+				OpenGl3Native.GetShaderInfoLog(shaderId, 1024, &length, buffer);
 
-				string infoLog = Encoding.UTF8.GetString(buf, (int)length);
+				string infoLog = Encoding.UTF8.GetString(buffer, (int)length);
 
 				Console.WriteLine($"[{nameof(Shader)}::{nameof(CompileShader)}]: Failed to compile.\n{infoLog}");
 			}
