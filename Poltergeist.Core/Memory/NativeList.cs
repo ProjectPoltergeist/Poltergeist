@@ -45,6 +45,7 @@ namespace Poltergeist.Core.Memory
 			: this(data.Length, zeroOnFree, allocator)
 		{
 			data.CopyTo(new Span<T>(Data, Capacity));
+			Count = data.Length;
 		}
 
 		public NativeList(int capacity = DefaultCapacity, bool zeroOnFree = false, INativeAllocator allocator = null)
@@ -117,6 +118,24 @@ namespace Poltergeist.Core.Memory
 			set
 			{
 				if (index >= Count || index < 0)
+					ThrowHelper.IndexOutOfRange();
+				Data[index] = value;
+			}
+		}
+
+		public T this[uint index]
+		{
+			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			get
+			{
+				if (index >= Count)
+					ThrowHelper.IndexOutOfRange();
+				return Data[index];
+			}
+			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			set
+			{
+				if (index >= Count)
 					ThrowHelper.IndexOutOfRange();
 				Data[index] = value;
 			}

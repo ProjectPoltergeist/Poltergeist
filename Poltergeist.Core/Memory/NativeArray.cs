@@ -100,6 +100,24 @@ namespace Poltergeist.Core.Memory
 			}
 		}
 
+		public T this[uint index]
+		{
+			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			get
+			{
+				if (index >= Count)
+					ThrowHelper.IndexOutOfRange();
+				return Data[index];
+			}
+			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			set
+			{
+				if (index >= Count)
+					ThrowHelper.IndexOutOfRange();
+				Data[index] = value;
+			}
+		}
+
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void CopyTo(Span<T> destination)
 		{
