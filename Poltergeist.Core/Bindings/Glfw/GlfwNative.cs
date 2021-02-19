@@ -374,11 +374,9 @@ namespace Poltergeist.Core.Bindings.Glfw
 		public static extern float* GetJoystickAxes(GlfwInput jid, out int count);
 
 		[DllImport(GlfwLibrary, EntryPoint = "glfwGetJoystickButtons", CallingConvention = Convention)]
-		[return: MarshalAs(UnmanagedType.U1)]
 		public static extern GlfwInputState* GetJoystickButtons(GlfwInput jid, out int count);
 
 		[DllImport(GlfwLibrary, EntryPoint = "glfwGetJoystickHats", CallingConvention = Convention)]
-		[return: MarshalAs(UnmanagedType.U1)]
 		public static extern GlfwInput* GetJoystickHats(GlfwInput jid, out int count);
 
 		[DllImport(GlfwLibrary, EntryPoint = "glfwGetJoystickName", CallingConvention = Convention)]
