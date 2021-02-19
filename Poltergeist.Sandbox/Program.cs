@@ -24,7 +24,6 @@ namespace Poltergeist.Sandbox
 				GlfwNative.WindowHint(GlfwHint.OpenGlForwardCompat, true);
 				GlfwNative.WindowHint(GlfwHint.Resizable, false);
 
-
 				using (var window = new Window("Poltergeist Sandbox"))
 				{
 					var fragmentShaderSource = File.ReadAllText("core.frag");
