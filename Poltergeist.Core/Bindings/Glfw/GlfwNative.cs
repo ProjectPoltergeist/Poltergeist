@@ -153,10 +153,10 @@ namespace Poltergeist.Core.Bindings.Glfw
 		public static extern GlfwMonitorFunction SetMonitorCallback(GlfwMonitorFunction callback);
 
 		[DllImport(GlfwLibrary, EntryPoint = "glfwGetVideoModes", CallingConvention = Convention)]
-		public static extern GlfwVidMode* GetVideoModes(GlfwMonitor* monitor, out int count);
+		public static extern GlfwVideoMode* GetVideoModes(GlfwMonitor* monitor, out int count);
 
 		[DllImport(GlfwLibrary, EntryPoint = "glfwGetVideoMode", CallingConvention = Convention)]
-		public static extern GlfwVidMode* GetVideoMode(GlfwMonitor* monitor);
+		public static extern GlfwVideoMode* GetVideoMode(GlfwMonitor* monitor);
 
 		[DllImport(GlfwLibrary, EntryPoint = "glfwSetGamma", CallingConvention = Convention)]
 		public static extern void SetGamma(GlfwMonitor* monitor, float gamma);
@@ -415,7 +415,6 @@ namespace Poltergeist.Core.Bindings.Glfw
 		public static extern char* GetGamepadName([MarshalAs(UnmanagedType.I4)] GlfwInput jid);
 
 		[DllImport(GlfwLibrary, EntryPoint = "glfwGetGamepadState", CallingConvention = Convention)]
-		[return: MarshalAs(UnmanagedType.I4)]
 		public static extern bool GetGamepadState([MarshalAs(UnmanagedType.I4)] GlfwInput jid, GlfwGamepadState* state);
 
 		[DllImport(GlfwLibrary, EntryPoint = "glfwSetClipboardString", CallingConvention = Convention, BestFitMapping = false)]

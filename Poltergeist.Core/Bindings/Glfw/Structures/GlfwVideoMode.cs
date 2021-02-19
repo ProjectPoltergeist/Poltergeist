@@ -3,5 +3,8 @@
 namespace Poltergeist.Core.Bindings.Glfw.Structures
 {
 	[StructLayout(LayoutKind.Sequential)]
-	public readonly struct GlfwVidMode { }
+	public readonly struct GlfwVideoMode
+	{
+		
+	}
 }
