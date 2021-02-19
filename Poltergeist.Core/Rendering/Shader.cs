@@ -14,7 +14,7 @@ namespace Poltergeist.Core.Rendering
 			_shaderId = shaderId;
 		}
 
-		public static Shader Create(string fragmentShaderSource, string vertexShaderSource)
+		public static Shader Create(ReadOnlySpan<char> fragmentShaderSource, ReadOnlySpan<char> vertexShaderSource)
 		{
 			uint programId = OpenGl3Native.CreateProgram();
 			uint fragmentShaderId = CompileShader(OpenGlShaderType.Fragment, fragmentShaderSource);
@@ -46,7 +46,7 @@ namespace Poltergeist.Core.Rendering
 			return new Shader(programId);
 		}
 
-		private static uint CompileShader(OpenGlShaderType shaderType, string source)
+		private static uint CompileShader(OpenGlShaderType shaderType, ReadOnlySpan<char> source)
 		{
 			uint shaderId = OpenGl3Native.CreateShader(shaderType);
 
