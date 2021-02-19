@@ -4,7 +4,7 @@
 	{
 		ArrowCursor = 0x00036001,
 
-		IbeamCursor = 0x00036002,
+		IBeamCursor = 0x00036002,
 
 		CrosshairCursor = 0x00036003,
 
