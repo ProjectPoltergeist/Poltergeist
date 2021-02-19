@@ -59,7 +59,7 @@
 
 		RefreshRate = 0x0002100F,
 
-		Doublebuffer = 0x00021010,
+		DoubleBuffer = 0x00021010,
 		#endregion
 
 		#region Context
