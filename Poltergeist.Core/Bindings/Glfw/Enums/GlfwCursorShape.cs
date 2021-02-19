@@ -4,14 +4,14 @@
 	{
 		ArrowCursor = 0x00036001,
 
-		IbeamCursor = 0x00036002,
+		IBeamCursor = 0x00036002,
 
 		CrosshairCursor = 0x00036003,
 
 		HandCursor = 0x00036004,
 
-		HresizeCursor = 0x00036005,
+		HResizeCursor = 0x00036005,
 
-		VresizeCursor = 0x00036006,
+		VResizeCursor = 0x00036006,
 	}
 }
