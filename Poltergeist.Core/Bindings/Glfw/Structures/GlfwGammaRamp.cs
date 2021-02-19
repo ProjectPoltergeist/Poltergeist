@@ -3,7 +3,5 @@
 namespace Poltergeist.Core.Bindings.Glfw.Structures
 {
 	[StructLayout(LayoutKind.Sequential)]
-	public readonly struct GlfwGammaRamp
-	{
-	}
+	public readonly struct GlfwGammaRamp { }
 }
