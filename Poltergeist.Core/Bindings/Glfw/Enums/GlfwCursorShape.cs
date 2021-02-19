@@ -12,6 +12,6 @@
 
 		HResizeCursor = 0x00036005,
 
-		VresizeCursor = 0x00036006,
+		VResizeCursor = 0x00036006,
 	}
 }
