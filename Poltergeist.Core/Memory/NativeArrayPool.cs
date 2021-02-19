@@ -15,7 +15,7 @@ namespace Poltergeist.Core.Memory
 		private const int MaxPerCorePerArraySizeStacks = 64;
 		private const int MaxBuffersPerArraySizePerCore = 8;
 
-		private static readonly NativeArray<T> Empty = new(0);
+		private static readonly NativeArray<T> Empty = new(0, false);
 
 		// ReSharper disable once StaticMemberInGenericType
 		private static readonly int[] BucketArraySizes;
@@ -51,7 +51,7 @@ namespace Poltergeist.Core.Memory
 			int bucketIndex = Utilities.SelectBucketIndex(minimumLength);
 
 			if (bucketIndex >= Buckets.Length)
-				return new NativeArray<T>(minimumLength);
+				return new NativeArray<T>(minimumLength, false);
 
 			NativeArray<T>[] tlsBuckets = _tTlsBuckets;
 			if (tlsBuckets != null)
@@ -72,7 +72,7 @@ namespace Poltergeist.Core.Memory
 					return buffer;
 			}
 
-			return new NativeArray<T>(BucketArraySizes[bucketIndex]);
+			return new NativeArray<T>(BucketArraySizes[bucketIndex], false);
 		}
 
 		public static void Return(NativeArray<T> nativeArray, bool clearArray = false)
