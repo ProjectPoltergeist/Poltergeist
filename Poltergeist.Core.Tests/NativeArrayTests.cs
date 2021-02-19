@@ -124,9 +124,7 @@ namespace Poltergeist.Core.Tests
 			using (NativeArray<uint> nativeArray = new(length))
 			{
 				nativeArray.Fill(uint.MaxValue);
-				uint[] array = nativeArray.ToArray();
-
-				AssertUtils.SequenceEqual(nativeArray, array);
+				AssertUtils.SequenceEqual(nativeArray, nativeArray.ToArray());
 			}
 		}
 

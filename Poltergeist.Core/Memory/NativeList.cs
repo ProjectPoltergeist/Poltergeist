@@ -42,7 +42,7 @@ namespace Poltergeist.Core.Memory
 		public bool IsFixedSize => false;
 
 		public NativeList(ReadOnlySpan<T> data, bool zeroOnFree = false, INativeAllocator allocator = null)
-			: this(data.Length, zeroOnFree, allocator)
+			: this(System.Math.Max(data.Length, DefaultCapacity), zeroOnFree, allocator)
 		{
 			data.CopyTo(new Span<T>(Data, Capacity));
 			Count = data.Length;
@@ -176,10 +176,11 @@ namespace Poltergeist.Core.Memory
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void Insert(int index, T item)
 		{
-			if (index >= Count || index < 0)
+			if (index > Count || index < 0)
 				ThrowHelper.IndexOutOfRange();
 			EnsureCapacity(Count + 1);
-			new ReadOnlySpan<T>(Data + index, Count - index).CopyTo(new Span<T>(Data + index + 1, Count - index - 1));
+			if (Count != index)
+				new ReadOnlySpan<T>(Data + index, Count - index).CopyTo(new Span<T>(Data + index + 1, Count - index));
 			Data[index] = item;
 			Count++;
 			_version++;
@@ -188,10 +189,11 @@ namespace Poltergeist.Core.Memory
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void InsertRange(int index, ReadOnlySpan<T> items)
 		{
-			if (index >= Count || index < 0)
+			if (index > Count || index < 0)
 				ThrowHelper.IndexOutOfRange();
 			EnsureCapacity(Count + items.Length);
-			new ReadOnlySpan<T>(Data + index, Count - index).CopyTo(new Span<T>(Data + index + items.Length, Count - index - items.Length));
+			if (Count != index)
+				new ReadOnlySpan<T>(Data + index, Count - index).CopyTo(new Span<T>(Data + index + items.Length, Count - index));
 			items.CopyTo(new Span<T>(Data + index, Capacity - index));
 			Count += items.Length;
 			_version++;
@@ -209,7 +211,7 @@ namespace Poltergeist.Core.Memory
 				return;
 			}
 
-			new ReadOnlySpan<T>(Data + index + 1, Count - index - 1).CopyTo(new Span<T>(Data + index, Count - index));
+			new ReadOnlySpan<T>(Data + index + 1, Count - index - 1).CopyTo(new Span<T>(Data + index, Count - index - 1));
 			Data[--Count] = default;
 		}
 
@@ -238,10 +240,10 @@ namespace Poltergeist.Core.Memory
 		{
 			if (index >= Count || index < 0)
 				ThrowHelper.IndexOutOfRange();
-			if (count < 0 || count > Count - index)
+			if (count < 0 || count > Count - index + 1)
 				// ReSharper disable once HeapView.BoxingAllocation
 				ThrowHelper.ArgumentOutOfRange("Trying to remove more elements than the collection contains after the index", nameof(count), count);
-			new ReadOnlySpan<T>(Data + index + count, Count - index - count).CopyTo(new Span<T>(Data + index, count));
+			new ReadOnlySpan<T>(Data + index + count, Count - index + 1 - count).CopyTo(new Span<T>(Data + index, Count - index + 1 - count));
 			if (_zeroOnFree)
 				new Span<T>(Data + Count - count, count).Clear();
 			Count -= count;
@@ -285,6 +287,8 @@ namespace Poltergeist.Core.Memory
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void CopyTo(Array array, int index)
 		{
+			if (Count == 0)
+				return;
 			if (index >= array.Length || index < 0)
 				ThrowHelper.IndexOutOfRange();
 			if (array is T[] a)
@@ -315,6 +319,8 @@ namespace Poltergeist.Core.Memory
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void CopyTo(T[] array, int index)
 		{
+			if (Count == 0)
+				return;
 			if (index >= array.Length || index < 0)
 				ThrowHelper.IndexOutOfRange();
 			CopyTo(new Span<T>(array, index, array.Length - index));
