@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-
 using Poltergeist.Core;
 using Poltergeist.Core.Bindings.Glfw;
 using Poltergeist.Core.Bindings.Glfw.Enums;
@@ -23,7 +22,6 @@ namespace Poltergeist.Sandbox
 				GlfwNative.WindowHint(GlfwHint.OpenGlProfile, GlfwProfile.OpenGLCoreProfile);
 				GlfwNative.WindowHint(GlfwHint.OpenGlForwardCompat, true);
 				GlfwNative.WindowHint(GlfwHint.Resizable, false);
-
 
 				using (var window = new Window("Poltergeist Sandbox"))
 				{
