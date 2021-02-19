@@ -8,7 +8,7 @@ namespace Poltergeist.Core.IO
 {
 	public static unsafe class BetterConsole
 	{
-		private static readonly ConcurrentQueue<string> Lines = new();
+		private static readonly ConcurrentQueue<ReadOnlyMemory<char>> Lines = new();
 		private static readonly StringBuilder Buffer = new(16384);
 		private static readonly AutoResetEvent Wait = new(false);
 		private static readonly Thread WriteThread;
@@ -36,25 +36,15 @@ namespace Poltergeist.Core.IO
 			WriteThread.Start();
 		}
 
-		public static void WriteLine(string line)
-		{
-			Lines.Enqueue(line);
-		}
+		public static void WriteLine(string line) => Lines.Enqueue(line.AsMemory());
 
-		public static void Flush()
-		{
-			Wait.Set();
-		}
+		public static void WriteLine(ReadOnlyMemory<char> line) => Lines.Enqueue(line);
 
-		public static void BeginConsoleUpdate()
-		{
-			_paused = true;
-		}
+		public static void Flush() => Wait.Set();
 
-		public static void EndConsoleUpdate()
-		{
-			_paused = false;
-		}
+		public static void BeginConsoleUpdate() => _paused = true;
+
+		public static void EndConsoleUpdate() => _paused = false;
 
 		private static void WriteLoop()
 		{
@@ -65,8 +55,11 @@ namespace Poltergeist.Core.IO
 				if (_paused && !_exit)
 					continue;
 
-				while (Lines.TryDequeue(out string line))
-					Buffer.AppendLine(line);
+				while (Lines.TryDequeue(out ReadOnlyMemory<char> line))
+				{
+					Buffer.Append(line);
+					Buffer.AppendLine();
+				}
 
 				if (Buffer.Length == 0)
 				{
