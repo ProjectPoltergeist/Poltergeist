@@ -128,5 +128,36 @@ namespace Poltergeist.Core.Tests
 					NativeArrayPool<int>.Return(nativeArray);
 			}
 		}
+
+		[Theory]
+		[InlineData(-1)]
+		[InlineData(int.MinValue)]
+		public void NegativeTest(int size)
+		{
+			Assert.Throws<ArgumentOutOfRangeException>(() => NativeArrayPool<int>.Rent(size));
+		}
+
+		[Fact]
+		public void ReturnNullTest()
+		{
+			Assert.Throws<ArgumentNullException>(() => NativeArrayPool<int>.Return(null));
+		}
+
+		[Theory]
+		[InlineData(0)]
+		[InlineData(1)]
+		[InlineData(10)]
+		public void ReturnNotFromPoolTest(int size)
+		{
+			NativeArray<int> array = new(size);
+			try
+			{
+				Assert.Throws<ArgumentException>(() => NativeArrayPool<int>.Return(array));
+			}
+			finally
+			{
+				array.Dispose();
+			}
+		}
 	}
 }

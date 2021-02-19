@@ -80,6 +80,12 @@ namespace Poltergeist.Core.Memory
 			if (nativeArray == null)
 				throw new ArgumentNullException(nameof(nativeArray));
 
+			if (nativeArray == Empty)
+				return;
+
+			if (nativeArray.Count == 0)
+				throw new ArgumentException("Memory not from pool", nameof(nativeArray));
+
 			int bucketIndex = Utilities.SelectBucketIndex(nativeArray.Count);
 
 			if (bucketIndex >= Buckets.Length)
@@ -99,18 +105,17 @@ namespace Poltergeist.Core.Memory
 			{
 				_tTlsBuckets = tlsBuckets = new NativeArray<T>[NumBuckets];
 				tlsBuckets[bucketIndex] = nativeArray;
+				return;
 			}
-			else
-			{
-				NativeArray<T> prev = tlsBuckets[bucketIndex];
-				tlsBuckets[bucketIndex] = nativeArray;
 
-				if (prev != null)
-				{
-					PerCoreLockedStacks stackBucket = Buckets[bucketIndex] ?? CreatePerCoreLockedStacks(bucketIndex);
-					stackBucket.TryPush(prev);
-				}
-			}
+			NativeArray<T> prev = tlsBuckets[bucketIndex];
+			tlsBuckets[bucketIndex] = nativeArray;
+
+			if (prev == null)
+				return;
+
+			PerCoreLockedStacks stackBucket = Buckets[bucketIndex] ?? CreatePerCoreLockedStacks(bucketIndex);
+			stackBucket.TryPush(prev);
 		}
 
 		private sealed class PerCoreLockedStacks
