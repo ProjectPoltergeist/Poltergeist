@@ -10,7 +10,7 @@
 
 		HandCursor = 0x00036004,
 
-		HresizeCursor = 0x00036005,
+		HResizeCursor = 0x00036005,
 
 		VresizeCursor = 0x00036006,
 	}
