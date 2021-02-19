@@ -2,10 +2,10 @@
 {
 	public enum GlfwProfile
 	{
-		OpenGLAnyProfile = 0,
+		OpenGlAnyProfile = 0,
 
-		OpenGLCoreProfile = 0x00032001,
+		OpenGlCoreProfile = 0x00032001,
 
-		OpenGLCompatProfile = 0x00032002,
+		OpenGlCompatProfile = 0x00032002,
 	}
 }
