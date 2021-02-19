@@ -41,13 +41,13 @@
 
 		StencilBits = 0x00021006,
 
-		AccumRedBits = 0x00021007,
+		AccumulateRedBits = 0x00021007,
 
-		AccumGreenBits = 0x00021008,
+		AccumulateGreenBits = 0x00021008,
 
-		AccumBlueBits = 0x00021009,
+		AccumulateBlueBits = 0x00021009,
 
-		AccumAlphaBits = 0x0002100A,
+		AccumulateAlphaBits = 0x0002100A,
 
 		AuxBuffers = 0x0002100B,
 
