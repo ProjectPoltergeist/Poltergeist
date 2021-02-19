@@ -98,7 +98,6 @@ namespace Poltergeist.Core.Bindings.Glfw
 
 		#region Functions
 		[DllImport(GlfwLibrary, EntryPoint = "glfwInit", CallingConvention = Convention)]
-		[return: MarshalAs(UnmanagedType.I4)]
 		public static extern bool Initialize();
 
 		[DllImport(GlfwLibrary, EntryPoint = "glfwTerminate", CallingConvention = Convention)]
@@ -378,7 +377,6 @@ namespace Poltergeist.Core.Bindings.Glfw
 		public static extern GlfwDropFunction SetDropCallback(GlfwWindow* window, GlfwDropFunction callback);
 
 		[DllImport(GlfwLibrary, EntryPoint = "glfwJoystickPresent", CallingConvention = Convention)]
-		[return: MarshalAs(UnmanagedType.I4)]
 		public static extern bool JoystickPresent(GlfwInput jid);
 
 		[DllImport(GlfwLibrary, EntryPoint = "glfwGetJoystickAxes", CallingConvention = Convention)]

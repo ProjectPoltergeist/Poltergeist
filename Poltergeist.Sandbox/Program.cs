@@ -17,12 +17,12 @@ namespace Poltergeist.Sandbox
 			using (new ExitHandler.LifetimeHandle())
 			{
 
-				GlfwNative.Init();
+				GlfwNative.Initialize();
 				GlfwNative.WindowHint(GlfwHint.ContextVersionMajor, 3);
 				GlfwNative.WindowHint(GlfwHint.ContextVersionMinor, 3);
-				GlfwNative.WindowHint(GlfwHint.OpenGlProfile, GlfwArg.OpenGLCoreProfile);
-				GlfwNative.WindowHint(GlfwHint.OpenGlForwardCompat, GlfwArg.True);
-				GlfwNative.WindowHint(GlfwHint.Resizable, GlfwArg.False);
+				GlfwNative.WindowHint(GlfwHint.OpenGlProfile, GlfwProfile.OpenGLCoreProfile);
+				GlfwNative.WindowHint(GlfwHint.OpenGlForwardCompat, true);
+				GlfwNative.WindowHint(GlfwHint.Resizable, false);
 
 
 				using (var window = new Window("Poltergeist Sandbox"))
