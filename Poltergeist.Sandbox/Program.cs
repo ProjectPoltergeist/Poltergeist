@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-
 using Poltergeist.Core;
 using Poltergeist.Core.Bindings.Glfw;
 using Poltergeist.Core.Bindings.Glfw.Enums;
