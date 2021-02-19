@@ -15,7 +15,6 @@ namespace Poltergeist.Sandbox
 		{
 			using (new ExitHandler.LifetimeHandle())
 			{
-
 				GlfwNative.Initialize();
 				GlfwNative.WindowHint(GlfwHint.ContextVersionMajor, 3);
 				GlfwNative.WindowHint(GlfwHint.ContextVersionMinor, 3);
