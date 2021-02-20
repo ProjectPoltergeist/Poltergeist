@@ -240,9 +240,15 @@ namespace Poltergeist.Core.Memory
 		{
 			if (index >= Count || index < 0)
 				ThrowHelper.IndexOutOfRange();
-			if (count < 0 || count > Count - index + 1)
-				// ReSharper disable once HeapView.BoxingAllocation
-				ThrowHelper.ArgumentOutOfRange("Trying to remove more elements than the collection contains after the index", nameof(count), count);
+			// ReSharper disable HeapView.BoxingAllocation
+			if (count < 0)
+				ThrowHelper.ArgumentOutOfRange("Tried to remove a negative count of elements", nameof(count), count);
+			if (Count - index < count)
+				ThrowHelper.ArgumentOutOfRange("Tried to remove more elements than the collection contains after the index", nameof(count), count);
+			// ReSharper restore HeapView.BoxingAllocation
+
+			if (count == 0)
+				return;
 			new ReadOnlySpan<T>(Data + index + count, Count - index + 1 - count).CopyTo(new Span<T>(Data + index, Count - index + 1 - count));
 			if (_zeroOnFree)
 				new Span<T>(Data + Count - count, count).Clear();
@@ -269,6 +275,12 @@ namespace Poltergeist.Core.Memory
 		public int IndexOf(T item)
 		{
 			return AsReadOnlySpan().IndexOf(item);
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public int LastIndexOf(T item)
+		{
+			return AsReadOnlySpan().LastIndexOf(item);
 		}
 
 		public bool Contains(object value)

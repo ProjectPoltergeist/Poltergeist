@@ -1,12 +1,16 @@
-﻿using Poltergeist.Core.Memory;
+﻿using Poltergeist.Core.Collections;
+using Poltergeist.Core.Memory;
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
-using Poltergeist.Core.Collections;
 using Xunit;
+
+// ReSharper disable HeapView.BoxingAllocation
+// ReSharper disable ParameterOnlyUsedForPreconditionCheck.Local
+// ReSharper disable UseCollectionCountProperty
 
 namespace Poltergeist.Core.Tests
 {
@@ -122,138 +126,151 @@ namespace Poltergeist.Core.Tests
 		}
 
 		[Theory]
-		[InlineData(new int[0], 512, new[] { 512 })]
-		[InlineData(new[] { 256 }, 512, new[] { 256, 512 })]
-		[InlineData(new[] { 256, 512, 512 }, 512, new[] { 256, 512, 512, 512 })]
-		public void AddTest(int[] initial, int value, int[] expected)
+		[InlineData(new int[0], 512)]
+		[InlineData(new[] { 256 }, 512)]
+		[InlineData(new[] { 256, 512, 512 }, 512)]
+		public void AddTest(int[] initial, int value)
 		{
 			using (NativeList<int> nativeList = new(initial))
 			{
+				List<int> expected = new(initial);
 				AssertUtils.SequenceEqual(initial, nativeList);
 				nativeList.Add(value);
+				expected.Add(value);
 				AssertUtils.SequenceEqual(expected, nativeList);
 			}
 			using (NativeList<int> nativeList = new(initial))
 			{
+				List<int> expected = new(initial);
 				AssertUtils.SequenceEqual(initial, nativeList);
-				// ReSharper disable once HeapView.BoxingAllocation
 				nativeList.Add((object)value);
+				((IList)expected).Add(value);
 				AssertUtils.SequenceEqual(expected, nativeList);
 			}
 		}
 
 		[Theory]
-		[InlineData(new int[0], new[] { 512 }, new[] { 512 })]
-		[InlineData(new[] { 256 }, new[] { 512 }, new[] { 256, 512 })]
-		[InlineData(new[] { 256, 512, 512 }, new[] { 512 }, new[] { 256, 512, 512, 512 })]
-		[InlineData(new int[0], new[] { 128, 512 }, new[] { 128, 512 })]
-		[InlineData(new[] { 256 }, new[] { 128, 512 }, new[] { 256, 128, 512 })]
-		[InlineData(new[] { 256, 512, 512 }, new[] { 128, 512 }, new[] { 256, 512, 512, 128, 512 })]
-		[InlineData(new[] { 256, 512, 512, 64, 32, 1024, 16384, 32768, 2, 4, 16 }, new[] { 128, 512, 2048, 4096, 8 },
-			new[] { 256, 512, 512, 64, 32, 1024, 16384, 32768, 2, 4, 16, 128, 512, 2048, 4096, 8 })]
-		public void AddRangeTest(int[] initial, int[] values, int[] expected)
+		[InlineData(new int[0], new[] { 512 })]
+		[InlineData(new[] { 256 }, new[] { 512 })]
+		[InlineData(new[] { 256, 512, 512 }, new[] { 512 })]
+		[InlineData(new int[0], new[] { 128, 512 })]
+		[InlineData(new[] { 256 }, new[] { 128, 512 })]
+		[InlineData(new[] { 256, 512, 512 }, new[] { 128, 512 })]
+		[InlineData(new[] { 256, 512, 512, 64, 32, 1024, 16384, 32768, 2, 4, 16 }, new[] { 128, 512, 2048, 4096, 8 })]
+		public void AddRangeTest(int[] initial, int[] values)
 		{
 			using (NativeList<int> nativeList = new(initial))
 			{
+				List<int> expected = new(initial);
 				AssertUtils.SequenceEqual(initial, nativeList);
 				nativeList.AddRange(values);
+				expected.AddRange(values);
 				AssertUtils.SequenceEqual(expected, nativeList);
 			}
 		}
 
 		[Theory]
-		[InlineData(new int[0], 512, 0, new[] { 512 })]
-		[InlineData(new[] { 256 }, 512, 0, new[] { 512, 256 })]
-		[InlineData(new[] { 256, 512, 512 }, 512, 0, new[] { 512, 256, 512, 512 })]
-		public void InsertTest(int[] initial, int value, int index, int[] expected)
+		[InlineData(new int[0], 512, 0)]
+		[InlineData(new[] { 256 }, 512, 0)]
+		[InlineData(new[] { 256, 512, 512 }, 512, 0)]
+		public void InsertTest(int[] initial, int value, int index)
 		{
 			using (NativeList<int> nativeList = new(initial))
 			{
+				List<int> expected = new(initial);
 				AssertUtils.SequenceEqual(initial, nativeList);
 				nativeList.Insert(index, value);
+				expected.Insert(index, value);
 				AssertUtils.SequenceEqual(expected, nativeList);
 			}
 			using (NativeList<int> nativeList = new(initial))
 			{
+				List<int> expected = new(initial);
 				AssertUtils.SequenceEqual(initial, nativeList);
-				// ReSharper disable once HeapView.BoxingAllocation
 				nativeList.Insert(index, (object)value);
+				((IList)expected).Insert(index, value);
 				AssertUtils.SequenceEqual(expected, nativeList);
 			}
 		}
 
 		[Theory]
-		[InlineData(new int[0], new[] { 512 }, 0, new[] { 512 })]
-		[InlineData(new[] { 256 }, new[] { 512 }, 0, new[] { 512, 256 })]
-		[InlineData(new[] { 256, 512, 512 }, new[] { 512 }, 0, new[] { 512, 256, 512, 512 })]
-		[InlineData(new int[0], new[] { 128, 512 }, 0, new[] { 128, 512 })]
-		[InlineData(new[] { 256 }, new[] { 128, 512 }, 0, new[] { 128, 512, 256 })]
-		[InlineData(new[] { 256, 512, 512 }, new[] { 128, 512 }, 0, new[] { 128, 512, 256, 512, 512 })]
-		[InlineData(new[] { 256, 512, 512, 64, 32, 1024, 16384, 32768, 2, 4, 16 }, new[] { 128, 512, 2048, 4096, 8 }, 0,
-			new[] { 128, 512, 2048, 4096, 8, 256, 512, 512, 64, 32, 1024, 16384, 32768, 2, 4, 16 })]
-		public void InsertRangeTest(int[] initial, int[] values, int index, int[] expected)
+		[InlineData(new int[0], new[] { 512 }, 0)]
+		[InlineData(new[] { 256 }, new[] { 512 }, 0)]
+		[InlineData(new[] { 256, 512, 512 }, new[] { 512 }, 0)]
+		[InlineData(new int[0], new[] { 128, 512 }, 0)]
+		[InlineData(new[] { 256 }, new[] { 128, 512 }, 0)]
+		[InlineData(new[] { 256, 512, 512 }, new[] { 128, 512 }, 0)]
+		[InlineData(new[] { 256, 512, 512, 64, 32, 1024, 16384, 32768, 2, 4, 16 }, new[] { 128, 512, 2048, 4096, 8 }, 0)]
+		public void InsertRangeTest(int[] initial, int[] values, int index)
 		{
 			using (NativeList<int> nativeList = new(initial))
 			{
+				List<int> expected = new(initial);
 				AssertUtils.SequenceEqual(initial, nativeList);
 				nativeList.InsertRange(index, values);
+				expected.InsertRange(index, values);
 				AssertUtils.SequenceEqual(expected, nativeList);
 			}
 		}
 
 		[Theory]
-		[InlineData(new[] { 256 }, 0, new int[0])]
-		[InlineData(new[] { 256, 512, 1024 }, 0, new[] { 512, 1024 })]
-		[InlineData(new[] { 256, 512, 1024 }, 1, new[] { 256, 1024 })]
-		[InlineData(new[] { 256, 512, 1024 }, 2, new[] { 256, 512 })]
-		public void RemoveAtTest(int[] initial, int index, int[] expected)
+		[InlineData(new[] { 256 }, 0)]
+		[InlineData(new[] { 256, 512, 1024 }, 0)]
+		[InlineData(new[] { 256, 512, 1024 }, 1)]
+		[InlineData(new[] { 256, 512, 1024 }, 2)]
+		public void RemoveAtTest(int[] initial, int index)
 		{
 			using (NativeList<int> nativeList = new(initial))
 			{
+				List<int> expected = new(initial);
 				AssertUtils.SequenceEqual(initial, nativeList);
 				nativeList.RemoveAt(index);
+				expected.RemoveAt(index);
 				AssertUtils.SequenceEqual(expected, nativeList);
 			}
 		}
 
 		[Theory]
-		[InlineData(new[] { 256, 512, 512, 128, 512 }, 4, 1, new[] { 256, 512, 512, 128 })]
-		[InlineData(new[] { 256, 512, 512, 128, 512 }, 0, 1, new[] { 512, 512, 128, 512 })]
-		[InlineData(new[] { 256, 512, 512, 128, 512 }, 4, 2, new[] { 256, 512, 512 })]
-		[InlineData(new[] { 256, 512, 512, 128, 512 }, 0, 2, new[] { 512, 128, 512 })]
-		[InlineData(new[] { 256, 512, 512, 128, 512 }, 4, 0, new[] { 256, 512, 512, 128, 512 })]
-		[InlineData(new[] { 256, 512, 512, 128, 512 }, 0, 0, new[] { 256, 512, 512, 128, 512 })]
-		[InlineData(new[] { 256, 512, 512, 64, 32, 1024, 16384, 32768, 2, 4, 16, 128, 512, 2048, 4096, 8 }, 5, 5,
-			new[] { 256, 512, 512, 64, 4, 16, 128, 512, 2048, 4096, 8 })]
-		public void RemoveRangeTest(int[] initial, int index, int count, int[] expected)
+		[InlineData(new[] { 256, 512, 512, 128, 512 }, 3, 1)]
+		[InlineData(new[] { 256, 512, 512, 128, 512 }, 0, 1)]
+		[InlineData(new[] { 256, 512, 512, 128, 512 }, 3, 2)]
+		[InlineData(new[] { 256, 512, 512, 128, 512 }, 0, 2)]
+		[InlineData(new[] { 256, 512, 512, 128, 512 }, 3, 0)]
+		[InlineData(new[] { 256, 512, 512, 128, 512 }, 0, 0)]
+		[InlineData(new[] { 256, 512, 512, 64, 32, 1024, 16384, 32768, 2, 4, 16, 128, 512, 2048, 4096, 8 }, 5, 5)]
+		public void RemoveRangeTest(int[] initial, int index, int count)
 		{
 			using (NativeList<int> nativeList = new(initial))
 			{
+				List<int> expected = new(initial);
 				AssertUtils.SequenceEqual(initial, nativeList);
 				nativeList.RemoveRange(index, count);
-				Debug.WriteLine(string.Join(' ', nativeList));
+				expected.RemoveRange(index, count);
 				AssertUtils.SequenceEqual(expected, nativeList);
 			}
 		}
 
 		[Theory]
-		[InlineData(new[] { 256 }, 256, new int[0])]
-		[InlineData(new[] { 256, 512, 1024 }, 256, new[] { 512, 1024 })]
-		[InlineData(new[] { 256, 512, 1024 }, 512, new[] { 256, 1024 })]
-		[InlineData(new[] { 256, 512, 1024 }, 1024, new[] { 256, 512 })]
-		public void RemoveTest(int[] initial, int value, int[] expected)
+		[InlineData(new[] { 256 }, 256)]
+		[InlineData(new[] { 256, 512, 1024 }, 256)]
+		[InlineData(new[] { 256, 512, 1024 }, 512)]
+		[InlineData(new[] { 256, 512, 1024 }, 1024)]
+		public void RemoveTest(int[] initial, int value)
 		{
 			using (NativeList<int> nativeList = new(initial))
 			{
+				List<int> expected = new(initial);
 				AssertUtils.SequenceEqual(initial, nativeList);
 				nativeList.Remove(value);
+				expected.Remove(value);
 				AssertUtils.SequenceEqual(expected, nativeList);
 			}
 			using (NativeList<int> nativeList = new(initial))
 			{
+				List<int> expected = new(initial);
 				AssertUtils.SequenceEqual(initial, nativeList);
-				// ReSharper disable once HeapView.BoxingAllocation
 				nativeList.Remove((object)value);
+				((IList)expected).Remove(value);
 				AssertUtils.SequenceEqual(expected, nativeList);
 			}
 		}
@@ -274,24 +291,27 @@ namespace Poltergeist.Core.Tests
 		}
 
 		[Theory]
-		[InlineData(new int[0], 512, -1)]
-		[InlineData(new[] { 256 }, 256, 0)]
-		[InlineData(new[] { 256, 512 }, 256, 0)]
-		[InlineData(new[] { 256, 512 }, 512, 1)]
-		[InlineData(new[] { 256, 512, 1024 }, 512, 1)]
-		[InlineData(new[] { 256, 512, 1024 }, 1024, 2)]
-		[InlineData(new[] { 256, 512, 1024 }, 128, -1)]
-		public void IndefOfContainsTest(int[] initial, int value, int index)
+		[InlineData(new int[0], 512)]
+		[InlineData(new[] { 256 }, 256)]
+		[InlineData(new[] { 256, 512 }, 256)]
+		[InlineData(new[] { 256, 512 }, 512)]
+		[InlineData(new[] { 256, 512, 1024 }, 512)]
+		[InlineData(new[] { 256, 512, 1024 }, 1024)]
+		[InlineData(new[] { 256, 512, 1024 }, 128)]
+		[InlineData(new[] { 256, 512, 512, 512, 1024 }, 512)]
+		[InlineData(new[] { 256, 1024, 512, 1024 }, 1024)]
+		[InlineData(new[] { 128, 256, 512, 1024, 128 }, 128)]
+		public void IndefOfContainsTest(int[] initial, int value)
 		{
 			using (NativeList<int> nativeList = new(initial))
 			{
+				List<int> expected = new(initial);
 				AssertUtils.SequenceEqual(initial, nativeList);
-				Assert.Equal(index, nativeList.IndexOf(value));
-				// ReSharper disable once HeapView.BoxingAllocation
-				Assert.Equal(index, nativeList.IndexOf((object)value));
-				Assert.Equal(index != -1, nativeList.Contains(value));
-				// ReSharper disable once HeapView.BoxingAllocation
-				Assert.Equal(index != -1, nativeList.Contains((object)value));
+				Assert.Equal(expected.IndexOf(value), nativeList.IndexOf(value));
+				Assert.Equal(((IList)expected).IndexOf(value), nativeList.IndexOf((object)value));
+				Assert.Equal(expected.LastIndexOf(value), nativeList.LastIndexOf(value));
+				Assert.Equal(expected.Contains(value), nativeList.Contains(value));
+				Assert.Equal(((IList)expected).Contains(value), nativeList.Contains((object)value));
 			}
 		}
 
@@ -335,9 +355,7 @@ namespace Poltergeist.Core.Tests
 			array.AsSpan().Fill(uint.MaxValue);
 			using (NativeList<uint> nativeList = new(array))
 			{
-				// ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local
 				Assert.True(nativeList.All(v => v == uint.MaxValue));
-				// ReSharper disable once UseCollectionCountProperty
 				Assert.Equal(nativeList.Count, nativeList.Count());
 			}
 		}
