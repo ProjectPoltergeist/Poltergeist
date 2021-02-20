@@ -18,6 +18,7 @@ namespace Poltergeist.Core.Tests
 			{
 				Assert.True(nativeStruct.Data != null);
 				Assert.NotNull(nativeStruct.Allocator);
+				Assert.Equal(NativeStruct<TestStruct>.DefaultAllocator, nativeStruct.Allocator);
 				Assert.Equal(Marshal.SizeOf<TestStruct>(), nativeStruct.Size);
 				Assert.Equal(testStruct.integer, *(int*)nativeStruct.Data);
 				Assert.Equal(testStruct, Marshal.PtrToStructure<TestStruct>(new IntPtr(nativeStruct.Data)));
