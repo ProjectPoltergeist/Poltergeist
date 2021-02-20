@@ -92,6 +92,18 @@ namespace Poltergeist.Core.Rendering
 			OpenGl3Native.UseProgram(0);
 		}
 
+		public void SetUniform(string name, int value)
+		{
+			byte[] nameBytes = Encoding.UTF8.GetBytes(name);
+
+			fixed (byte* nameBytesPointer = nameBytes)
+			{
+				int uniformLocation = OpenGl3Native.GetUniformLocation(_shaderId, nameBytesPointer);
+				
+				OpenGl3Native.Uniform(uniformLocation, value);
+			}
+		}
+
 		public void Dispose()
 		{
 			OpenGl3Native.DeleteProgram(_shaderId);
