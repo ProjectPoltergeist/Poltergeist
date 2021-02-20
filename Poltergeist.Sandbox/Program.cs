@@ -45,15 +45,16 @@ namespace Poltergeist.Sandbox
 
 							Span<float> vertices = stackalloc float[]
 							{
-								0.5f, 0.5f, 0.0f,
-								0.5f, -0.5f, 0.0f,
-								-0.5f, -0.5f, 0.0f,
-								-0.5f, 0.5f, 0.0f
+								0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+								0.5f, -0.5f, 0.0f, 1.0f, 1.0f,
+								-0.5f, -0.5f, 0.0f, 0.0f, 1.0f,
+								-0.5f, 0.5f, 0.0f, 0.0f, 0.0f
 							};
 
 							Span<VertexBufferElement> layout = stackalloc VertexBufferElement[]
 							{
-								new VertexBufferElement(OpenGlType.Float, 3)
+								new VertexBufferElement(OpenGlType.Float, 3),
+								new VertexBufferElement(OpenGlType.Float, 2)
 							};
 
 							using (VertexBuffer.Create<float>(vertices, layout))
@@ -67,15 +68,25 @@ namespace Poltergeist.Sandbox
 								{
 									indexBuffer.Bind();
 
-									while (window.IsOpen)
+									using (var texture = Texture.Create("texture.png"))
 									{
-										window.PollEvents();
+										texture.Bind(0);
 
-										OpenGl3Native.ClearColor(0.3f, 0.3f, 0.3f, 1.0f);
-										OpenGl3Native.Clear(OpenGlClearMask.ColorBufferBit);
-										OpenGl3Native.DrawElements(OpenGlPrimitive.Triangles, 6, OpenGlType.UnsignedInt, null);
+										shader.SetUniform("u_Texture", 0);
 
-										window.SwapBuffers();
+										while (window.IsOpen)
+										{
+											window.PollEvents();
+
+											OpenGl3Native.ClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+											OpenGl3Native.Clear(OpenGlClearMask.ColorBufferBit);
+											OpenGl3Native.DrawElements(OpenGlPrimitive.Triangles, 6,
+												OpenGlType.UnsignedInt, null);
+
+											window.SwapBuffers();
+										}
+
+										texture.Unbind();
 									}
 
 									vertexArray.Unbind();

@@ -25,19 +25,23 @@ namespace Poltergeist.Core.Rendering
 			fixed (T* dataPointer = data)
 				OpenGl3Native.BufferData(OpenGlBufferType.Array, data.Length * sizeof(T), dataPointer, OpenGlUsageHint.StaticDraw);
 
+			int stride = 0;
+
+			for (uint i = 0; i < layout.Length; i++)
+			{
+				var element = layout[(int)i];
+				
+				stride += element.Count * OpenGlTypeUtils.SizeOf(element.Type);
+			}
+
 			nuint offset = 0;
 
 			for (uint i = 0; i < layout.Length; i++)
 			{
 				var element = layout[(int)i];
-				var typeSize = element.Type switch
-				{
-					OpenGlType.Float => sizeof(float),
-					_ => throw new ArgumentOutOfRangeException()
-				};
-				var size = element.Count * typeSize;
+				var size = element.Count * OpenGlTypeUtils.SizeOf(element.Type);
 
-				OpenGl3Native.VertexAttributePointer(i, element.Count, element.Type, false, size, offset);
+				OpenGl3Native.VertexAttributePointer(i, element.Count, element.Type, false, stride, offset);
 				OpenGl3Native.EnableVertexAttributeArray(i);
 
 				offset += (nuint)size;

@@ -24,17 +24,17 @@ namespace Poltergeist.Core.Bindings.OpenGl
 			= (delegate* unmanaged[Cdecl]<uint, void>)GlfwNative.GetProcessAddress("glDeleteProgram");
 
 		private static readonly delegate* unmanaged[Cdecl]<uint, void> _useProgram
-			= (delegate* unmanaged[Cdecl]<uint, void>) GlfwNative.GetProcessAddress("glUseProgram");
+			= (delegate* unmanaged[Cdecl]<uint, void>)GlfwNative.GetProcessAddress("glUseProgram");
 
 		private static readonly delegate* unmanaged[Cdecl]<uint, void> _linkProgram
 			= (delegate* unmanaged[Cdecl]<uint, void>)GlfwNative.GetProcessAddress("glLinkProgram");
 
 		private static readonly delegate* unmanaged[Cdecl]<uint, OpenGlParameter, int*, void> _getProgramIntegerValue
-			= (delegate* unmanaged[Cdecl]<uint, OpenGlParameter, int*, void>) GlfwNative.GetProcessAddress(
+			= (delegate* unmanaged[Cdecl]<uint, OpenGlParameter, int*, void>)GlfwNative.GetProcessAddress(
 				"glGetProgramiv");
 
 		private static readonly delegate* unmanaged[Cdecl]<uint, long, long*, byte*, void> _getProgramInfoLog
-			= (delegate* unmanaged[Cdecl]<uint, long, long*, byte*, void>) GlfwNative.GetProcessAddress(
+			= (delegate* unmanaged[Cdecl]<uint, long, long*, byte*, void>)GlfwNative.GetProcessAddress(
 				"glGetProgramInfoLog");
 
 		private static readonly delegate* unmanaged[Cdecl]<OpenGlShaderType, uint> _createShader
@@ -57,12 +57,37 @@ namespace Poltergeist.Core.Bindings.OpenGl
 			= (delegate* unmanaged[Cdecl]<uint, void>)GlfwNative.GetProcessAddress("glCompileShader");
 
 		private static readonly delegate* unmanaged[Cdecl]<uint, OpenGlParameter, int*, void> _getShaderIntegerValue
-			= (delegate* unmanaged[Cdecl]<uint, OpenGlParameter, int*, void>) GlfwNative.GetProcessAddress(
+			= (delegate* unmanaged[Cdecl]<uint, OpenGlParameter, int*, void>)GlfwNative.GetProcessAddress(
 				"glGetShaderiv");
 
 		private static readonly delegate* unmanaged[Cdecl]<uint, long, long*, byte*, void> _getShaderInfoLog
 			= (delegate* unmanaged[Cdecl]<uint, long, long*, byte*, void>)GlfwNative.GetProcessAddress(
 				"glGetShaderInfoLog");
+
+		private static readonly delegate* unmanaged[Cdecl]<int, uint*, void> _generateTextures =
+			(delegate* unmanaged[Cdecl]<int, uint*, void>)GlfwNative.GetProcessAddress("glGenTextures");
+
+		private static readonly delegate* unmanaged[Cdecl]<int, uint*, void> _deleteTextures =
+			(delegate* unmanaged[Cdecl]<int, uint*, void>)GlfwNative.GetProcessAddress("glDeleteTextures");
+		
+		private static readonly delegate* unmanaged[Cdecl]<OpenGlTextureType, uint, void> _bindTexture =
+			(delegate* unmanaged[Cdecl]<OpenGlTextureType, uint, void>)GlfwNative.GetProcessAddress("glBindTexture");
+
+		private static readonly delegate* unmanaged[Cdecl]<OpenGlTextureType, OpenGlTextureParameter, int*, void>
+			_textureParameterInteger =
+				(delegate* unmanaged[Cdecl]<OpenGlTextureType, OpenGlTextureParameter, int*, void>)GlfwNative
+					.GetProcessAddress("glTexParameteri");
+
+		private static readonly delegate* unmanaged[Cdecl]<OpenGlTextureType, int, OpenGlTextureFormat, int, int, int,
+			OpenGlTextureFormat, OpenGlType, void*, void> _textureImage2D =
+				(delegate* unmanaged[Cdecl]<OpenGlTextureType, int, OpenGlTextureFormat, int, int, int, 
+					OpenGlTextureFormat, OpenGlType, void*, void>)GlfwNative.GetProcessAddress("glTexImage2D");
+
+		private static readonly delegate* unmanaged[Cdecl]<uint, byte*, int> _getUniformLocation =
+			(delegate* unmanaged[Cdecl]<uint, byte*, int>)GlfwNative.GetProcessAddress("glGetUniformLocation");
+
+		private static readonly delegate* unmanaged[Cdecl]<int, int, void> _uniform1Integer =
+			(delegate* unmanaged[Cdecl]<int, int, void>)GlfwNative.GetProcessAddress("glUniform1i");
 
 		static OpenGl2Native()
 		{
@@ -386,6 +411,150 @@ namespace Poltergeist.Core.Bindings.OpenGl
 			_getShaderInfoLog(shaderId, maxLength, length, infoLog);
 
 			HandleOpenGlErrors(nameof(GetShaderInfoLog));
+		}
+
+		public static void GenerateTextures(int count, uint* textureIds)
+		{
+			if (_generateTextures == null)
+			{
+				Console.WriteLine($"[{nameof(GenerateTextures)}]: Function is not supported.");
+				return;
+			}
+
+			if (count <= 0)
+			{
+				Console.WriteLine($"[{nameof(GenerateTextures)}]: Count must be greater than 0.");
+				return;
+			}
+		
+			_generateTextures(count, textureIds);
+
+			HandleOpenGlErrors(nameof(GenerateTextures));
+		}
+
+		public static void DeleteTextures(int count, uint* textureIds)
+		{
+			if (_deleteTextures == null)
+			{
+				Console.WriteLine($"[{nameof(DeleteTextures)}]: Function is not supported.");
+				return;
+			}
+
+			if (count <= 0)
+			{
+				Console.WriteLine($"[{nameof(DeleteTextures)}]: Count must be greater than 0.");
+				return;
+			}
+
+			if (!PointerUtils.IsReadable(textureIds))
+			{
+				Console.WriteLine($"[{nameof(DeleteTextures)}]: TextureIds must point to a valid memory region.");
+				return;
+			}
+		
+			_deleteTextures(count, textureIds);
+			
+			HandleOpenGlErrors(nameof(DeleteTextures));
+		}
+
+		public static void BindTexture(OpenGlTextureType textureType, uint textureId)
+		{
+			if (_bindTexture == null)
+			{
+				Console.WriteLine($"[{nameof(BindTexture)}]: Function is not supported.");
+				return;
+			}
+		
+			_bindTexture(textureType, textureId);
+		
+			HandleOpenGlErrors(nameof(BindTexture));
+		}
+
+		public static void TextureParameter(OpenGlTextureType textureType, OpenGlTextureParameter parameter,
+			OpenGlTextureParameterValue value)
+		{
+			if (_textureParameterInteger == null)
+			{
+				Console.WriteLine($"[{nameof(TextureParameter)}]: Function is not supported.");
+				return;
+			}
+
+			_textureParameterInteger(textureType, parameter, (int*)(int)value);
+
+			HandleOpenGlErrors(nameof(TextureParameter));
+		}
+
+		public static void TextureImage2D(OpenGlTextureType textureType, int levelOfDetails,
+			OpenGlTextureFormat internalFormat, int width, int height, OpenGlTextureFormat dataFormat,
+			OpenGlType dataType, void* data)
+		{
+			if (_textureImage2D == null)
+			{
+				Console.WriteLine($"[{nameof(TextureImage2D)}]: Function is not supported.");
+				return;
+			}
+
+			if (levelOfDetails < 0)
+			{
+				Console.WriteLine($"[{nameof(TextureImage2D)}]: Width must be greater than or equal to 0.");
+				return;
+			}
+
+			if (width <= 0)
+			{
+				Console.WriteLine($"[{nameof(TextureImage2D)}]: Width must be greater than 0.");
+				return;
+			}
+
+			if (height <= 0)
+			{
+				Console.WriteLine($"[{nameof(TextureImage2D)}]: Height must be greater than 0.");
+				return;
+			}
+
+			if (!PointerUtils.IsReadable((byte*)data))
+			{
+				Console.WriteLine($"[{nameof(TextureImage2D)}]: Data must point to a valid memory region.");
+				return;
+			}
+			
+			_textureImage2D(textureType, levelOfDetails, internalFormat, width, height, 0, dataFormat, dataType, data);
+
+			HandleOpenGlErrors(nameof(TextureImage2D));
+		}
+
+		public static int GetUniformLocation(uint shaderId, byte* uniformName)
+		{
+			if (_getUniformLocation == null)
+			{
+				Console.WriteLine($"[{nameof(GetUniformLocation)}]: Function is not supported.");
+				return 0;
+			}
+
+			if (!PointerUtils.IsReadable(uniformName))
+			{
+				Console.WriteLine($"[{nameof(GetUniformLocation)}]: Uniform name must point to a valid memory region.");
+				return 0;
+			}
+			
+			int uniformLocation = _getUniformLocation(shaderId, uniformName);
+			
+			HandleOpenGlErrors(nameof(GetUniformLocation));
+
+			return uniformLocation;
+		}
+
+		public static void Uniform(int location, int value)
+		{
+			if (_uniform1Integer == null)
+			{
+				Console.WriteLine($"[{nameof(Uniform)}]: Function is not supported.");
+				return;
+			}
+
+			_uniform1Integer(location, value);
+			
+			HandleOpenGlErrors(nameof(Uniform));
 		}
 	}
 }
