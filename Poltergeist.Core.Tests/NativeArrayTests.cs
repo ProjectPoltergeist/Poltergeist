@@ -43,8 +43,7 @@ namespace Poltergeist.Core.Tests
 				Assert.Equal(array.Length, nativeArray.Count);
 				Assert.Equal(array.Length * sizeof(int), nativeArray.ByteSize);
 				Assert.True(nativeArray.AlignedSize >= nativeArray.ByteSize);
-				// ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local
-				Assert.True(array.SequenceEqual(nativeArray));
+				AssertUtils.SequenceEqual(array, nativeArray);
 			}
 		}
 
@@ -67,8 +66,8 @@ namespace Poltergeist.Core.Tests
 			{
 				Assert.Equal(nativeArray.Count, nativeArray.AsSpan().Length);
 				Assert.Equal(nativeArray.Count, nativeArray.AsReadOnlySpan().Length);
-				Assert.True(nativeArray.AsSpan().SequenceEqual(new ReadOnlySpan<int>(nativeArray.Data, nativeArray.Count)));
-				Assert.True(nativeArray.AsReadOnlySpan().SequenceEqual(new ReadOnlySpan<int>(nativeArray.Data, nativeArray.Count)));
+				AssertUtils.SequenceEqual(nativeArray.AsSpan(), new ReadOnlySpan<int>(nativeArray.Data, nativeArray.Count));
+				AssertUtils.SequenceEqual(nativeArray.AsReadOnlySpan(), new ReadOnlySpan<int>(nativeArray.Data, nativeArray.Count));
 			}
 		}
 
@@ -125,10 +124,7 @@ namespace Poltergeist.Core.Tests
 			using (NativeArray<uint> nativeArray = new(length))
 			{
 				nativeArray.Fill(uint.MaxValue);
-				uint[] array = nativeArray.ToArray();
-
-				Assert.True(nativeArray.SequenceEqual(array));
-				Assert.Equal(nativeArray.Count, array.Length);
+				AssertUtils.SequenceEqual(nativeArray, nativeArray.ToArray());
 			}
 		}
 
@@ -143,6 +139,8 @@ namespace Poltergeist.Core.Tests
 				for (int i = 0; i < nativeArray.Count; i++)
 					nativeArray[i] = uint.MaxValue;
 				for (int i = 0; i < nativeArray.Count; i++)
+					Assert.Equal(uint.MaxValue, nativeArray[i]);
+				for (uint i = 0; i < nativeArray.Count; i++)
 					Assert.Equal(uint.MaxValue, nativeArray[i]);
 				foreach (uint u in nativeArray)
 					Assert.Equal(uint.MaxValue, u);
@@ -159,10 +157,17 @@ namespace Poltergeist.Core.Tests
 			{
 				Assert.Throws<IndexOutOfRangeException>(() => { _ = nativeArray[-1]; });
 				Assert.Throws<IndexOutOfRangeException>(() => { _ = nativeArray[nativeArray.Count]; });
-				if (nativeArray.Count == 0)
-					return;
-				_ = nativeArray[0];
-				_ = nativeArray[nativeArray.Count - 1];
+				if (nativeArray.Count != 0)
+				{
+					_ = nativeArray[0];
+					_ = nativeArray[nativeArray.Count - 1];
+				}
+				Assert.Throws<IndexOutOfRangeException>(() => { _ = nativeArray[(uint)nativeArray.Count]; });
+				if (nativeArray.Count != 0)
+				{
+					_ = nativeArray[0u];
+					_ = nativeArray[(uint)(nativeArray.Count - 1)];
+				}
 			}
 		}
 	}

@@ -35,6 +35,9 @@ namespace Poltergeist.Core.Bindings.OpenGl
 		private static readonly delegate* unmanaged[Cdecl]<OpenGlPrimitive, int, OpenGlType, void*, void> _drawElements =
 			(delegate* unmanaged[Cdecl]<OpenGlPrimitive, int, OpenGlType, void*, void>)GlfwNative.GetProcessAddress("glDrawElements");
 
+		private static readonly delegate* unmanaged[Cdecl]<int, void> _activeTexture = 
+			(delegate* unmanaged[Cdecl]<int, void>)GlfwNative.GetProcessAddress("glActiveTexture");
+
 		public static OpenGlError GetError()
 		{
 			if (_getError == null)
@@ -237,6 +240,27 @@ namespace Poltergeist.Core.Bindings.OpenGl
 			_drawElements(primitive, count, indicesType, startIndex);
 
 			HandleOpenGlErrors(nameof(DrawElements));
+		}
+
+		public static void ActiveTexture(int slot)
+		{
+			if (_activeTexture == null)
+			{
+				Console.WriteLine($"[{nameof(ActiveTexture)}]: Function is not supported.");
+				return;
+			}
+
+			if (slot < 0)
+			{
+				Console.WriteLine($"[{nameof(ActiveTexture)}]: Slot must be greater than or equal to 0.");
+				return;
+			}
+
+			const int firstTextureSlot = 0x84C0;
+			
+			_activeTexture(firstTextureSlot + slot);
+			
+			HandleOpenGlErrors(nameof(ActiveTexture));
 		}
 
 		protected static void HandleOpenGlErrors(string function)
