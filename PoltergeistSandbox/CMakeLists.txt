@@ -1,4 +1,6 @@
 add_executable(PoltergeistSandbox src/PoltergeistSandbox.cpp)
 target_include_directories(PoltergeistSandbox PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include/")
-target_link_libraries(PoltergeistSandbox PUBLIC Poltergeist::PoltergeistEngine)
+find_package(glfw3 CONFIG REQUIRED)
+find_package(glad CONFIG REQUIRED)
+target_link_libraries(PoltergeistSandbox PUBLIC Poltergeist::PoltergeistEngine PRIVATE glfw glad::glad)
 add_executable(Poltergeist::PoltergeistSandbox ALIAS PoltergeistSandbox)
