@@ -18,8 +18,8 @@ namespace Poltergeist.Core.Bindings.Glfw
 		{
 			try
 			{
-				GetVersion(out int major, out int minor, out int rev);
-				Version = new Version(major, minor, rev);
+				GetVersion(out int major, out int minor, out int revision);
+				Version = new Version(major, minor, revision);
 				Loaded = true;
 			}
 			catch
@@ -104,10 +104,10 @@ namespace Poltergeist.Core.Bindings.Glfw
 		public static extern void InitializeHint(GlfwHint hint, int value);
 
 		[DllImport(GlfwLibrary, EntryPoint = "glfwGetVersion", CallingConvention = Convention)]
-		public static extern void GetVersion(out int major, out int minor, out int rev);
+		public static extern void GetVersion(out int major, out int minor, out int revision);
 
 		[DllImport(GlfwLibrary, EntryPoint = "glfwGetVersionString", CallingConvention = Convention)]
-		public static extern char* GetVersionString();
+		public static extern byte* GetVersionString();
 
 		[DllImport(GlfwLibrary, EntryPoint = "glfwGetError", CallingConvention = Convention, BestFitMapping = false)]
 		public static extern GlfwError GetError([MarshalAs(UnmanagedType.LPUTF8Str)] out string description);
