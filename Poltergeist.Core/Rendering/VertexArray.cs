@@ -1,5 +1,5 @@
 ﻿using System;
-using Poltergeist.Core.Bindings.OpenGl;
+using OpenTK.Graphics.ES30;
 
 namespace Poltergeist.Core.Rendering
 {
@@ -15,26 +15,24 @@ namespace Poltergeist.Core.Rendering
 		public static VertexArray Create()
 		{
 			uint vertexArrayId;
-
-			OpenGl3Native.GenerateVertexArrays(1, &vertexArrayId);
-
+			GL.GenVertexArrays(1, &vertexArrayId);
 			return new VertexArray(vertexArrayId);
 		}
 
 		public void Bind()
 		{
-			OpenGl3Native.BindVertexArray(_vertexArrayId);
+			GL.BindVertexArray(_vertexArrayId);
 		}
 
 		public void Unbind()
 		{
-			OpenGl3Native.BindVertexArray(0);
+			GL.BindVertexArray(0);
 		}
 
 		public void Dispose()
 		{
 			fixed (uint* vertexArrayIdPointer = &_vertexArrayId)
-				OpenGl3Native.DeleteVertexArrays(1, vertexArrayIdPointer);
+				GL.DeleteVertexArrays(1, vertexArrayIdPointer);
 		}
 	}
 }

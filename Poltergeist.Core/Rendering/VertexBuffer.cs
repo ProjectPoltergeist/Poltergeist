@@ -1,5 +1,5 @@
 ﻿using System;
-using Poltergeist.Core.Bindings.OpenGl;
+using OpenTK.Graphics.ES20;
 
 namespace Poltergeist.Core.Rendering
 {
@@ -12,60 +12,56 @@ namespace Poltergeist.Core.Rendering
 			_vertexBufferId = vertexBufferId;
 		}
 
-		public static VertexBuffer Create<T>(ReadOnlySpan<T> data, ReadOnlySpan<VertexBufferElement> layout) where T : unmanaged
+		public static VertexBuffer Create<T>(T[] data, ReadOnlySpan<VertexBufferElement> layout) where T : unmanaged
 		{
-			uint vertexBufferId;
-
-			OpenGl3Native.GenerateBuffers(1, &vertexBufferId);
+			var vertexBufferId = 0u;
+			GL.GenBuffers(1, &vertexBufferId);
 
 			var vertexBuffer = new VertexBuffer(vertexBufferId);
-
 			vertexBuffer.Bind();
 
-			fixed (T* dataPointer = data)
-				OpenGl3Native.BufferData(OpenGlBufferType.Array, data.Length * sizeof(T), dataPointer, OpenGlUsageHint.StaticDraw);
+			GL.BufferData(BufferTarget.ArrayBuffer, data.Length * sizeof(T), data, BufferUsageHint.StaticDraw);
 
-			int stride = 0;
+			var stride = 0;
 
 			for (uint i = 0; i < layout.Length; i++)
 			{
 				var element = layout[(int)i];
 				
-				stride += element.Count * OpenGlTypeUtils.SizeOf(element.Type);
+				stride += element.Count * element.Size;
 			}
 
-			nuint offset = 0;
+			var offset = 0;
 
-			for (uint i = 0; i < layout.Length; i++)
+			for (int i = 0; i < layout.Length; i++)
 			{
 				var element = layout[(int)i];
-				var size = element.Count * OpenGlTypeUtils.SizeOf(element.Type);
+				var size = element.Count * element.Size;
 
-				OpenGl3Native.VertexAttributePointer(i, element.Count, element.Type, false, stride, offset);
-				OpenGl3Native.EnableVertexAttributeArray(i);
+				GL.VertexAttribPointer(i, element.Count, (All)element.Type, false, stride, new(offset)); //??
+				GL.EnableVertexAttribArray(i);
 
-				offset += (nuint)size;
+				offset += size;
 			}
 
 			vertexBuffer.Unbind();
-
 			return vertexBuffer;
 		}
 
 		public void Bind()
 		{
-			OpenGl3Native.BindBuffer(OpenGlBufferType.Array, _vertexBufferId);
+			GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferId);
 		}
 
 		public void Unbind()
 		{
-			OpenGl3Native.BindBuffer(OpenGlBufferType.Array, 0);
+			GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
 		}
 
 		public void Dispose()
 		{
 			fixed (uint* vertexBufferIdPointer = &_vertexBufferId)
-				OpenGl3Native.DeleteBuffers(1, vertexBufferIdPointer);
+				GL.DeleteBuffers(1, vertexBufferIdPointer);
 		}
 	}
 }

@@ -1,5 +1,5 @@
 ﻿using System;
-using Poltergeist.Core.Bindings.OpenGl;
+using OpenTK.Graphics.ES20;
 
 namespace Poltergeist.Core.Rendering
 {
@@ -12,38 +12,34 @@ namespace Poltergeist.Core.Rendering
 			_indexBufferId = indexBufferId;
 		}
 
-		public static IndexBuffer Create<T>(ReadOnlySpan<T> indices) where T : unmanaged
+		public static IndexBuffer Create<T>(T[] indices) where T : unmanaged
 		{
-			uint indexBufferId;
-
-			OpenGl3Native.GenerateBuffers(1, &indexBufferId);
+			var indexBufferId = 0u;
+			GL.GenBuffers(1, &indexBufferId);
 
 			var indexBuffer = new IndexBuffer(indexBufferId);
-
 			indexBuffer.Bind();
 
-			fixed (T* dataPointer = indices)
-				OpenGl3Native.BufferData(OpenGlBufferType.ElementArray, indices.Length * sizeof(T), dataPointer, OpenGlUsageHint.StaticDraw);
+			GL.BufferData(BufferTarget.ElementArrayBuffer, indices.Length * sizeof(T), indices, BufferUsageHint.StaticDraw);
 
 			indexBuffer.Unbind();
-
 			return indexBuffer;
 		}
 
 		public void Bind()
 		{
-			OpenGl3Native.BindBuffer(OpenGlBufferType.ElementArray, _indexBufferId);
+			GL.BindBuffer(BufferTarget.ElementArrayBuffer, _indexBufferId);
 		}
 
 		public void Unbind()
 		{
-			OpenGl3Native.BindBuffer(OpenGlBufferType.ElementArray, 0);
+			GL.BindBuffer(BufferTarget.ElementArrayBuffer, 0);
 		}
 
 		public void Dispose()
 		{
 			fixed (uint* indexBufferIdPointer = &_indexBufferId)
-				OpenGl3Native.DeleteBuffers(1, indexBufferIdPointer);
+				GL.DeleteBuffers(1, indexBufferIdPointer);
 		}
 	}
 }

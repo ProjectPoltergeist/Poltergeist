@@ -1,112 +1,68 @@
 ﻿using System;
-using System.Buffers;
-using System.Text;
-using Poltergeist.Core.Bindings.OpenGl;
+using OpenTK.Graphics.ES30;
 
 namespace Poltergeist.Core.Rendering
 {
 	public readonly unsafe struct Shader : IDisposable
 	{
-		private readonly uint _shaderId;
+		private readonly int _shaderId;
 
-		private Shader(uint shaderId)
+		private Shader(int shaderId)
 		{
 			_shaderId = shaderId;
 		}
 
-		public static Shader Create(ReadOnlySpan<char> fragmentShaderSource, ReadOnlySpan<char> vertexShaderSource)
+		public static Shader Create(string fragmentShaderSource, string vertexShaderSource)
 		{
-			uint programId = OpenGl3Native.CreateProgram();
-			uint fragmentShaderId = CompileShader(OpenGlShaderType.Fragment, fragmentShaderSource);
-			uint vertexShaderId = CompileShader(OpenGlShaderType.Vertex, vertexShaderSource);
+			var vertexShader = GL.CreateShader(ShaderType.VertexShader);
+			GL.ShaderSource(vertexShader, vertexShaderSource);
+			GL.CompileShader(vertexShader);
 
-			OpenGl3Native.AttachShader(programId, fragmentShaderId);
-			OpenGl3Native.AttachShader(programId, vertexShaderId);
-			OpenGl3Native.LinkProgram(programId);
-			OpenGl3Native.DetachShader(programId, fragmentShaderId);
-			OpenGl3Native.DetachShader(programId, vertexShaderId);
-			OpenGl3Native.DeleteShader(fragmentShaderId);
-			OpenGl3Native.DeleteShader(vertexShaderId);
+			var fragmentShader = GL.CreateShader(ShaderType.FragmentShader);
+			GL.ShaderSource(fragmentShader, fragmentShaderSource);
+			GL.CompileShader(fragmentShader);
 
-			int success;
-			OpenGl3Native.GetProgramIntegerValue(programId, OpenGlParameter.LinkStatus, &success);
+			var programId = GL.CreateProgram();
+			GL.AttachShader(programId, vertexShader);
+			GL.AttachShader(programId, fragmentShader);
+			GL.LinkProgram(programId);
 
-			if (success == 0)
-			{
-				byte* buffer = stackalloc byte[1024];
-				long length;
-
-				OpenGl3Native.GetProgramInfoLog(programId, 1024, &length, buffer);
-
-				string infoLog = Encoding.UTF8.GetString(buffer, (int)length);
-
-				Console.WriteLine($"[{nameof(Shader)}::{nameof(Create)}]: Failed to link.\n{infoLog}");
-			}
+			GL.DetachShader(programId, vertexShader);
+			GL.DetachShader(programId, fragmentShader);
+			GL.DeleteShader(vertexShader);
+			GL.DeleteShader(fragmentShader);
 
 			return new Shader(programId);
 		}
 
-		private static uint CompileShader(OpenGlShaderType shaderType, ReadOnlySpan<char> source)
+		private static int CompileShader(ShaderType shaderType, string source)
 		{
-			uint shaderId = OpenGl3Native.CreateShader(shaderType);
-
-			byte[] sourceBytes = ArrayPool<byte>.Shared.Rent(Encoding.UTF8.GetMaxByteCount(source.Length));
-			try
-			{
-				int length = Encoding.UTF8.GetBytes(source, sourceBytes);
-				fixed (byte* sourceBytesPointer = sourceBytes)
-					OpenGl3Native.ShaderSource(shaderId, 1, &sourceBytesPointer, &length);
-			}
-			finally
-			{
-				ArrayPool<byte>.Shared.Return(sourceBytes);
-			}
-
-			OpenGl3Native.CompileShader(shaderId);
-
-			int success = 0;
-			OpenGl3Native.GetShaderIntegerValue(shaderId, OpenGlParameter.CompileStatus, &success);
-
-			if (success == 0)
-			{
-				byte* buffer = stackalloc byte[1024];
-				long length;
-
-				OpenGl3Native.GetShaderInfoLog(shaderId, 1024, &length, buffer);
-
-				string infoLog = Encoding.UTF8.GetString(buffer, (int)length);
-
-				Console.WriteLine($"[{nameof(Shader)}::{nameof(CompileShader)}]: Failed to compile.\n{infoLog}");
-			}
+			var shaderId = GL.CreateShader(shaderType);
+			GL.ShaderSource(shaderId, source);
+			GL.CompileShader(shaderId);
 
 			return shaderId;
 		}
 
 		public void Bind()
 		{
-			OpenGl3Native.UseProgram(_shaderId);
+			GL.UseProgram(_shaderId);
 		}
 
 		public void Unbind()
 		{
-			OpenGl3Native.UseProgram(0);
+			GL.UseProgram(0);
 		}
 
-		public void SetUniform(string name, int value)
+		public void SetUniform(string name, float value)
 		{
-			byte[] nameBytes = Encoding.UTF8.GetBytes(name);
-
-			fixed (byte* nameBytesPointer = nameBytes)
-			{
-				int uniformLocation = OpenGl3Native.GetUniformLocation(_shaderId, nameBytesPointer);
-				
-				OpenGl3Native.Uniform(uniformLocation, value);
-			}
+			var uniformLocation = GL.GetUniformLocation(_shaderId, name);
+			GL.Uniform1(uniformLocation, value);
 		}
 
 		public void Dispose()
 		{
-			OpenGl3Native.DeleteProgram(_shaderId);
+			GL.DeleteProgram(_shaderId);
 		}
 	}
 }

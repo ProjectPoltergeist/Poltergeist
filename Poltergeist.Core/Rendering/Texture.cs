@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Imaging;
-using Poltergeist.Core.Bindings.OpenGl;
+using OpenTK.Graphics.ES20;
+
+using PixelFormat = System.Drawing.Imaging.PixelFormat;
+using OpenTkPixelFormat = OpenTK.Graphics.ES30.PixelFormat;
 
 namespace Poltergeist.Core.Rendering
 {
@@ -16,54 +19,47 @@ namespace Poltergeist.Core.Rendering
 
 		public static Texture Create(string filePath)
 		{
-			uint textureId;
+			var textureId = 0u;		
+			GL.GenTextures(1, &textureId);
 			
-			OpenGl3Native.GenerateTextures(1, &textureId);
-			
-			Texture texture = new(textureId);
+			var texture = new Texture(textureId);
 
-			OpenGl3Native.BindTexture(OpenGlTextureType.Texture2D, textureId);
+			GL.BindTexture(TextureTarget.Texture2D, textureId);
 			
-			OpenGl3Native.TextureParameter(OpenGlTextureType.Texture2D, OpenGlTextureParameter.TextureMagnifyingFilter,
-				OpenGlTextureParameterValue.Linear);
-			OpenGl3Native.TextureParameter(OpenGlTextureType.Texture2D, OpenGlTextureParameter.TextureMinifyingFilter,
-				OpenGlTextureParameterValue.Linear);
-			OpenGl3Native.TextureParameter(OpenGlTextureType.Texture2D, OpenGlTextureParameter.TextureWrapS,
-				OpenGlTextureParameterValue.Clamp);
-			OpenGl3Native.TextureParameter(OpenGlTextureType.Texture2D, OpenGlTextureParameter.TextureWrapT,
-				OpenGlTextureParameterValue.Clamp);
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Clamp);
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Clamp);
 
 			Bitmap bitmap = new(filePath);
 			BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadWrite,
 				PixelFormat.Format24bppRgb);
-			void* rawData = bitmapData.Scan0.ToPointer();
+			var rawData = bitmapData.Scan0;
 			
-			OpenGl3Native.TextureImage2D(OpenGlTextureType.Texture2D, 0, OpenGlTextureFormat.Rgb, bitmap.Width,
-				bitmap.Height,
-				OpenGlTextureFormat.Bgr, OpenGlType.UnsignedByte, rawData);
+			GL.TexImage2D(All.Texture2D, 0, All.Rgb, bitmap.Width, bitmap.Height,0, All.AbgrExt, All.UnsignedByte, rawData); //nie wiem czemu ale nie przyjmuje enumów normalnych
 
 			bitmap.UnlockBits(bitmapData);
-
 			texture.Unbind();
 
 			return texture;
 		}
 
-		public void Bind(int slot)
+		public void Bind(int slot) //check this bullshit
 		{
-			OpenGl3Native.ActiveTexture(slot);
-			OpenGl3Native.BindTexture(OpenGlTextureType.Texture2D, _textureId);
+			var textureUnit = (TextureUnit)(33984 + slot);
+			GL.ActiveTexture(textureUnit);
+			GL.BindTexture(TextureTarget.Texture2D, _textureId);
 		}
 
 		public void Unbind()
 		{
-			OpenGl3Native.BindTexture(OpenGlTextureType.Texture2D, 0);
+			GL.BindTexture(TextureTarget.Texture2D, 0);
 		}
 
 		public void Dispose()
 		{
 			fixed (uint* textureIdPointer = &_textureId)
-				OpenGl3Native.DeleteTextures(1, textureIdPointer);
+				GL.DeleteTextures(1, textureIdPointer);
 		}
 	}
 }
