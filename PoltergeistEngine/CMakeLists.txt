@@ -1,3 +1,5 @@
-add_library(PoltergeistEngine STATIC src/PoltergeistEngine.cpp)
+add_library(PoltergeistEngine STATIC src/PoltergeistEngine.cpp src/VertexArray.cpp)
 target_include_directories(PoltergeistEngine PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include/")
+find_package(glad CONFIG REQUIRED)
+target_link_libraries(PoltergeistEngine PRIVATE glad::glad)
 add_library(Poltergeist::PoltergeistEngine ALIAS PoltergeistEngine)

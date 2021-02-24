@@ -2,6 +2,7 @@
 #include <memory>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <VertexArray.hpp>
 
 int main() {
     std::cout << "Hello sandbox!\n";
@@ -31,9 +32,8 @@ int main() {
             return -2;
         }
 
-        uint32_t vertexArrayId;
-        glGenVertexArrays(1, &vertexArrayId);
-        glBindVertexArray(vertexArrayId);
+        VertexArray vertexArray;
+        vertexArray.Bind();
 
         float vertices[] = {
                  0.5f,  0.5f, 0.0f,
@@ -69,11 +69,10 @@ int main() {
         }
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-        glBindVertexArray(0);
+        vertexArray.Unbind();
 
         glDeleteBuffers(1, &indexBufferId);
         glDeleteBuffers(1, &vertexBufferId);
-        glDeleteVertexArrays(1, &vertexArrayId);
     }
 
     glfwTerminate();
