@@ -3,6 +3,8 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <VertexArray.hpp>
+#include <VertexBuffer.hpp>
+#include <VertexBufferLayout.hpp>
 #include <IndexBuffer.hpp>
 
 int main() {
@@ -43,13 +45,10 @@ int main() {
                 -0.5f,  0.5f, 0.0f
         };
 
-        uint32_t vertexBufferId;
-        glGenBuffers(1, &vertexBufferId);
-        glBindBuffer(GL_ARRAY_BUFFER, vertexBufferId);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_STATIC_DRAW);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
-        glEnableVertexAttribArray(0);
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        VertexBufferLayout layout;
+        layout.AddElement<float>(3);
+
+        VertexBuffer vertexBuffer(vertices, sizeof(vertices), layout);
 
         uint32_t indices[] = {
                 0, 1, 3,
@@ -69,8 +68,6 @@ int main() {
 
         indexBuffer.Unbind();
         vertexArray.Unbind();
-
-        glDeleteBuffers(1, &vertexBufferId);
     }
 
     glfwTerminate();
