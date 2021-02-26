@@ -3,6 +3,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <VertexArray.hpp>
+#include <IndexBuffer.hpp>
 
 int main() {
     std::cout << "Hello sandbox!\n";
@@ -55,10 +56,8 @@ int main() {
                 1, 2, 3
         };
 
-        uint32_t indexBufferId;
-        glGenBuffers(1, &indexBufferId);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferId);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), &indices, GL_STATIC_DRAW);
+        IndexBuffer indexBuffer(indices, 6);
+        indexBuffer.Bind();
 
         while (!glfwWindowShouldClose(window.get())) {
             glfwPollEvents();
@@ -68,10 +67,9 @@ int main() {
             glfwSwapBuffers(window.get());
         }
 
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+        indexBuffer.Unbind();
         vertexArray.Unbind();
 
-        glDeleteBuffers(1, &indexBufferId);
         glDeleteBuffers(1, &vertexBufferId);
     }
 
