@@ -2,6 +2,7 @@
 #include <memory>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <Shader.hpp>
 #include <VertexArray.hpp>
 #include <VertexBuffer.hpp>
 #include <VertexBufferLayout.hpp>
@@ -34,6 +35,16 @@ int main() {
             glfwTerminate();
             return -2;
         }
+
+        auto shader = Shader::Create("core.vert", "core.frag");
+
+        if (!shader)
+        {
+            glfwTerminate();
+            return -3;
+        }
+
+        shader->Bind();
 
         VertexArray vertexArray;
         vertexArray.Bind();
@@ -68,6 +79,7 @@ int main() {
 
         indexBuffer.Unbind();
         vertexArray.Unbind();
+        shader->Unbind();
     }
 
     glfwTerminate();

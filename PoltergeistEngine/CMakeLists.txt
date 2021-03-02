@@ -1,4 +1,4 @@
-add_library(PoltergeistEngine STATIC src/PoltergeistEngine.cpp src/VertexArray.cpp src/IndexBuffer.cpp src/VertexBuffer.cpp)
+add_library(PoltergeistEngine STATIC src/PoltergeistEngine.cpp src/VertexArray.cpp src/IndexBuffer.cpp src/VertexBuffer.cpp src/Shader.cpp src/ShaderStage.cpp)
 target_include_directories(PoltergeistEngine PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include/")
 find_package(glad CONFIG REQUIRED)
 target_link_libraries(PoltergeistEngine PRIVATE glad::glad)
