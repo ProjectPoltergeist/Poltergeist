@@ -11,7 +11,7 @@ extern "C"
 
 int main()
 {
-	std::cout << "Hello editor!\n";
+    std::cout << "Hello editor!\n";
 
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
