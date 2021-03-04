@@ -7,6 +7,7 @@
 #include <VertexBuffer.hpp>
 #include <VertexBufferLayout.hpp>
 #include <IndexBuffer.hpp>
+#include <Texture.hpp>
 
 int main() {
     std::cout << "Hello sandbox!\n";
@@ -50,14 +51,15 @@ int main() {
         vertexArray.Bind();
 
         float vertices[] = {
-                 0.5f,  0.5f, 0.0f,
-                 0.5f, -0.5f, 0.0f,
-                -0.5f, -0.5f, 0.0f,
-                -0.5f,  0.5f, 0.0f
+                 0.5f,  0.5f, 0.0f, 1.0f, 0.0f,
+                 0.5f, -0.5f, 0.0f, 1.0f, 1.0f,
+                -0.5f, -0.5f, 0.0f, 0.0f, 1.0f,
+                -0.5f,  0.5f, 0.0f, 0.0f, 0.0f
         };
 
         VertexBufferLayout layout;
         layout.AddElement<float>(3);
+        layout.AddElement<float>(2);
 
         VertexBuffer vertexBuffer(vertices, sizeof(vertices), layout);
 
@@ -69,7 +71,12 @@ int main() {
         IndexBuffer indexBuffer(indices, 6);
         indexBuffer.Bind();
 
-        while (!glfwWindowShouldClose(window.get())) {
+        Texture texture("texture.png", 0);
+        texture.Bind();
+        shader->SetUniform("u_Texture", 0);
+
+        while (!glfwWindowShouldClose(window.get()))
+        {
             glfwPollEvents();
             glClear(GL_COLOR_BUFFER_BIT);
             glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
@@ -77,6 +84,7 @@ int main() {
             glfwSwapBuffers(window.get());
         }
 
+        texture.Unbind();
         indexBuffer.Unbind();
         vertexArray.Unbind();
         shader->Unbind();

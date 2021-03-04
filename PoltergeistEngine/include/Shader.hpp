@@ -21,6 +21,8 @@ public:
 
     void Bind() const noexcept;
     void Unbind() const noexcept;
+
+    void SetUniform(const std::string& uniformName, int32_t value) const noexcept;
 };
 
 #endif

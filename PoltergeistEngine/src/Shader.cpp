@@ -63,3 +63,10 @@ void Shader::Unbind() const noexcept
 {
     glUseProgram(0);
 }
+
+void Shader::SetUniform(const std::string &name, int32_t value) const noexcept
+{
+    int location = glGetUniformLocation(m_shaderId, name.c_str());
+
+    glUniform1i(location, value);
+}
