@@ -3,6 +3,12 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+extern "C"
+{
+    __declspec(dllexport) uint32_t NvOptimusEnablement = 1;
+    __declspec(dllexport) int32_t AmdPowerXpressRequestHighPerformance = 1;
+}
+
 int main()
 {
 	std::cout << "Hello editor!\n";

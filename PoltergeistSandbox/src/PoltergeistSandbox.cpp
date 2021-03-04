@@ -9,6 +9,12 @@
 #include <IndexBuffer.hpp>
 #include <Texture.hpp>
 
+extern "C"
+{
+    __declspec(dllexport) uint32_t NvOptimusEnablement = 1;
+    __declspec(dllexport) int32_t AmdPowerXpressRequestHighPerformance = 1;
+}
+
 int main()
 {
     std::cout << "Hello sandbox!\n";
