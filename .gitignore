@@ -351,3 +351,9 @@ MigrationBackup/
 
 # Rider
 .idea/
+
+# CMake
+cmake-build-debug/
+cmake-build-release/
+cmake-build-debug-visual-studio/
+cmake-build-release-visual-studio/
