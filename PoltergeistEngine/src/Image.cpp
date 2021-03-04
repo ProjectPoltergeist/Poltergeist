@@ -62,14 +62,17 @@ Image::~Image() noexcept
     delete[] m_data;
 }
 
-uint32_t Image::GetWidth() const noexcept {
+uint32_t Image::GetWidth() const noexcept
+{
     return m_width;
 }
 
-uint32_t Image::GetHeight() const noexcept {
+uint32_t Image::GetHeight() const noexcept
+{
     return m_height;
 }
 
-uint8_t* Image::GetData() const noexcept {
+uint8_t* Image::GetData() const noexcept
+{
     return m_data;
 }

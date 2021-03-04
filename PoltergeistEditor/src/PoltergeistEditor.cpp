@@ -19,19 +19,22 @@ int main() {
                 &glfwDestroyWindow
         };
 
-        if (window.get() == nullptr) {
+        if (window.get() == nullptr)
+        {
             glfwTerminate();
             return -1;
         }
 
         glfwMakeContextCurrent(window.get());
 
-        if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress))) {
+        if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)))
+        {
             glfwTerminate();
             return -2;
         }
 
-        while (!glfwWindowShouldClose(window.get())) {
+        while (!glfwWindowShouldClose(window.get()))
+        {
             glfwPollEvents();
             glfwSwapBuffers(window.get());
         }

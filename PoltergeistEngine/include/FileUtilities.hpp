@@ -5,10 +5,12 @@
 #include <fstream>
 #include <optional>
 
-[[nodiscard]] static std::optional<std::string> GetFileContent(const std::filesystem::path& filePath) {
+[[nodiscard]] static std::optional<std::string> GetFileContent(const std::filesystem::path& filePath)
+{
     std::ifstream fileStream(filePath);
 
-    if (fileStream.good()) {
+    if (fileStream.good())
+    {
         auto result = std::make_optional<std::string>();
 
         fileStream.seekg(0, std::ios::end);
