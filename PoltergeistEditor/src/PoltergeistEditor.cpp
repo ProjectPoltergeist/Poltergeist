@@ -3,7 +3,8 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-int main() {
+int main()
+{
 	std::cout << "Hello editor!\n";
 
     glfwInit();

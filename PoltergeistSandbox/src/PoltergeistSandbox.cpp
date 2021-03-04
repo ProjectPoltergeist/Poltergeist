@@ -9,7 +9,8 @@
 #include <IndexBuffer.hpp>
 #include <Texture.hpp>
 
-int main() {
+int main()
+{
     std::cout << "Hello sandbox!\n";
 
     glfwInit();
