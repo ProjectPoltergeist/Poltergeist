@@ -2,6 +2,9 @@
 #include <memory>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#ifdef WIN32
+#include <Windows.h>
+#endif
 
 extern "C"
 {
@@ -11,7 +14,12 @@ extern "C"
 
 int main()
 {
-    std::cout << "Hello editor!\n";
+#ifdef WIN32
+	SetConsoleOutputCP(CP_UTF8);
+    setvbuf(stdout, nullptr, _IOFBF, 1024);
+#endif
+
+    std::cout << "Hello editor!" << std::endl;
 
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);

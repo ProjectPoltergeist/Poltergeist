@@ -5,6 +5,8 @@
 #include <fstream>
 #include <optional>
 
+FILE* OpenFile(const char* filename, const char* mode);
+
 [[nodiscard]] static std::optional<std::string> GetFileContent(const std::filesystem::path& filePath)
 {
     std::ifstream fileStream(filePath);

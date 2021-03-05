@@ -1,10 +1,11 @@
 #include "Image.hpp"
+#include "FileUtilities.hpp"
 #include <cstdio>
 #include <png.h>
 
 Image::Image(const std::filesystem::path &imagePath)
 {
-    FILE* file = fopen(imagePath.generic_string().c_str(), "rb");
+    FILE* file = OpenFile(imagePath.generic_string().c_str(), "rb");
 
     if (!file)
         throw std::runtime_error("Couldn't open the file");
