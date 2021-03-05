@@ -22,8 +22,10 @@ int main()
 {
 #ifdef WIN32
 	SetConsoleOutputCP(CP_UTF8);
+    setvbuf(stdout, nullptr, _IOFBF, 1024);
 #endif
-    std::cout << "Hello sandbox!\n";
+
+    std::cout << "Hello sandbox!" << std::endl;
 
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
