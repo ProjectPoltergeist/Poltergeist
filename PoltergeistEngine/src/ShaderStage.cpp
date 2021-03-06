@@ -10,15 +10,13 @@ ShaderStage::~ShaderStage() noexcept
     glDeleteShader(m_shaderStageId);
 }
 
-std::optional<ShaderStage> ShaderStage::Create(ShaderStageType shaderStageType, const std::filesystem::path &shaderStageFilePath) noexcept
+ShaderStage ShaderStage::Create(ShaderStageType shaderStageType, const std::filesystem::path &shaderStageFilePath)
 {
     std::optional<std::string> shaderStageSource = GetFileContent(shaderStageFilePath);
 
     if (!shaderStageSource)
     {
-        std::cout << "Failed to read the file\n";
-
-        return {};
+        throw std::runtime_error("Failed to read the file");
     }
 
     const char* shaderStageSourceCString = shaderStageSource->data();
@@ -40,10 +38,10 @@ std::optional<ShaderStage> ShaderStage::Create(ShaderStageType shaderStageType, 
 
         std::cout << "Failed to compile the shader stage: " << infoLog << "\n";
 
-        return {};
+        throw std::runtime_error("Failed to compile the shader stage");
     }
 
-    return std::make_optional<ShaderStage>(shaderStageId);
+    return ShaderStage(shaderStageId);
 }
 
 uint32_t ShaderStage::GetId() const noexcept

@@ -4,7 +4,6 @@
 #include <cstdint>
 #include <filesystem>
 #include <iostream>
-#include <optional>
 #include <glad/glad.h>
 #include "ShaderStage.hpp"
 #include "ShaderStageType.hpp"
@@ -17,7 +16,7 @@ public:
     explicit Shader(uint32_t shaderId) noexcept;
     ~Shader() noexcept;
 
-    [[nodiscard]] static std::optional<Shader> Create(const std::filesystem::path& vertexShaderFilePath, const std::filesystem::path& fragmentShaderFilePath) noexcept;
+    [[nodiscard]] static std::shared_ptr<Shader> Create(const std::filesystem::path& vertexShaderFilePath, const std::filesystem::path& fragmentShaderFilePath);
 
     void Bind() const noexcept;
     void Unbind() const noexcept;

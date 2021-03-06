@@ -10,30 +10,19 @@ Shader::~Shader() noexcept
     glDeleteProgram(m_shaderId);
 }
 
-std::optional<Shader> Shader::Create(const std::filesystem::path& vertexShaderFilePath, const std::filesystem::path& fragmentShaderFilePath) noexcept
+std::shared_ptr<Shader> Shader::Create(const std::filesystem::path& vertexShaderFilePath, const std::filesystem::path& fragmentShaderFilePath)
 {
     uint32_t shaderId = glCreateProgram();
 
     {
-        auto vertexShaderStage = ShaderStage::Create(ShaderStageType::Vertex, vertexShaderFilePath);
+        auto vertexShaderStage = ShaderStage::Create(ShaderStageType::VertexStage, vertexShaderFilePath);
+        auto fragmentShaderStage = ShaderStage::Create(ShaderStageType::FragmentStage, fragmentShaderFilePath);
 
-        if (!vertexShaderStage)
-        {
-            return {};
-        }
-
-        auto fragmentShaderStage = ShaderStage::Create(ShaderStageType::Fragment, fragmentShaderFilePath);
-
-        if (!fragmentShaderStage)
-        {
-            return {};
-        }
-
-        glAttachShader(shaderId, vertexShaderStage->GetId());
-        glAttachShader(shaderId, fragmentShaderStage->GetId());
+        glAttachShader(shaderId, vertexShaderStage.GetId());
+        glAttachShader(shaderId, fragmentShaderStage.GetId());
         glLinkProgram(shaderId);
-        glDetachShader(shaderId, vertexShaderStage->GetId());
-        glDetachShader(shaderId, fragmentShaderStage->GetId());
+        glDetachShader(shaderId, vertexShaderStage.GetId());
+        glDetachShader(shaderId, fragmentShaderStage.GetId());
     }
 
     int32_t success = 0;
@@ -48,10 +37,10 @@ std::optional<Shader> Shader::Create(const std::filesystem::path& vertexShaderFi
 
         std::cout << "Failed to link the shader: " << info << "\n";
 
-        return {};
+        throw std::runtime_error("Failed to link the shader");
     }
 
-    return std::make_optional<Shader>(shaderId);
+    return std::shared_ptr<Shader>(new Shader(shaderId));
 }
 
 void Shader::Bind() const noexcept
