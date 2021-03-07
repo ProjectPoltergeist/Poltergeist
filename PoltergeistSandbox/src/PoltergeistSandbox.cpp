@@ -2,12 +2,8 @@
 #include <memory>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <Shader.hpp>
-#include <VertexArray.hpp>
-#include <VertexBuffer.hpp>
-#include <VertexBufferLayout.hpp>
-#include <IndexBuffer.hpp>
 #include <Texture.hpp>
+#include <Renderer.hpp>
 #ifdef WIN32
 #include <Windows.h>
 #endif
@@ -59,57 +55,17 @@ int main()
             return -2;
         }
 
-        auto shader = Shader::Create("core.vert", "core.frag");
-
-        if (!shader)
-        {
-            glfwTerminate();
-            return -3;
-        }
-
-        shader->Bind();
-
-        VertexArray vertexArray;
-        vertexArray.Bind();
-
-        float vertices[] = {
-                 0.5f,  0.5f, 0.0f, 1.0f, 0.0f,
-                 0.5f, -0.5f, 0.0f, 1.0f, 1.0f,
-                -0.5f, -0.5f, 0.0f, 0.0f, 1.0f,
-                -0.5f,  0.5f, 0.0f, 0.0f, 0.0f
-        };
-
-        VertexBufferLayout layout;
-        layout.AddElement<float>(3);
-        layout.AddElement<float>(2);
-
-        VertexBuffer vertexBuffer(vertices, sizeof(vertices), layout);
-
-        uint32_t indices[] = {
-                0, 1, 3,
-                1, 2, 3
-        };
-
-        IndexBuffer indexBuffer(indices, 6);
-        indexBuffer.Bind();
-
-        Texture texture("texture.png", 0);
-        texture.Bind();
-        shader->SetUniform("u_Texture", 0);
+        std::shared_ptr<Texture> texture = Texture::Create("texture.png", 1);
+        std::shared_ptr<Renderer> renderer = Renderer::Create();
 
         while (!glfwWindowShouldClose(window.get()))
         {
             glfwPollEvents();
-            glClear(GL_COLOR_BUFFER_BIT);
-            glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
-            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+            renderer->Clear(glm::vec3(0.3f, 0.3f, 0.3f));
+            renderer->DrawQuad(glm::vec2(-0.70f, 0.0f), 0.0f, glm::vec2(0.25f, 0.25f), glm::vec3(1.0, 0.0, 0.0));
+            renderer->DrawQuad(glm::vec2(0.25f, 0.25f), 45.0f, glm::vec2(0.50f, 0.50f), texture);
             glfwSwapBuffers(window.get());
         }
-
-        texture.Unbind();
-        indexBuffer.Unbind();
-        vertexArray.Unbind();
-        shader->Unbind();
     }
 
     glfwTerminate();
