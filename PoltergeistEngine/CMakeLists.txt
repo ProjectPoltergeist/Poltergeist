@@ -1,0 +1,7 @@
+add_library(PoltergeistEngine STATIC src/PoltergeistEngine.cpp src/VertexArray.cpp src/IndexBuffer.cpp src/VertexBuffer.cpp src/Shader.cpp src/ShaderStage.cpp src/Texture.cpp src/Image.cpp src/Renderer.cpp src/EncodingUtilities.cpp src/FileUtilities.cpp)
+target_include_directories(PoltergeistEngine PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include/")
+find_package(glad CONFIG REQUIRED)
+find_package(glm CONFIG REQUIRED)
+find_package(libpng CONFIG REQUIRED)
+target_link_libraries(PoltergeistEngine PRIVATE glad::glad glm png)
+add_library(Poltergeist::PoltergeistEngine ALIAS PoltergeistEngine)
