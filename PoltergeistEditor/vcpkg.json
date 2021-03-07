@@ -1,0 +1,8 @@
+{
+	"name": "PoltergeistEditor",
+	"version-string": "0.0.0",
+	"dependencies": [
+		"glfw3",
+		"glad"
+	]
+}
