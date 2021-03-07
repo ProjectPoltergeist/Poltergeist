@@ -11,6 +11,10 @@ extern "C"
     __declspec(dllexport) uint32_t NvOptimusEnablement = 1;
     __declspec(dllexport) int32_t AmdPowerXpressRequestHighPerformance = 1;
 }
+void OnWindowSizeUpdate(GLFWwindow* window, int width, int height)
+{
+    glViewport(0, 0, width, height);
+}
 
 int main()
 {
@@ -41,6 +45,7 @@ int main()
         }
 
         glfwMakeContextCurrent(window.get());
+        glfwSetWindowSizeCallback(window.get(), OnWindowSizeUpdate);
 
         if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)))
         {
