@@ -9,7 +9,7 @@ out vec2 v_TextureCoordinates;
 
 void main()
 {
-    gl_Position = vec4(position, 1.0, 1.0);
-    v_Color = color;
-    v_TextureCoordinates = texture_coordinates;
+	gl_Position = vec4(position, 1.0, 1.0);
+	v_Color = color;
+	v_TextureCoordinates = texture_coordinates;
 }

@@ -5,8 +5,8 @@
 
 enum ShaderStageType
 {
-    VertexStage = GL_VERTEX_SHADER,
-    FragmentStage = GL_FRAGMENT_SHADER
+	VertexStage = GL_VERTEX_SHADER,
+	FragmentStage = GL_FRAGMENT_SHADER
 };
 
 #endif
