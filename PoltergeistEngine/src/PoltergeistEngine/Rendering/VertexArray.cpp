@@ -1,4 +1,4 @@
-#include "VertexArray.hpp"
+#include "PoltergeistEngine/Rendering/VertexArray.hpp"
 
 VertexArray::VertexArray() noexcept
 {

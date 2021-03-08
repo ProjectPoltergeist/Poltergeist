@@ -1,5 +1,5 @@
-#include "VertexBuffer.hpp"
-#include "OpenGlUtilities.hpp"
+#include "PoltergeistEngine/Rendering/VertexBuffer.hpp"
+#include "PoltergeistEngine/Rendering/OpenGlUtilities.hpp"
 
 VertexBuffer::VertexBuffer(const void* vertices, const size_t size, const VertexBufferLayout& layout) noexcept
 {

@@ -1,4 +1,4 @@
-#include "EncodingUtilities.hpp"
+#include "PoltergeistEngine/Encoding/EncodingUtilities.hpp"
 #include <stdexcept>
 #ifdef WIN32
 #include <Windows.h>

@@ -1,4 +1,4 @@
-#include "Shader.hpp"
+#include "PoltergeistEngine/Rendering/Shader.hpp"
 
 Shader::Shader(uint32_t shaderId) noexcept
 {

@@ -1,4 +1,4 @@
-#include "Texture.hpp"
+#include "PoltergeistEngine/Rendering/Texture.hpp"
 #include "Image.hpp"
 #include <glad/glad.h>
 

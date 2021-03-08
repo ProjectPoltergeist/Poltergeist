@@ -1,4 +1,4 @@
-#include "ShaderStage.hpp"
+#include "PoltergeistEngine/Rendering/ShaderStage.hpp"
 
 ShaderStage::ShaderStage(uint32_t shaderStageId) noexcept
 {

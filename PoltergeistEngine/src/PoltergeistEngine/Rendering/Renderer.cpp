@@ -1,9 +1,9 @@
 #include <array>
-#include "Renderer.hpp"
-#include "VertexArray.hpp"
-#include "VertexBuffer.hpp"
-#include "VertexBufferLayout.hpp"
-#include "IndexBuffer.hpp"
+#include "PoltergeistEngine/Rendering/Renderer.hpp"
+#include "PoltergeistEngine/Rendering/VertexArray.hpp"
+#include "PoltergeistEngine/Rendering/VertexBuffer.hpp"
+#include "PoltergeistEngine/Rendering/VertexBufferLayout.hpp"
+#include "PoltergeistEngine/Rendering/IndexBuffer.hpp"
 
 std::shared_ptr<Renderer> Renderer::Create()
 {
