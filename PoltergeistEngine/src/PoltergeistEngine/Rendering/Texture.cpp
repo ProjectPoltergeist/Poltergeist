@@ -1,5 +1,5 @@
-#include "Texture.hpp"
-#include "Image.hpp"
+#include "PoltergeistEngine/Rendering/Texture.hpp"
+#include "PoltergeistEngine/Image/Image.hpp"
 #include <glad/glad.h>
 
 Texture::Texture(uint32_t textureId, uint8_t slot) noexcept

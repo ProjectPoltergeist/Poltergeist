@@ -1,4 +1,4 @@
-#include "IndexBuffer.hpp"
+#include "PoltergeistEngine/Rendering/IndexBuffer.hpp"
 
 IndexBuffer::IndexBuffer(const uint32_t* indices, size_t count) noexcept
 {

@@ -2,8 +2,8 @@
 #include <memory>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <Texture.hpp>
-#include <Renderer.hpp>
+#include <PoltergeistEngine/Rendering/Texture.hpp>
+#include <PoltergeistEngine/Rendering/Renderer.hpp>
 #ifdef WIN32
 #include <Windows.h>
 #endif

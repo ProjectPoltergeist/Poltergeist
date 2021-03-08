@@ -5,7 +5,7 @@
 #include <filesystem>
 #include <iostream>
 #include <glad/glad.h>
-#include "FileUtilities.hpp"
+#include "PoltergeistEngine/IO/FileUtilities.hpp"
 #include "ShaderStageType.hpp"
 
 class ShaderStage

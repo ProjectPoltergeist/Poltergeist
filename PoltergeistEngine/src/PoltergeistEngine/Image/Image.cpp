@@ -1,5 +1,5 @@
-#include "Image.hpp"
-#include "FileUtilities.hpp"
+#include "PoltergeistEngine/Image/Image.hpp"
+#include "PoltergeistEngine/IO/FileUtilities.hpp"
 #include <cstdio>
 #include <png.h>
 

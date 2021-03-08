@@ -1,6 +1,6 @@
-#include "FileUtilities.hpp"
+#include "PoltergeistEngine/IO/FileUtilities.hpp"
 #ifdef WIN32
-#include "EncodingUtilities.hpp"
+#include "PoltergeistEngine/Encoding/EncodingUtilities.hpp"
 #endif
 
 FILE* OpenFile(const char* filename, const char* mode)
