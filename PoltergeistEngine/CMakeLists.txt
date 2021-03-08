@@ -1,4 +1,4 @@
-add_library(PoltergeistEngine STATIC src/PoltergeistEngine.cpp src/VertexArray.cpp src/IndexBuffer.cpp src/VertexBuffer.cpp src/Shader.cpp src/ShaderStage.cpp src/Texture.cpp src/Image.cpp src/Renderer.cpp src/EncodingUtilities.cpp src/FileUtilities.cpp)
+add_library(PoltergeistEngine STATIC src/PoltergeistEngine/Rendering/VertexArray.cpp src/PoltergeistEngine/Rendering/IndexBuffer.cpp src/PoltergeistEngine/Rendering/VertexBuffer.cpp src/PoltergeistEngine/Rendering/Shader.cpp src/PoltergeistEngine/Rendering/ShaderStage.cpp src/PoltergeistEngine/Rendering/Texture.cpp src/PoltergeistEngine/Image/Image.cpp src/PoltergeistEngine/Rendering/Renderer.cpp src/PoltergeistEngine/Encoding/EncodingUtilities.cpp src/PoltergeistEngine/IO/FileUtilities.cpp)
 target_include_directories(PoltergeistEngine PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include/")
 find_package(glad CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
