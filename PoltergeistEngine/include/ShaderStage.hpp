@@ -11,15 +11,15 @@
 class ShaderStage
 {
 private:
-    uint32_t m_shaderStageId;
+	uint32_t m_shaderStageId;
 
-    explicit ShaderStage(uint32_t shaderStageId) noexcept;
+	explicit ShaderStage(uint32_t shaderStageId) noexcept;
 public:
-    ~ShaderStage() noexcept;
+	~ShaderStage() noexcept;
 
-    [[nodiscard]] static ShaderStage Create(ShaderStageType shaderStageType, const std::filesystem::path& shaderStageFilePath);
+	[[nodiscard]] static ShaderStage Create(ShaderStageType shaderStageType, const std::filesystem::path& shaderStageFilePath);
 
-    uint32_t GetId() const noexcept;
+	uint32_t GetId() const noexcept;
 };
 
 #endif

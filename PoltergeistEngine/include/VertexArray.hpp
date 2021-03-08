@@ -7,13 +7,13 @@
 class VertexArray
 {
 private:
-    uint32_t m_vertexArrayId;
+	uint32_t m_vertexArrayId;
 public:
-    VertexArray() noexcept;
-    ~VertexArray() noexcept;
+	VertexArray() noexcept;
+	~VertexArray() noexcept;
 
-    void Bind() const noexcept;
-    void Unbind() const noexcept;
+	void Bind() const noexcept;
+	void Unbind() const noexcept;
 };
 
 #endif
