@@ -78,10 +78,10 @@ int main()
 			GUIContent();
 			ImGui::Render();
 
-			int display_w;
-			int display_h;
-			glfwGetFramebufferSize(window.get(), &display_w, &display_h);
-			glViewport(0, 0, display_w, display_h);
+			int displayWidth;
+			int displayHeight;
+			glfwGetFramebufferSize(window.get(), &displayWidth, &displayHeight);
+			glViewport(0, 0, displayWidth, displayHeight);
 
 			glClearColor(backroundColor.x, backroundColor.y, backroundColor.z, backroundColor.w);
 			glClear(GL_COLOR_BUFFER_BIT);
