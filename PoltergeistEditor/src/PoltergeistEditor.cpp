@@ -62,7 +62,6 @@ int main()
 		IMGUI_CHECKVERSION();
 
 		ImGui::CreateContext();
-		ImGuiIO& io = ImGui::GetIO();
 		ImGui::StyleColorsDark();
 		ImGui_ImplGlfw_InitForOpenGL(window.get(), true);
 		ImGui_ImplOpenGL3_Init();
