@@ -5,4 +5,5 @@ void GUIContent()
 {
 	ImGui::BeginMainMenuBar();
 	ImGui::EndMainMenuBar();
+	ImGui::ShowDemoWindow();
 }
