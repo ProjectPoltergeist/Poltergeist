@@ -74,7 +74,7 @@ void Renderer::DrawVertices(std::vector<Vertex>& vertices, std::vector<uint32_t>
 	m_coreShader->Bind();
 
 	VertexArray vertexArray;
-	//vertexArray.Bind();
+	vertexArray.Bind();
 
 	VertexBufferLayout layout;
 	layout.AddElement<float>(2);
