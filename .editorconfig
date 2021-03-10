@@ -1,6 +1,6 @@
 root = true
 
-[*.{cs,csx,vb,vbx}]
+[*.{cs,csx,vb,vbx,cpp,hpp,c,h}]
 indent_style = tab
 charset = utf-8-bom
 trim_trailing_whitespace = true
