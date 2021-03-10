@@ -6,7 +6,7 @@ set(CMAKE_C_STANDARD 17)
 
 # MSVC settings
 if (MSVC)
-	add_compile_options("/utf-8")
+	add_compile_options(/utf-8)
 endif (MSVC)
 
 # Windows settings
