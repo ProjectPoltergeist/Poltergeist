@@ -77,9 +77,6 @@ int main()
 			GUIContent();
 			ImGui::Render();
 
-			int displayWidth;
-			int displayHeight;
-
 			glClearColor(backgroundColor.x, backgroundColor.y, backgroundColor.z, backgroundColor.w);
 			glClear(GL_COLOR_BUFFER_BIT);
 

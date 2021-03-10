@@ -1,1 +1,6 @@
+#ifndef POLTERGEIST_GUICONTENT_HPP
+#define POLTERGEIST_GUICONTENT_HPP
+
 void GUIContent();
+
+#endif
