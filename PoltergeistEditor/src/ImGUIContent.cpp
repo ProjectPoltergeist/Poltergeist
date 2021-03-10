@@ -1,4 +1,4 @@
-#include "ImGUIContent.h"
+#include "ImGUIContent.hpp"
 #include <imgui.h>
 
 void GUIContent()

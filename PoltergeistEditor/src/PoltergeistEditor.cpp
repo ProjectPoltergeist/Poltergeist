@@ -5,7 +5,7 @@
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
-#include "ImGUIContent.h"
+#include "ImGUIContent.hpp"
 #ifdef WIN32
 #include <Windows.h>
 #endif
@@ -21,7 +21,7 @@ void OnWindowSizeUpdate(GLFWwindow* window, int width, int height)
 	glViewport(0, 0, width, height);
 }
 
-ImVec4 backroundColor = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+ImVec4 backgroundColor = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
 
 int main()
 {
@@ -79,10 +79,8 @@ int main()
 
 			int displayWidth;
 			int displayHeight;
-			glfwGetFramebufferSize(window.get(), &displayWidth, &displayHeight);
-			glViewport(0, 0, displayWidth, displayHeight);
 
-			glClearColor(backroundColor.x, backroundColor.y, backroundColor.z, backroundColor.w);
+			glClearColor(backgroundColor.x, backgroundColor.y, backgroundColor.z, backgroundColor.w);
 			glClear(GL_COLOR_BUFFER_BIT);
 
 			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
