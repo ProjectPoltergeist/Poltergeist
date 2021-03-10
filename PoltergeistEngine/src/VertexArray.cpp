@@ -7,7 +7,7 @@ VertexArray::VertexArray() noexcept
 
 VertexArray::~VertexArray() noexcept
 {
-      glGenVertexArrays(1, &m_vertexArrayId);
+      glDeleteVertexArrays(1, &m_vertexArrayId);
 }
 
 void VertexArray::Bind() const noexcept
@@ -17,5 +17,5 @@ void VertexArray::Bind() const noexcept
 
 void VertexArray::Unbind() const noexcept
 {
-      glBindVertexArray(m_vertexArrayId);
+      glBindVertexArray(0);
 }
