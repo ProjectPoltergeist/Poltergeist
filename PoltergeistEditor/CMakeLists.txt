@@ -1,4 +1,4 @@
-add_executable(PoltergeistEditor src/PoltergeistEditor.cpp src/ImGUIContent.cpp  include/ImGUIContent.hpp  )
+add_executable(PoltergeistEditor src/PoltergeistEditor.cpp src/ImGUIContent.cpp )
 target_include_directories(PoltergeistEditor PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include/")
 find_package(glfw3 CONFIG REQUIRED)
 find_package(glad CONFIG REQUIRED)
