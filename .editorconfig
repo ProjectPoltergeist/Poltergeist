@@ -1,8 +1,15 @@
 root = true
 
-[*.{cs,csx,vb,vbx}]
+[*.{cs,csx,vb,vbx,cpp,hpp,c,h}]
 indent_style = tab
 charset = utf-8-bom
+trim_trailing_whitespace = true
+insert_final_newline = true
+max_line_length = 120
+
+[CMakeLists.txt]
+indent_style = tab
+charset = utf-8
 trim_trailing_whitespace = true
 insert_final_newline = true
 max_line_length = 120
