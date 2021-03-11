@@ -2,6 +2,10 @@
 #include <memory>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <imgui.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_opengl3.h>
+#include "ImGUIContent.hpp"
 #ifdef WIN32
 #include <Windows.h>
 #endif
@@ -53,12 +57,37 @@ int main()
 			return -2;
 		}
 
+		IMGUI_CHECKVERSION();
+
+		ImGui::CreateContext();
+		ImGui::StyleColorsDark();
+		ImGui_ImplGlfw_InitForOpenGL(window.get(), true);
+		ImGui_ImplOpenGL3_Init();
+
 		while (!glfwWindowShouldClose(window.get()))
 		{
 			glfwPollEvents();
+			
+			ImGui_ImplOpenGL3_NewFrame();
+			ImGui_ImplGlfw_NewFrame();
+			ImGui::NewFrame();
+
+			GUIContent();
+			ImGui::Render();
+
+			ImVec4 backgroundColor(1.0f, 1.0f, 1.0f, 1.0f);
+			glClearColor(backgroundColor.x, backgroundColor.y, backgroundColor.z, backgroundColor.w);
+			glClear(GL_COLOR_BUFFER_BIT);
+
+			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
 			glfwSwapBuffers(window.get());
 		}
 	}
+
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext();
 
 	glfwTerminate();
 
