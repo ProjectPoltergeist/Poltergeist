@@ -75,7 +75,7 @@ int main()
 			GUIContent();
 			ImGui::Render();
 
-			ImVec4 backgroundColor = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+			ImVec4 backgroundColor(1.0f, 1.0f, 1.0f, 1.0f);
 			glClearColor(backgroundColor.x, backgroundColor.y, backgroundColor.z, backgroundColor.w);
 			glClear(GL_COLOR_BUFFER_BIT);
 
