@@ -21,8 +21,6 @@ void OnWindowSizeUpdate(GLFWwindow* window, int width, int height)
 	glViewport(0, 0, width, height);
 }
 
-ImVec4 backgroundColor = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
-
 int main()
 {
 #ifdef WIN32
@@ -77,6 +75,7 @@ int main()
 			GUIContent();
 			ImGui::Render();
 
+			ImVec4 backgroundColor = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
 			glClearColor(backgroundColor.x, backgroundColor.y, backgroundColor.z, backgroundColor.w);
 			glClear(GL_COLOR_BUFFER_BIT);
 
