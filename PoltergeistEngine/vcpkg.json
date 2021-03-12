@@ -1,0 +1,9 @@
+{
+	"name":"PoltergeistEngine",
+	"version-string":"0.0.0",
+	"dependencies":[
+		"glad",
+		"glm",
+		"libpng"
+	]
+}
