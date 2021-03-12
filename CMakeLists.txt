@@ -1,10 +1,12 @@
 cmake_minimum_required(VERSION 3.2)
 
-project(Poltergeist)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_C_STANDARD 17)
 
+set(VCPKG_MANIFEST_MODE ON)
 set(CMAKE_TOOLCHAIN_FILE ${CMAKE_CURRENT_SOURCE_DIR}/vcpkg/scripts/buildsystems/vcpkg.cmake CACHE STRING "Vcpkg toolchain file")
+
+project(Poltergeist)
 
 # MSVC settings
 if (MSVC)
