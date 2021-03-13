@@ -1,0 +1,17 @@
+{
+	"name":"poltergeist",
+	"version-string":"0.0.0",
+	"dependencies":[
+		"glfw3",
+		"glad",
+		"glm",
+		"libpng",
+		{
+			"name":"imgui",
+			"features":[
+				"glfw-binding",
+				"opengl3-glad-binding"
+			]
+		}
+	]
+}
