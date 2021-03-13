@@ -11,6 +11,11 @@ jobs:
       matrix:
         os: [windows-latest]
         configuration: ['Debug', 'Release']
+        include:
+          - os: windows-latest
+            generator: 'Visual Studio 16 2019'
+          #- os: windows-latest
+          #  generator: 'MSYS Makefiles'
 
     steps:
     - uses: actions/checkout@v2.3.4
@@ -24,12 +29,13 @@ jobs:
       uses: lukka/run-vcpkg@v7.1
       with:
         setupOnly: true
-        vcpkgDirectory: '${{ github.workspace }}/vcpkg'
+        vcpkgDirectory: '${{github.workspace}}/vcpkg'
         appendedCacheKey: ${{ hashFiles( '**/vcpkg.json' ) }}
         additionalCachedPaths: ${{ env.buildDir }}/vcpkg_installed
 
     - name: 'Build'
       uses: lukka/run-cmake@v3.3
       with:
-        cmakeListsTxtPath: '${{ github.workspace }}/CMakeLists.txt'
+        cmakeListsTxtPath: '${{github.workspace}}/CMakeLists.txt'
         cmakeAppendedArgs: '-DCMAKE_BUILD_TYPE=${{matrix.configuration}}'
+        cmakeGenerator: ${{matrix.generator}}
