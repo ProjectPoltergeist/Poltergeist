@@ -13,13 +13,13 @@ jobs:
         configuration: ['Debug', 'Release']
 
     steps:
-    - uses: actions/checkout@latest
+    - uses: actions/checkout@v2.3.4
     
     - name: Get latest CMake and ninja
       uses: lukka/get-cmake@latest
       
     - name: Run vcpkg
-      uses: lukka/run-vcpkg@latest
+      uses: lukka/run-vcpkg@v7.1
       with:
         setupOnly: true
         vcpkgDirectory: '${{ github.workspace }}/vcpkg'
@@ -27,7 +27,7 @@ jobs:
         additionalCachedPaths: ${{ env.buildDir }}/vcpkg_installed
 
     - name: 'Build'
-      uses: lukka/run-cmake@latest
+      uses: lukka/run-cmake@v3.3
       with:
         cmakeListsTxtPath: '${{ github.workspace }}/CMakeLists.txt'
         cmakeAppendedArgs: '-DCMAKE_BUILD_TYPE=${{matrix.configuration}}'
