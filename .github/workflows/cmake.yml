@@ -15,30 +15,34 @@ jobs:
       matrix:
         os: [windows-latest,ubuntu-latest]
         configuration: ['Debug', 'Release']
+        compiler: ['msvc','gcc','clang']
         include:
           - os: windows-latest
             generator: 'VS16Win64'
           - os: ubuntu-latest
             generator: 'UnixMakefiles'
+        exclude:
+          - os: windows-latest
+            compiler: 'gcc'
+          - os: windows-latest
+            compiler: 'clang'
           - os: ubuntu-latest
-            compiler: gcc
-          - os: ubuntu-latest
-            compiler: clang
+            compiler: 'msvc'
 
     steps:
     - uses: actions/checkout@v2.3.4
       with:
         submodules: 'recursive'
 
-    - if: matrix.os == 'windows-latest'
-      name: Setup MSBuild
-      uses: microsoft/setup-msbuild@v1
-
     - if: matrix.os == 'ubuntu-latest'
       name: Install dependencies
       run: |
         sudo apt update
         sudo apt install build-essential gcc clang llvm cmake libxinerama-dev libxcursor-dev xorg-dev libglu1-mesa-dev
+
+    - if: matrix.compiler == 'msvc'
+      name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1
 
     - if: matrix.compiler == 'gcc'
       name: Set up GCC
