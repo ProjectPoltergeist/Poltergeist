@@ -13,20 +13,20 @@ jobs:
 
     strategy:
       matrix:
-        os: [windows-latest,ubuntu-latest]
+        os: [windows-latest,ubuntu-20.04]
         configuration: ['Debug', 'Release']
         compiler: ['msvc','gcc','clang']
         include:
           - os: windows-latest
             generator: 'VS16Win64'
-          - os: ubuntu-latest
+          - os: ubuntu-20.04
             generator: 'UnixMakefiles'
         exclude:
           - os: windows-latest
             compiler: 'gcc'
           - os: windows-latest
             compiler: 'clang'
-          - os: ubuntu-latest
+          - os: ubuntu-20.04
             compiler: 'msvc'
 
     steps:
@@ -34,7 +34,7 @@ jobs:
       with:
         submodules: 'recursive'
 
-    - if: matrix.os == 'ubuntu-latest'
+    - if: matrix.os == 'ubuntu-20.04'
       name: Install dependencies
       run: |
         sudo apt update
