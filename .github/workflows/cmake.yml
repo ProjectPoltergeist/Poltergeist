@@ -9,6 +9,8 @@ jobs:
 
     env:
       buildDir: '${{github.workspace}}/out'
+      CC: '/usr/bin/clang'
+      CXX: '/usr/bin/clang++'
 
     strategy:
       matrix:
