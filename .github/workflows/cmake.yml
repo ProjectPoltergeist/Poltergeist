@@ -27,8 +27,8 @@ jobs:
             cxx: '/usr/bin/g++'
           - os: ubuntu-latest
             compiler: clang
-            cc: ${{github.workspace}}/llvm/clang
-            cxx: ${{github.workspace}}/llvm/clang++
+            cc: '${{github.workspace}}/llvm/clang'
+            cxx: '${{github.workspace}}/llvm/clang++'
 
     steps:
     - uses: actions/checkout@v2.3.4
