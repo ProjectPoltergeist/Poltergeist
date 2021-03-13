@@ -33,7 +33,7 @@ jobs:
       name: Install dependencies
       run: |
         sudo apt update
-        sudo apt install libxinerama-dev libxcursor-dev xorg-dev libglu1-mesa-dev
+        sudo apt install build-essential gcc libxinerama-dev libxcursor-dev xorg-dev libglu1-mesa-dev
 
     - name: Get latest CMake and ninja
       uses: lukka/get-cmake@latest
