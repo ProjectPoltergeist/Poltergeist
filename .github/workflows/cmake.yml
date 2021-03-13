@@ -69,7 +69,6 @@ jobs:
     - if: matrix.compiler == 'clang'
       name: Enable CLANG
       run: |
-        ls ${{env.llvmLocation}}/bin
         echo "CC=${{env.llvmLocation}}/bin/clang" >> $GITHUB_ENV
         echo "CXX=${{env.llvmLocation}}/bin/clang++" >> $GITHUB_ENV
 
