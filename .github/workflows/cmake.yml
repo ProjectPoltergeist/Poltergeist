@@ -57,7 +57,7 @@ jobs:
       with:
         path: '${{env.llvmLocation}}'
         key: llvm-11
-        
+
     - if: matrix.compiler == 'clang'
       name: Install LLVM and Clang
       uses: KyleMayes/install-llvm-action@v1
@@ -65,7 +65,7 @@ jobs:
         version: "11"
         directory: '${{env.llvmLocation}}'
         cached: ${{ steps.cache-llvm.outputs.cache-hit }}
-        
+
     - if: matrix.compiler == 'clang'
       name: Enable CLANG
       run: |
