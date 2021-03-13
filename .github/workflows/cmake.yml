@@ -1,0 +1,33 @@
+name: CMake
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: Poltergeist CMake 
+    runs-on: ${{matrix.os}}
+
+    strategy:
+      matrix:
+        os: [windows-latest]
+        configuration: ['Debug', 'Release']
+
+    steps:
+    - uses: actions/checkout@latest
+    
+    - name: Get latest CMake and ninja
+      uses: lukka/get-cmake@latest
+      
+    - name: Run vcpkg
+      uses: lukka/run-vcpkg@latest
+      with:
+        setupOnly: true
+        vcpkgDirectory: '${{ github.workspace }}/vcpkg'
+        appendedCacheKey: ${{ hashFiles( '**/vcpkg.json' ) }}
+        additionalCachedPaths: ${{ env.buildDir }}/vcpkg_installed
+
+    - name: 'Build'
+      uses: lukka/run-cmake@latest
+      with:
+        cmakeListsTxtPath: '${{ github.workspace }}/CMakeLists.txt'
+        cmakeAppendedArgs: '-DCMAKE_BUILD_TYPE=${{matrix.configuration}}'
