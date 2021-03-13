@@ -69,6 +69,7 @@ jobs:
     - if: matrix.compiler == 'clang'
       name: Enable CLANG
       run: |
+        ls ${{env.llvmLocation}}
         echo "CC=${{env.llvmLocation}}/clang" >> $GITHUB_ENV
         echo "CXX=${{env.llvmLocation}}/clang++" >> $GITHUB_ENV
 
@@ -81,7 +82,7 @@ jobs:
         setupOnly: true
         doNotUpdateVcpkg: true
         vcpkgDirectory: '${{github.workspace}}/vcpkg'
-        appendedCacheKey: ${{hashFiles('${{github.workspace}}/vcpkg.json')}}-${{matrix.os}}-${{matrix.compiler}}
+        appendedCacheKey: ${{matrix.os}}-${{matrix.compiler}}-${{hashFiles('vcpkg.json')}}
         additionalCachedPaths: '${{env.buildDir}}/vcpkg_installed'
 
     - name: Build
