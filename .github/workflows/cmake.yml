@@ -36,7 +36,7 @@ jobs:
         setupOnly: true
         doNotUpdateVcpkg: true
         vcpkgDirectory: '${{github.workspace}}/vcpkg'
-        appendedCacheKey: ${{ hashFiles( '**/vcpkg.json' ) }}-version1
+        appendedCacheKey: '${{hashFiles(${{github.workspace}}/vcpkg.json)}}-version1'
         additionalCachedPaths: '${{env.buildDir}}/vcpkg_installed'
 
     - name: Build
