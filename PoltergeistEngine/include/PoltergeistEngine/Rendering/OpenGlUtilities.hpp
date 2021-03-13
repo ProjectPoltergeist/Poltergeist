@@ -7,7 +7,10 @@
 #include <glad/glad.h>
 
 template<typename T>
-static int32_t GetOpenGlType()
+inline constexpr bool alwaysFalse = false;
+
+template<typename T>
+constexpr int32_t GetOpenGlType()
 {
 	if constexpr(std::is_same_v<T, float>)
 	{
@@ -15,7 +18,7 @@ static int32_t GetOpenGlType()
 	}
 	else
 	{
-		static_assert(false, "Incorrect type");
+		static_assert(alwaysFalse<T>, "Incorrect type");
 		return 0;
 	}
 }
