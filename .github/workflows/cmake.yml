@@ -7,6 +7,9 @@ jobs:
     name: Poltergeist CMake 
     runs-on: ${{matrix.os}}
 
+    env:
+      buildDir: '${{github.workspace}}/out'
+
     strategy:
       matrix:
         os: [windows-latest]
@@ -33,13 +36,14 @@ jobs:
         setupOnly: true
         vcpkgDirectory: '${{github.workspace}}/vcpkg'
         appendedCacheKey: ${{ hashFiles( '**/vcpkg.json' ) }}
-        additionalCachedPaths: '${{github.workspace}}/vcpkg_installed'
+        additionalCachedPaths: '${{env.buildDir}}/vcpkg_installed'
 
     - name: 'Build'
       uses: lukka/run-cmake@v3.3
       with:
         cmakeListsOrSettingsJson: CMakeListsTxtAdvanced
         cmakeListsTxtPath: '${{github.workspace}}/CMakeLists.txt'
+        buildDirectory: ${{env.buildDir}}
         useVcpkgToolchainFile: true
         buildWithCMake: true
         cmakeBuildType: ${{matrix.configuration}}
