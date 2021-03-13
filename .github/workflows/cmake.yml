@@ -19,11 +19,7 @@ jobs:
         generator: ['Visual Studio 16 2019', 'MSYS Makefiles', 'Unix Makefiles']
         exclude:
           - os: windows-latest
-            compiler: 'gcc'
-          - os: windows-latest
             generator: 'Unix Makefiles'
-          - os: windows-latest
-            compiler: 'clang'
           - os: ubuntu-20.04
             compiler: 'msvc'
           - os: ubuntu-20.04
