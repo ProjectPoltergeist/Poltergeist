@@ -13,7 +13,7 @@ jobs:
         configuration: ['Debug', 'Release']
         include:
           - os: windows-latest
-            generator: 'Visual Studio 16 2019'
+            generator: 'VS16Win64'
           #- os: windows-latest
           #  generator: 'MSYS Makefiles'
 
