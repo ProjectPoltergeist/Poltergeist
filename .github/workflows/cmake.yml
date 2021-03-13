@@ -35,11 +35,14 @@ jobs:
         setupOnly: true
         vcpkgDirectory: '${{github.workspace}}/vcpkg'
         appendedCacheKey: ${{ hashFiles( '**/vcpkg.json' ) }}
-        additionalCachedPaths: ${{ env.buildDir }}/vcpkg_installed
+        additionalCachedPaths: '${{github.workspace}}/vcpkg_installed'
 
     - name: 'Build'
       uses: lukka/run-cmake@v3.3
       with:
+        cmakeListsOrSettingsJson: CMakeListsTxtAdvanced
         cmakeListsTxtPath: '${{github.workspace}}/CMakeLists.txt'
-        cmakeAppendedArgs: '-DCMAKE_BUILD_TYPE=${{matrix.configuration}}'
+        useVcpkgToolchainFile: true
+        buildWithCMake: true
+        cmakeBuildType: ${{matrix.configuration}}
         cmakeGenerator: ${{matrix.generator}}
