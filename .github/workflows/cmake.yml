@@ -10,8 +10,6 @@ jobs:
     env:
       buildDir: '${{github.workspace}}/out'
       llvmLocation: '${{github.workspace}}/llvm'
-      CC: ${{matrix.cc}}
-      CXX: ${{matrix.cxx}}
 
     strategy:
       matrix:
@@ -24,12 +22,8 @@ jobs:
             generator: 'UnixMakefiles'
           - os: ubuntu-latest
             compiler: gcc
-            cc: '/usr/bin/gcc'
-            cxx: '/usr/bin/g++'
           - os: ubuntu-latest
             compiler: clang
-            cc: '${{env.llvmLocation}}/clang'
-            cxx: '${{env.llvmLocation}}/clang++'
 
     steps:
     - uses: actions/checkout@v2.3.4
@@ -67,6 +61,12 @@ jobs:
         version: "11"
         directory: '${{env.llvmLocation}}'
         cached: ${{ steps.cache-llvm.outputs.cache-hit }}
+        
+    - if: matrix.compiler == 'clang'
+      name: Enable CLANG
+      run: |
+        echo "CC=${{env.llvmLocation}}/clang" >> $GITHUB_ENV
+        echo "CXX=${{env.llvmLocation}}/clang++" >> $GITHUB_ENV
 
     - name: Get latest CMake and ninja
       uses: lukka/get-cmake@latest
