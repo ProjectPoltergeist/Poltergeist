@@ -1,6 +1,7 @@
 #ifndef POLTERGEIST_INDEXBUFFER_HPP
 #define POLTERGEIST_INDEXBUFFER_HPP
 
+#include <cstddef>
 #include <cstdint>
 #include <glad/glad.h>
 
