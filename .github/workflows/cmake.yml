@@ -38,7 +38,7 @@ jobs:
       name: Install dependencies
       run: |
         sudo apt update
-        sudo apt install build-essential gcc-10 g++-10 clang llvm cmake libxinerama-dev libxcursor-dev xorg-dev libglu1-mesa-dev
+        sudo apt install build-essential gcc-10 g++-10 clang-11 llvm cmake libxinerama-dev libxcursor-dev xorg-dev libglu1-mesa-dev libtinfo6
 
     - if: matrix.compiler == 'msvc'
       name: Setup MSBuild
