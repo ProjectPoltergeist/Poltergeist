@@ -9,6 +9,7 @@ jobs:
 
     env:
       buildDir: '${{github.workspace}}/out'
+      llvmLocation: '${{github.workspace}}/llvm'
       CC: ${{matrix.cc}}
       CXX: ${{matrix.cxx}}
 
@@ -27,8 +28,8 @@ jobs:
             cxx: '/usr/bin/g++'
           - os: ubuntu-latest
             compiler: clang
-            cc: '${{runner.temp}}/llvm/clang'
-            cxx: '${{runner.temp}}/llvm/clang++'
+            cc: '${{env.llvmLocation}}/clang'
+            cxx: '${{env.llvmLocation}}/clang++'
 
     steps:
     - uses: actions/checkout@v2.3.4
@@ -56,7 +57,7 @@ jobs:
       id: cache-llvm
       uses: actions/cache@v2
       with:
-        path: '${{runner.temp}}/llvm'
+        path: '${{env.llvmLocation}}'
         key: llvm-11
         
     - if: matrix.compiler == 'clang'
@@ -64,7 +65,7 @@ jobs:
       uses: KyleMayes/install-llvm-action@v1
       with:
         version: "11"
-        directory: '${{runner.temp}}/llvm'
+        directory: '${{env.llvmLocation}}'
         cached: ${{ steps.cache-llvm.outputs.cache-hit }}
 
     - name: Get latest CMake and ninja
