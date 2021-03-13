@@ -16,18 +16,26 @@ jobs:
         os: [windows-latest,ubuntu-20.04]
         configuration: ['Debug', 'Release']
         compiler: ['msvc','gcc','clang']
-        include:
-          - os: windows-latest
-            generator: 'Visual Studio 16 2019'
-          - os: ubuntu-20.04
-            generator: 'Unix Makefiles'
+        generator: ['Visual Studio 16 2019', 'MSYS Makefiles', 'Unix Makefiles']
         exclude:
           - os: windows-latest
             compiler: 'gcc'
           - os: windows-latest
+            generator: 'Unix Makefiles'
+          - os: windows-latest
             compiler: 'clang'
           - os: ubuntu-20.04
             compiler: 'msvc'
+          - os: ubuntu-20.04
+            generator: 'Visual Studio 16 2019'
+          - os: ubuntu-20.04
+            generator: 'MSYS Makefiles' 
+          - compiler: 'msvc'
+            generator: 'MSYS Makefiles'
+          - compiler: 'gcc'
+            generator: 'Visual Studio 16 2019'
+          - compiler: 'clang'
+            generator: 'Visual Studio 16 2019'
 
     steps:
     - uses: actions/checkout@v2.3.4
