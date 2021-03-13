@@ -92,4 +92,4 @@ jobs:
         buildWithCMake: true
         buildDirectory: ${{env.buildDir}}
         cmakeListsTxtPath: '${{github.workspace}}/CMakeLists.txt'
-        cmakeAppendedArgs: '-G ${{matrix.generator}} -DCMAKE_BUILD_TYPE=${{matrix.configuration}}'
+        cmakeAppendedArgs: '-G "${{matrix.generator}}" -DCMAKE_BUILD_TYPE=${{matrix.configuration}}'
