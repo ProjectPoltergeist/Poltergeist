@@ -18,9 +18,9 @@ jobs:
         compiler: ['msvc','gcc','clang']
         include:
           - os: windows-latest
-            generator: 'VS16Win64'
+            generator: 'Visual Studio 16 2019'
           - os: ubuntu-20.04
-            generator: 'UnixMakefiles'
+            generator: 'Unix Makefiles'
         exclude:
           - os: windows-latest
             compiler: 'gcc'
@@ -87,10 +87,9 @@ jobs:
     - name: Build
       uses: lukka/run-cmake@v3.3
       with:
-        cmakeListsOrSettingsJson: 'CMakeListsTxtAdvanced'
+        cmakeListsOrSettingsJson: CMakeListsTxtAdvanced
         useVcpkgToolchainFile: true
         buildWithCMake: true
-        cmakeListsTxtPath: '${{github.workspace}}/CMakeLists.txt'
         buildDirectory: ${{env.buildDir}}
-        cmakeBuildType: ${{matrix.configuration}}
-        cmakeGenerator: ${{matrix.generator}}
+        cmakeListsTxtPath: '${{github.workspace}}/CMakeLists.txt'
+        cmakeAppendedArgs: '-G ${{matrix.generator}} -DCMAKE_BUILD_TYPE=${{matrix.configuration}}'
