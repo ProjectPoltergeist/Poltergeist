@@ -87,7 +87,7 @@ jobs:
     - name: Build
       uses: lukka/run-cmake@v3.3
       with:
-        cmakeListsOrSettingsJson: CMakeListsTxtAdvanced
+        cmakeListsOrSettingsJson: 'CMakeListsTxtAdvanced'
         useVcpkgToolchainFile: true
         buildWithCMake: true
         cmakeListsTxtPath: '${{github.workspace}}/CMakeLists.txt'
