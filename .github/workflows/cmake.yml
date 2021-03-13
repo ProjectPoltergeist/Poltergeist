@@ -34,11 +34,12 @@ jobs:
       uses: lukka/run-vcpkg@v7.1
       with:
         setupOnly: true
+        doNotUpdateVcpkg: true
         vcpkgDirectory: '${{github.workspace}}/vcpkg'
-        appendedCacheKey: ${{ hashFiles( '**/vcpkg.json' ) }}
+        appendedCacheKey: ${{ hashFiles( '**/vcpkg.json' ) }}-version1
         additionalCachedPaths: '${{env.buildDir}}/vcpkg_installed'
 
-    - name: 'Build'
+    - name: Build
       uses: lukka/run-cmake@v3.3
       with:
         cmakeListsOrSettingsJson: CMakeListsTxtAdvanced
