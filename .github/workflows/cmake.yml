@@ -43,9 +43,9 @@ jobs:
       uses: lukka/run-cmake@v3.3
       with:
         cmakeListsOrSettingsJson: CMakeListsTxtAdvanced
-        cmakeListsTxtPath: '${{github.workspace}}/CMakeLists.txt'
-        buildDirectory: ${{env.buildDir}}
         useVcpkgToolchainFile: true
         buildWithCMake: true
+        cmakeListsTxtPath: '${{github.workspace}}/CMakeLists.txt'
+        buildDirectory: ${{env.buildDir}}
         cmakeBuildType: ${{matrix.configuration}}
         cmakeGenerator: ${{matrix.generator}}
