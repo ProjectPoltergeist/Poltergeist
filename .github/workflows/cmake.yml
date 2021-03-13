@@ -15,7 +15,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2.3.4
       with:
-        submodules: 'recurse'
+        submodules: 'recursive'
     
     - name: Get latest CMake and ninja
       uses: lukka/get-cmake@latest
