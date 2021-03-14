@@ -36,7 +36,7 @@ jobs:
           - generator: 'Visual Studio 16 2019'
             cmakeshell: 'powershell'
           - generator: 'MSYS Makefiles'
-            cmakeshell: 'msys2 {0}'
+            cmakeshell: 'msys2'
           - generator: 'Visual Studio 16 2019'
             cmakeshell: 'bash'
 
