@@ -36,7 +36,7 @@ jobs:
           - generator: 'Visual Studio 16 2019'
             cmakewrapper: ''
           - generator: 'MSYS Makefiles'
-            cmakewrapper: 'msys2'
+            cmakewrapper: 'msys2 -c'
           - generator: 'Visual Studio 16 2019'
             cmakewrapper: ''
 
