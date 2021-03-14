@@ -52,21 +52,21 @@ jobs:
       name: Setup MSBuild
       uses: microsoft/setup-msbuild@v1
 
-    - if: matrix.compiler == 'gcc' && matrix.os != windows-latest
+    - if: matrix.compiler == 'gcc' && matrix.os != 'windows-latest'
       shell: 'bash'
       name: Set up GCC
       run: |
         echo "CC=gcc-10" >> $GITHUB_ENV
         echo "CXX=g++-10" >> $GITHUB_ENV
         
-    - if: matrix.compiler == 'gcc' && matrix.os == windows-latest
+    - if: matrix.compiler == 'gcc' && matrix.os == 'windows-latest'
       shell: 'msys2 {0}'
       name: Set up GCC
       run: |
         echo "CC=gcc" >> $GITHUB_ENV
         echo "CXX=g++" >> $GITHUB_ENV
 
-    - if: matrix.compiler == 'clang' && matrix.os != windows-latest
+    - if: matrix.compiler == 'clang' && matrix.os != 'windows-latest'
       name: Cache LLVM and Clang
       id: cache-llvm
       uses: actions/cache@v2
@@ -74,7 +74,7 @@ jobs:
         path: '${{env.llvmLocation}}'
         key: llvm-11
 
-    - if: matrix.compiler == 'clang' && matrix.os != windows-latest
+    - if: matrix.compiler == 'clang' && matrix.os != 'windows-latest'
       name: Install LLVM and Clang
       uses: KyleMayes/install-llvm-action@v1
       with:
@@ -82,14 +82,14 @@ jobs:
         directory: '${{env.llvmLocation}}'
         cached: ${{ steps.cache-llvm.outputs.cache-hit }}
 
-    - if: matrix.compiler == 'clang' && matrix.os != windows-latest
+    - if: matrix.compiler == 'clang' && matrix.os != 'windows-latest'
       shell: 'bash'
       name: Enable CLANG
       run: |
         echo "CC=${{env.llvmLocation}}/bin/clang" >> $GITHUB_ENV
         echo "CXX=${{env.llvmLocation}}/bin/clang++" >> $GITHUB_ENV
         
-    - if: matrix.compiler == 'clang' && matrix.os == windows-latest
+    - if: matrix.compiler == 'clang' && matrix.os == 'windows-latest'
       shell: 'msys2 {0}'
       name: Enable CLANG
       run: |
