@@ -32,13 +32,6 @@ jobs:
             generator: 'Visual Studio 16 2019'
           - compiler: 'clang'
             generator: 'Visual Studio 16 2019'
-        include:
-          - generator: 'Visual Studio 16 2019'
-            shell: 'pwsh'
-          - generator: 'MSYS Makefiles'
-            shell: 'msys2 {0}'
-          - generator: 'Unix Makefiles'
-            shell: 'bash'
 
     steps:
     - uses: actions/checkout@v2.3.4
@@ -60,14 +53,14 @@ jobs:
       uses: microsoft/setup-msbuild@v1
 
     - if: matrix.compiler == 'gcc' && matrix.os != windows-latest
-      shell: ${{matrix.shell}}
+      shell: 'bash'
       name: Set up GCC
       run: |
         echo "CC=gcc-10" >> $GITHUB_ENV
         echo "CXX=g++-10" >> $GITHUB_ENV
         
     - if: matrix.compiler == 'gcc' && matrix.os == windows-latest
-      shell: ${{matrix.shell}}
+      shell: 'msys2 {0}'
       name: Set up GCC
       run: |
         echo "CC=gcc" >> $GITHUB_ENV
@@ -90,14 +83,14 @@ jobs:
         cached: ${{ steps.cache-llvm.outputs.cache-hit }}
 
     - if: matrix.compiler == 'clang' && matrix.os != windows-latest
-      shell: ${{matrix.shell}}
+      shell: 'bash'
       name: Enable CLANG
       run: |
         echo "CC=${{env.llvmLocation}}/bin/clang" >> $GITHUB_ENV
         echo "CXX=${{env.llvmLocation}}/bin/clang++" >> $GITHUB_ENV
         
     - if: matrix.compiler == 'clang' && matrix.os == windows-latest
-      shell: ${{matrix.shell}}
+      shell: 'msys2 {0}'
       name: Enable CLANG
       run: |
         echo "CC=clang" >> $GITHUB_ENV
