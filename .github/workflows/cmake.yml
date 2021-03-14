@@ -32,6 +32,13 @@ jobs:
             generator: 'Visual Studio 16 2019'
           - compiler: 'clang'
             generator: 'Visual Studio 16 2019'
+        include:
+          - generator: 'Visual Studio 16 2019'
+            shell: 'pwsh'
+          - generator: 'MSYS Makefiles'
+            shell: 'msys2 {0}'
+          - generator: 'Unix Makefiles'
+            shell: 'bash'
 
     steps:
     - uses: actions/checkout@v2.3.4
@@ -44,17 +51,29 @@ jobs:
         sudo apt update
         sudo apt install build-essential gcc-10 g++-10 clang llvm cmake libxinerama-dev libxcursor-dev xorg-dev libglu1-mesa-dev libtinfo6
 
+    - if: matrix.generator == 'MSYS Makefiles'
+      name: Setup MSYS2
+      uses: msys2/setup-msys2@v2
+
     - if: matrix.compiler == 'msvc'
       name: Setup MSBuild
       uses: microsoft/setup-msbuild@v1
 
-    - if: matrix.compiler == 'gcc'
+    - if: matrix.compiler == 'gcc' && matrix.os != windows-latest
+      shell: ${{matrix.shell}}
       name: Set up GCC
       run: |
         echo "CC=gcc-10" >> $GITHUB_ENV
         echo "CXX=g++-10" >> $GITHUB_ENV
+        
+    - if: matrix.compiler == 'gcc' && matrix.os == windows-latest
+      shell: ${{matrix.shell}}
+      name: Set up GCC
+      run: |
+        echo "CC=gcc" >> $GITHUB_ENV
+        echo "CXX=g++" >> $GITHUB_ENV
 
-    - if: matrix.compiler == 'clang'
+    - if: matrix.compiler == 'clang' && matrix.os != windows-latest
       name: Cache LLVM and Clang
       id: cache-llvm
       uses: actions/cache@v2
@@ -62,7 +81,7 @@ jobs:
         path: '${{env.llvmLocation}}'
         key: llvm-11
 
-    - if: matrix.compiler == 'clang'
+    - if: matrix.compiler == 'clang' && matrix.os != windows-latest
       name: Install LLVM and Clang
       uses: KyleMayes/install-llvm-action@v1
       with:
@@ -70,11 +89,19 @@ jobs:
         directory: '${{env.llvmLocation}}'
         cached: ${{ steps.cache-llvm.outputs.cache-hit }}
 
-    - if: matrix.compiler == 'clang'
+    - if: matrix.compiler == 'clang' && matrix.os != windows-latest
+      shell: ${{matrix.shell}}
       name: Enable CLANG
       run: |
         echo "CC=${{env.llvmLocation}}/bin/clang" >> $GITHUB_ENV
         echo "CXX=${{env.llvmLocation}}/bin/clang++" >> $GITHUB_ENV
+        
+    - if: matrix.compiler == 'clang' && matrix.os == windows-latest
+      shell: ${{matrix.shell}}
+      name: Enable CLANG
+      run: |
+        echo "CC=clang" >> $GITHUB_ENV
+        echo "CXX=clang++" >> $GITHUB_ENV
 
     - name: Get latest CMake and ninja
       uses: lukka/get-cmake@latest
