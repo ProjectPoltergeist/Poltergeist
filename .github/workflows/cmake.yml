@@ -32,6 +32,13 @@ jobs:
             generator: 'Visual Studio 16 2019'
           - compiler: 'clang'
             generator: 'Visual Studio 16 2019'
+        include:
+          - generator: 'Visual Studio 16 2019'
+            cmakeshell: 'powershell'
+          - generator: 'MSYS Makefiles'
+            cmakeshell: 'msys2 {0}'
+          - generator: 'Visual Studio 16 2019'
+            cmakeshell: 'bash'
 
     steps:
     - uses: actions/checkout@v2.3.4
@@ -111,6 +118,7 @@ jobs:
     - name: Build
       uses: lukka/run-cmake@v3.3
       with:
+        useShell: '${{matrix.cmakeshell}}'
         cmakeListsOrSettingsJson: CMakeListsTxtAdvanced
         useVcpkgToolchainFile: true
         buildWithCMake: true
