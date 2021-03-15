@@ -116,7 +116,7 @@ jobs:
         setupOnly: true
         doNotUpdateVcpkg: true
         vcpkgDirectory: '${{github.workspace}}/vcpkg'
-        appendedCacheKey: ${{matrix.os}}-${{matrix.generator}}-${{matrix.compiler}}-${{hashFiles('vcpkg.json')}}
+        appendedCacheKey: ${{matrix.os}}-${{matrix.generator}}-${{matrix.compiler}}-${{matrix.configuration}}-${{hashFiles('vcpkg.json')}}
         additionalCachedPaths: '${{env.buildDir}}/vcpkg_installed'
 
     - name: Build
