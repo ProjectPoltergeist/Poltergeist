@@ -36,7 +36,9 @@ jobs:
             generator: 'Visual Studio 16 2019'
           - compiler: 'clang'
             generator: 'Visual Studio 16 2019'
-#        include:
+        include:
+          - generator: 'Unix Makefiles'
+            clangtidy: '-DCMAKE_C_CLANG_TIDY="clang-tidy-11 -checks=clang-analyzer-*,concurrency-*,cppcoreguidelines-*,misc-*,modernize-*,performance-*,portability-*,readability-*" -DCMAKE_CXX_CLANG_TIDY="clang-tidy-11 -checks=clang-analyzer-*,concurrency-*,cppcoreguidelines-*,misc-*,modernize-*,performance-*,portability-*,readability-*"'
 #          - generator: 'Visual Studio 16 2019'
 #            cmakewrapper: ''
 #          - generator: 'MSYS Makefiles'
@@ -53,7 +55,7 @@ jobs:
       name: Install dependencies
       run: |
         sudo apt update
-        sudo apt install build-essential gcc-10 g++-10 clang llvm cmake libxinerama-dev libxcursor-dev xorg-dev libglu1-mesa-dev libtinfo6
+        sudo apt install build-essential gcc-10 g++-10 clang clang-tidy-11 llvm cmake libxinerama-dev libxcursor-dev xorg-dev libglu1-mesa-dev libtinfo6
 
     - if: matrix.generator == 'MSYS Makefiles'
       name: Setup MSYS2
@@ -128,4 +130,4 @@ jobs:
         buildWithCMake: true
         buildDirectory: ${{env.buildDir}}
         cmakeListsTxtPath: '${{github.workspace}}/CMakeLists.txt'
-        cmakeAppendedArgs: '-G "${{matrix.generator}}" -DCMAKE_BUILD_TYPE=${{matrix.configuration}}'
+        cmakeAppendedArgs: '-G "${{matrix.generator}}" -DCMAKE_BUILD_TYPE=${{matrix.configuration}} ${{matrix.clangtidy}}'
