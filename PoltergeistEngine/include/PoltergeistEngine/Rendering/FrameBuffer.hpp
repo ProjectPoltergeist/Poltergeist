@@ -12,7 +12,7 @@ private:
 	std::shared_ptr<Texture> m_textureAttachment;
 	uint32_t m_depthAndStencilAttachmentId;
 public:
-	FrameBuffer(size_t width, size_t height);
+	FrameBuffer(uint32_t width, uint32_t height);
 	~FrameBuffer() noexcept;
 
 	void Bind() const noexcept;

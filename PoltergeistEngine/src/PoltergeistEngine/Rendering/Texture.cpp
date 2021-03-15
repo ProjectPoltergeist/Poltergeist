@@ -13,7 +13,7 @@ Texture::~Texture() noexcept
 	glDeleteTextures(1, &m_textureId);
 }
 
-std::shared_ptr<Texture> Texture::CreateEmpty(size_t width, size_t height, uint8_t slot)
+std::shared_ptr<Texture> Texture::CreateEmpty(uint32_t width, uint32_t height, uint8_t slot)
 {
 	uint32_t textureId;
 	glGenTextures(1, &textureId);

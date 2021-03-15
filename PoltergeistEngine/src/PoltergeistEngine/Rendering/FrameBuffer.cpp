@@ -1,7 +1,7 @@
 #include <stdexcept>
 #include "PoltergeistEngine/Rendering/FrameBuffer.hpp"
 
-FrameBuffer::FrameBuffer(size_t width, size_t height)
+FrameBuffer::FrameBuffer(uint32_t width, uint32_t height)
 {
 	glGenFramebuffers(1, &m_frameBufferId);
 
