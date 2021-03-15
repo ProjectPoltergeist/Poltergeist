@@ -1,6 +1,6 @@
 {
 	"name":"poltergeist",
-	"version-string":"0.0.0",
+	"version-string":"0.0.1",
 	"dependencies":[
 		"glfw3",
 		"glad",

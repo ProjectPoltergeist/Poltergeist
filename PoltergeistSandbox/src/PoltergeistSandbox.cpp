@@ -5,14 +5,15 @@
 #include <PoltergeistEngine/Rendering/Texture.hpp>
 #include <PoltergeistEngine/Rendering/Renderer.hpp>
 #include <PoltergeistEngine/Rendering/FrameBuffer.hpp>
+#include <PoltergeistEngine/Macros.hpp>
 #ifdef WIN32
 #include <Windows.h>
 #endif
 
 extern "C"
 {
-	__declspec(dllexport) uint32_t NvOptimusEnablement = 1;
-	__declspec(dllexport) int32_t AmdPowerXpressRequestHighPerformance = 1;
+	POLTERGEIST_PUBLIC uint32_t NvOptimusEnablement = 1;
+	POLTERGEIST_PUBLIC int32_t AmdPowerXpressRequestHighPerformance = 1;
 }
 
 void OnWindowSizeUpdate(GLFWwindow* window, int width, int height)
