@@ -1,17 +1,16 @@
-name: Build
+name: Build GameKit
 
 on: [push, pull_request]
 
 jobs:
   build:
-    name: Poltergeist build ${{matrix.project}} (${{matrix.runtime}} ${{matrix.configuration}})
+    name: Poltergeist GameKit build (${{matrix.runtime}} ${{matrix.configuration}})
     runs-on: ${{matrix.os}}
 
     strategy:
       matrix:
         os: [windows-latest]
         configuration: ['debug', 'release']
-        project: ['Poltergeist.Editor', 'Poltergeist.Sandbox']
         include:
           - os: windows-latest
             runtime: 'win-x64'
@@ -31,10 +30,4 @@ jobs:
       run: dotnet restore -r ${{matrix.runtime}}
 
     - name: Build ${{matrix.project}}
-      run: dotnet publish -c ${{matrix.configuration}} -r ${{matrix.runtime}} --no-restore ${{matrix.project}}
-
-    - name: Upload ${{matrix.project}}
-      uses: actions/upload-artifact@v2
-      with:
-        name: ${{matrix.project}} (${{matrix.runtime}} ${{matrix.configuration}})
-        path: ${{matrix.project}}/bin/${{matrix.configuration}}/net5.0/${{matrix.runtime}}/publish
+      run: dotnet publish -c ${{matrix.configuration}} -r ${{matrix.runtime}} --no-restore

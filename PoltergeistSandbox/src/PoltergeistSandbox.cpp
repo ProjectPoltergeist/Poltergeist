@@ -1,17 +1,18 @@
-#include <iostream>
+﻿#include <iostream>
 #include <memory>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <PoltergeistEngine/Rendering/Texture.hpp>
 #include <PoltergeistEngine/Rendering/Renderer.hpp>
+#include <PoltergeistEngine/Macros.hpp>
 #ifdef WIN32
 #include <Windows.h>
 #endif
 
 extern "C"
 {
-	__declspec(dllexport) uint32_t NvOptimusEnablement = 1;
-	__declspec(dllexport) int32_t AmdPowerXpressRequestHighPerformance = 1;
+	POLTERGEIST_PUBLIC uint32_t NvOptimusEnablement = 1;
+	POLTERGEIST_PUBLIC int32_t AmdPowerXpressRequestHighPerformance = 1;
 }
 
 void OnWindowSizeUpdate(GLFWwindow* window, int width, int height)
