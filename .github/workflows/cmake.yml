@@ -38,7 +38,7 @@ jobs:
             generator: 'Visual Studio 16 2019'
         include:
           - generator: 'Unix Makefiles'
-            clangtidy: '-DCMAKE_C_CLANG_TIDY="clang-tidy-11 -checks=clang-analyzer-*,concurrency-*,cppcoreguidelines-*,misc-*,modernize-*,performance-*,portability-*,readability-*" -DCMAKE_CXX_CLANG_TIDY="clang-tidy-11 -checks=clang-analyzer-*,concurrency-*,cppcoreguidelines-*,misc-*,modernize-*,performance-*,portability-*,readability-*"'
+            clangtidy: '-DCMAKE_C_CLANG_TIDY="clang-tidy-11;-checks=clang-analyzer-*,concurrency-*,cppcoreguidelines-*,misc-*,modernize-*,performance-*,portability-*,readability-*" -DCMAKE_CXX_CLANG_TIDY="clang-tidy-11;-checks=clang-analyzer-*,concurrency-*,cppcoreguidelines-*,misc-*,modernize-*,performance-*,portability-*,readability-*"'
 #          - generator: 'Visual Studio 16 2019'
 #            cmakewrapper: ''
 #          - generator: 'MSYS Makefiles'
