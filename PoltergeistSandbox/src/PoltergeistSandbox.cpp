@@ -4,10 +4,9 @@
 #include <GLFW/glfw3.h>
 #include <PoltergeistEngine/Rendering/Texture.hpp>
 #include <PoltergeistEngine/Rendering/Renderer.hpp>
+#include <PoltergeistEngine/Rendering/FrameBuffer.hpp>
 #ifdef WIN32
 #include <Windows.h>
-#include <PoltergeistEngine/Rendering/FrameBuffer.hpp>
-
 #endif
 
 extern "C"
