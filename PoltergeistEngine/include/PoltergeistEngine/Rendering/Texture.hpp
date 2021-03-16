@@ -14,11 +14,13 @@ private:
 public:
 	~Texture() noexcept;
 
-	[[nodiscard]] static std::shared_ptr<Texture> Create(const std::filesystem::path& texturePath, uint8_t slot);
+	[[nodiscard]] static std::shared_ptr<Texture> CreateEmpty(uint32_t width, uint32_t height, uint8_t slot);
+	[[nodiscard]] static std::shared_ptr<Texture> CreateFromFile(const std::filesystem::path& texturePath, uint8_t slot);
 
 	void Bind() const noexcept;
 	void Unbind() const noexcept;
 
+	uint32_t GetId() const noexcept;
 	uint8_t GetSlot() const noexcept;
 };
 
