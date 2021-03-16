@@ -6,6 +6,12 @@ set(CMAKE_C_STANDARD 11)
 set(VCPKG_MANIFEST_MODE ON)
 set(CMAKE_TOOLCHAIN_FILE ${CMAKE_CURRENT_SOURCE_DIR}/vcpkg/scripts/buildsystems/vcpkg.cmake CACHE STRING "Vcpkg toolchain file")
 
+if(MSVC)
+	target_compile_options(${TARGET_NAME} PRIVATE /W4 /WX)
+else()
+	target_compile_options(${TARGET_NAME} PRIVATE -Wall -Wextra -pedantic -Werror)
+endif()
+
 # MSVC settings
 if (MSVC)
 	add_compile_options(/utf-8)
