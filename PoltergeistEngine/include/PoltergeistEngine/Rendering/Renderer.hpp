@@ -6,6 +6,7 @@
 #include "Shader.hpp"
 #include "Texture.hpp"
 #include "Vertex.hpp"
+#include "FrameBuffer.hpp"
 
 class Renderer
 {
@@ -14,6 +15,11 @@ private:
 	std::shared_ptr<Texture> m_whiteTexture;
 public:
 	[[nodiscard]] static std::shared_ptr<Renderer> Create();
+
+	void BeginRenderPass() const noexcept;
+	void BeginRenderPass(FrameBuffer& frameBuffer) const noexcept;
+
+	void EndRenderPass() const noexcept;
 
 	void Clear(glm::vec3 color) const noexcept;
 	void Clear(glm::vec4 color) const noexcept;

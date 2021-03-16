@@ -1,9 +1,10 @@
-﻿#include <iostream>
+#include <iostream>
 #include <memory>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <PoltergeistEngine/Rendering/Texture.hpp>
 #include <PoltergeistEngine/Rendering/Renderer.hpp>
+#include <PoltergeistEngine/Rendering/FrameBuffer.hpp>
 #include <PoltergeistEngine/Macros.hpp>
 #ifdef WIN32
 #include <Windows.h>
@@ -56,15 +57,30 @@ int main()
 			return -2;
 		}
 
-		std::shared_ptr<Texture> texture = Texture::Create("texture.png", 1);
+		std::shared_ptr<Texture> texture = Texture::CreateFromFile("texture.png", 1);
 		std::shared_ptr<Renderer> renderer = Renderer::Create();
+
+		FrameBuffer frameBuffer(800, 600);
 
 		while (!glfwWindowShouldClose(window.get()))
 		{
 			glfwPollEvents();
+
+			renderer->BeginRenderPass(frameBuffer);
+
 			renderer->Clear(glm::vec3(0.3f, 0.3f, 0.3f));
 			renderer->DrawQuad(glm::vec2(-0.70f, 0.0f), 0.0f, glm::vec2(0.25f, 0.25f), glm::vec3(1.0, 0.0, 0.0));
 			renderer->DrawQuad(glm::vec2(0.25f, 0.25f), 45.0f, glm::vec2(0.50f, 0.50f), texture);
+
+			renderer->EndRenderPass();
+
+			renderer->BeginRenderPass();
+
+			renderer->Clear(glm::vec3(0.3f, 0.3f, 0.3f));
+			renderer->DrawQuad(glm::vec2(0.0f, 0.0f), 0.0f, glm::vec2(0.5f, 0.5f), frameBuffer.GetTextureAttachment());
+
+			renderer->EndRenderPass();
+
 			glfwSwapBuffers(window.get());
 		}
 	}

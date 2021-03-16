@@ -13,7 +13,27 @@ Texture::~Texture() noexcept
 	glDeleteTextures(1, &m_textureId);
 }
 
-std::shared_ptr<Texture> Texture::Create(const std::filesystem::path &texturePath, uint8_t slot)
+std::shared_ptr<Texture> Texture::CreateEmpty(uint32_t width, uint32_t height, uint8_t slot)
+{
+	uint32_t textureId;
+	glGenTextures(1, &textureId);
+
+	std::shared_ptr<Texture> texture(new Texture(textureId, slot));
+
+	glBindTexture(GL_TEXTURE_2D, textureId);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
+
+	texture->Unbind();
+
+	return texture;
+}
+
+std::shared_ptr<Texture> Texture::CreateFromFile(const std::filesystem::path &texturePath, uint8_t slot)
 {
 	uint32_t textureId;
 	glGenTextures(1, &textureId);
@@ -45,6 +65,11 @@ void Texture::Bind() const noexcept
 void Texture::Unbind() const noexcept
 {
 	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+uint32_t Texture::GetId() const noexcept
+{
+	return m_textureId;
 }
 
 uint8_t Texture::GetSlot() const noexcept

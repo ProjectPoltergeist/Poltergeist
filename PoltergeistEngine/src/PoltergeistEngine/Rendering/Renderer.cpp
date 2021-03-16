@@ -2,7 +2,6 @@
 #include "PoltergeistEngine/Rendering/Renderer.hpp"
 #include "PoltergeistEngine/Rendering/VertexArray.hpp"
 #include "PoltergeistEngine/Rendering/VertexBuffer.hpp"
-#include "PoltergeistEngine/Rendering/VertexBufferLayout.hpp"
 #include "PoltergeistEngine/Rendering/IndexBuffer.hpp"
 
 std::shared_ptr<Renderer> Renderer::Create()
@@ -10,7 +9,7 @@ std::shared_ptr<Renderer> Renderer::Create()
 	std::shared_ptr<Renderer> renderer(new Renderer());
 
 	renderer->m_coreShader = Shader::Create("core.vert", "core.frag");
-	renderer->m_whiteTexture = Texture::Create("white.png", 0);
+	renderer->m_whiteTexture = Texture::CreateFromFile("white.png", 0);
 
 	return renderer;
 }
@@ -106,4 +105,23 @@ void Renderer::RotateVertices(std::vector<Vertex>& vertices, float rotation) con
 				vertex.m_position.y * glm::cos(glm::radians(rotation)) - vertex.m_position.x * sin(glm::radians(rotation))
 		);
 	}
+}
+
+void Renderer::BeginRenderPass() const noexcept
+{
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+void Renderer::BeginRenderPass(FrameBuffer& frameBuffer) const noexcept
+{
+	frameBuffer.Bind();
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+void Renderer::EndRenderPass() const noexcept
+{
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
