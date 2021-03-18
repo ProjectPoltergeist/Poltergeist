@@ -126,6 +126,7 @@ jobs:
         cmakeListsOrSettingsJson: CMakeListsTxtAdvanced
         useVcpkgToolchainFile: true
         buildWithCMake: true
+        buildWithCMakeArgs: '--config ${{matrix.configuration}}'
         buildDirectory: ${{env.buildDir}}
         cmakeListsTxtPath: '${{github.workspace}}/CMakeLists.txt'
         cmakeAppendedArgs: '-G "${{matrix.generator}}" -DCMAKE_BUILD_TYPE=${{matrix.configuration}}'
