@@ -5,7 +5,9 @@
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
-#include "ImGUIContent.hpp"
+#include <PoltergeistEngine/Rendering/Texture.hpp>
+#include <PoltergeistEngine/Rendering/FrameBuffer.hpp>
+#include <PoltergeistEngine/Rendering/Renderer.hpp>
 #include <PoltergeistEngine/Macros.hpp>
 #ifdef WIN32
 #include <Windows.h>
@@ -21,6 +23,11 @@ void OnWindowSizeUpdate(GLFWwindow* window, int width, int height)
 {
 	glViewport(0, 0, width, height);
 }
+
+class Editor
+{
+
+};
 
 int main()
 {
@@ -39,7 +46,7 @@ int main()
 
 	{
 		std::unique_ptr<GLFWwindow, decltype(glfwDestroyWindow)*> window {
-				glfwCreateWindow(800, 600, "Poltergeist Editor", nullptr, nullptr),
+				glfwCreateWindow(1280, 720, "Poltergeist Editor", nullptr, nullptr),
 				&glfwDestroyWindow
 		};
 
@@ -65,6 +72,11 @@ int main()
 		ImGui_ImplGlfw_InitForOpenGL(window.get(), true);
 		ImGui_ImplOpenGL3_Init();
 
+		std::shared_ptr<Texture> texture = Texture::CreateFromFile("texture.png", 1);
+		std::shared_ptr<Renderer> renderer = Renderer::Create();
+
+		FrameBuffer frameBuffer(800, 600);
+
 		while (!glfwWindowShouldClose(window.get()))
 		{
 			glfwPollEvents();
@@ -73,7 +85,21 @@ int main()
 			ImGui_ImplGlfw_NewFrame();
 			ImGui::NewFrame();
 
-			GUIContent();
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
+			ImGui::Begin("Scene", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoCollapse);
+
+			renderer->BeginRenderPass(frameBuffer);
+			renderer->Clear(glm::vec3(1.0f, 1.0f, 1.0f));
+			renderer->DrawQuad(glm::vec2(-0.70f, 0.0f), 0.0f, glm::vec2(0.25f, 0.25f), glm::vec3(1.0, 0.0, 0.0));
+			renderer->DrawQuad(glm::vec2(0.25f, 0.25f), 45.0f, glm::vec2(0.50f, 0.50f), texture);
+			renderer->DrawQuad(glm::vec2(-1.0f, -1.0f), 0.0f, glm::vec2(0.5f, 0.5f), glm::vec3(0.0, 1.0, 0.0));
+			renderer->EndRenderPass();
+
+			ImGui::Image(reinterpret_cast<void*>(frameBuffer.GetTextureAttachment()->GetId()), ImVec2(800, 600), ImVec2(0, 1), ImVec2(1, 0));
+
+			ImGui::End();
+			ImGui::PopStyleVar();
+
 			ImGui::Render();
 
 			ImVec4 backgroundColor(1.0f, 1.0f, 1.0f, 1.0f);

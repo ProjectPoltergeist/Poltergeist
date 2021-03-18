@@ -11,6 +11,8 @@ private:
 	uint32_t m_frameBufferId;
 	std::shared_ptr<Texture> m_textureAttachment;
 	uint32_t m_depthAndStencilAttachmentId;
+	uint32_t m_width;
+	uint32_t m_height;
 public:
 	FrameBuffer(uint32_t width, uint32_t height);
 	~FrameBuffer() noexcept;

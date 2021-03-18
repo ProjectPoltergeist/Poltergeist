@@ -3,6 +3,9 @@
 
 FrameBuffer::FrameBuffer(uint32_t width, uint32_t height)
 {
+	m_width = width;
+	m_height = height;
+
 	glGenFramebuffers(1, &m_frameBufferId);
 
 	Bind();
@@ -33,6 +36,7 @@ FrameBuffer::~FrameBuffer() noexcept
 void FrameBuffer::Bind() const noexcept
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, m_frameBufferId);
+	glViewport(0, 0, m_width, m_height);
 }
 
 void FrameBuffer::Unbind() const noexcept
