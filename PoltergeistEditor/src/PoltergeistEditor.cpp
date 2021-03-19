@@ -8,7 +8,9 @@
 #include <PoltergeistEngine/Rendering/Texture.hpp>
 #include <PoltergeistEngine/Rendering/FrameBuffer.hpp>
 #include <PoltergeistEngine/Rendering/Renderer.hpp>
+#include <PoltergeistEngine/GameObject.hpp>
 #include <PoltergeistEngine/Macros.hpp>
+#include <PoltergeistEngine/Scene.hpp>
 #ifdef WIN32
 #include <Windows.h>
 #endif
@@ -77,6 +79,10 @@ int main()
 
 		FrameBuffer frameBuffer(800, 600);
 
+		Scene defaultScene;
+		defaultScene.CreateGameObject();
+		defaultScene.CreateGameObject();
+
 		while (!glfwWindowShouldClose(window.get()))
 		{
 			glfwPollEvents();
@@ -84,6 +90,24 @@ int main()
 			ImGui_ImplOpenGL3_NewFrame();
 			ImGui_ImplGlfw_NewFrame();
 			ImGui::NewFrame();
+
+			ImGui::Begin("Scene Hierarchy", nullptr, ImGuiWindowFlags_NoCollapse);
+
+			size_t currentNodeIndex = 0;
+
+			for (const GameObject& gameObject : defaultScene.GetGameObjects())
+			{
+				bool open = ImGui::TreeNodeEx(reinterpret_cast<void*>(currentNodeIndex), ImGuiTreeNodeFlags_OpenOnArrow,"Object");
+
+				if (open)
+				{
+					ImGui::TreePop();
+				}
+
+				currentNodeIndex++;
+			}
+
+			ImGui::End();
 
 			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
 			ImGui::Begin("Scene", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoCollapse);
