@@ -3,5 +3,6 @@ target_include_directories(PoltergeistEngine PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}
 find_package(glad CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
 find_package(libpng CONFIG REQUIRED)
-target_link_libraries(PoltergeistEngine PRIVATE glad::glad glm::glm png)
+find_package(EnTT CONFIG REQUIRED)
+target_link_libraries(PoltergeistEngine PRIVATE glad::glad glm::glm png EnTT::EnTT)
 add_library(Poltergeist::PoltergeistEngine ALIAS PoltergeistEngine)

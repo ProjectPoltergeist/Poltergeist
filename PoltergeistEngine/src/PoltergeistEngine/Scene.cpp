@@ -2,7 +2,7 @@
 
 GameObject& Scene::CreateGameObject() noexcept
 {
-	m_gameObjects.emplace_back();
+	m_gameObjects.push_back(std::move(GameObject::Create(m_registry)));
 
 	return m_gameObjects[m_gameObjects.size() - 1];
 }

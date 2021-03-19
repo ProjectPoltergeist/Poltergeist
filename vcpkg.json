@@ -12,6 +12,7 @@
 				"glfw-binding",
 				"opengl3-glad-binding"
 			]
-		}
+		},
+		"entt"
 	]
 }
