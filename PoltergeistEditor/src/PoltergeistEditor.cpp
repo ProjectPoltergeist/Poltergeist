@@ -5,6 +5,7 @@
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
+#include <PoltergeistEngine/Components/TransformComponent.hpp>
 #include <PoltergeistEngine/Rendering/Texture.hpp>
 #include <PoltergeistEngine/Rendering/FrameBuffer.hpp>
 #include <PoltergeistEngine/Rendering/Renderer.hpp>
@@ -80,8 +81,12 @@ int main()
 		FrameBuffer frameBuffer(800, 600);
 
 		Scene defaultScene;
-		defaultScene.CreateGameObject();
-		defaultScene.CreateGameObject();
+
+		GameObject& gameObject1 = defaultScene.CreateGameObject();
+		gameObject1.AddComponent<TransformComponent>(glm::vec2(0.0f, 0.0f), 0.0f, glm::vec2(0.25f, 0.25f));
+
+		GameObject& gameObject2 = defaultScene.CreateGameObject();
+		gameObject2.AddComponent<TransformComponent>(glm::vec2(-1.0f, -1.0f), 0.0f, glm::vec2(0.5f, 0.5f));
 
 		while (!glfwWindowShouldClose(window.get()))
 		{
@@ -114,9 +119,17 @@ int main()
 
 			renderer->BeginRenderPass(frameBuffer);
 			renderer->Clear(glm::vec3(1.0f, 1.0f, 1.0f));
-			renderer->DrawQuad(glm::vec2(-0.70f, 0.0f), 0.0f, glm::vec2(0.25f, 0.25f), glm::vec3(1.0, 0.0, 0.0));
-			renderer->DrawQuad(glm::vec2(0.25f, 0.25f), 45.0f, glm::vec2(0.50f, 0.50f), texture);
-			renderer->DrawQuad(glm::vec2(-1.0f, -1.0f), 0.0f, glm::vec2(0.5f, 0.5f), glm::vec3(0.0, 1.0, 0.0));
+
+			for (GameObject& gameObject : defaultScene.GetGameObjects())
+			{
+				if (gameObject.HasComponent<TransformComponent>())
+				{
+					TransformComponent& transform = gameObject.GetComponent<TransformComponent>();
+
+					renderer->DrawQuad(transform.m_position, transform.m_rotation, transform.m_scale, glm::vec3(1.0, 0.0, 0.0));
+				}
+			}
+
 			renderer->EndRenderPass();
 
 			ImGui::Image(reinterpret_cast<void*>(frameBuffer.GetTextureAttachment()->GetId()), ImVec2(800, 600), ImVec2(0, 1), ImVec2(1, 0));
