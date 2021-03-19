@@ -33,45 +33,6 @@ GameObject GameObject::Create(entt::registry& registry) noexcept
 	return GameObject(registry, registry.create());
 }
 
-template<typename T, typename... Arguments>
-T& GameObject::AddComponent(Arguments&&... arguments)
-{
-	if (HasComponent<T>())
-	{
-		throw std::runtime_error("Entity already has component");
-	}
-
-	return m_registry.emplace<T>(m_entityId, std::forward<Arguments>(arguments)...);
-}
-
-template<typename T>
-void GameObject::RemoveComponent()
-{
-	if (!HasComponent<T>())
-	{
-		throw std::runtime_error("Entity doesn't have component");
-	}
-
-	m_registry.remove<T>(m_entityId);
-}
-
-template<typename T>
-bool GameObject::HasComponent() noexcept
-{
-	return m_registry.has<T>(m_entityId);
-}
-
-template<typename T>
-T& GameObject::GetComponent()
-{
-	if (!HasComponent<T>())
-	{
-		throw std::runtime_error("Entity doesn't have component");
-	}
-
-	return m_registry.get<T>(m_entityId);
-}
-
 void GameObject::DestroyEntity() const noexcept
 {
 	if (m_entityId != entt::null)
