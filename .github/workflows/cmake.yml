@@ -12,11 +12,12 @@ jobs:
       llvmLocation: '${{github.workspace}}/llvm'
 
     strategy:
+      fail-fast: false
       matrix:
         os: [windows-latest,ubuntu-20.04]
-        configuration: ['Debug', 'Release']
         compiler: ['msvc','gcc','clang']
         generator: ['Visual Studio 16 2019', 'MSYS Makefiles', 'Unix Makefiles']
+        configuration: ['Debug', 'Release']
         exclude:
           - os: windows-latest
             generator: 'Unix Makefiles'
