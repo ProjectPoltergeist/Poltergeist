@@ -10,5 +10,5 @@ ImageLoader* ImageLoader::GetLoaderForFormat(FILE* file)
 		return new JpegImage();
 	if (PngImage::IsValidFormat(file))
 		return new PngImage();
-	return NULL;
+	return nullptr;
 }
