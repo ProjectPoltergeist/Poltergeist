@@ -1,14 +1,15 @@
-#ifndef POLTERGEIST_PNGIMAGE_HPP
+﻿#ifndef POLTERGEIST_PNGIMAGE_HPP
 #define POLTERGEIST_PNGIMAGE_HPP
 
 #include <cstdint>
 #include <cstdio>
+#include "PoltergeistEngine/Image/ImageLoader.hpp"
 
-static class PngImage
+class PngImage : public ImageLoader
 {
 public:
 	static bool IsValidFormat(FILE* file);
-	static void LoadImageFromFile(FILE* file, uint32_t& width, uint32_t& height, uint8_t*& data);
+	void LoadImage(FILE* file) override;
 };
 
 #endif

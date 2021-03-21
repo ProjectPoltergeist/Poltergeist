@@ -24,15 +24,15 @@ bool JpegImage::IsValidFormat(FILE* file)
 	return header == 0xD8FF;
 }
 
-void JpegImage::LoadImageFromFile(FILE* file, uint32_t& width, uint32_t& height, uint8_t*& data)
+void JpegImage::LoadImage(FILE* file)
 {
-    my_error_mgr error;
+    my_error_mgr errorManager;
     jpeg_decompress_struct decompressInfo;
     JSAMPARRAY pixelBuffor;
 
-    decompressInfo.err = jpeg_std_error(&error.publicErrorManager);
-    error.publicErrorManager.error_exit = my_error_exit;
-    if (setjmp(error.setJmpBuffer))
+    decompressInfo.err = jpeg_std_error(&errorManager.publicErrorManager);
+    errorManager.publicErrorManager.error_exit = my_error_exit;
+    if (setjmp(errorManager.setJmpBuffer))
     {
         jpeg_destroy_decompress(&decompressInfo);
         throw std::runtime_error("jpg:jmp error");
@@ -43,23 +43,34 @@ void JpegImage::LoadImageFromFile(FILE* file, uint32_t& width, uint32_t& height,
     jpeg_read_header(&decompressInfo, TRUE);
     jpeg_start_decompress(&decompressInfo);
 
-    int rowLength = decompressInfo.output_width * decompressInfo.output_components;
+    int rowLength = decompressInfo.output_width * 3;
     pixelBuffor = (*decompressInfo.mem->alloc_sarray)
         ((j_common_ptr)&decompressInfo, JPOOL_IMAGE, rowLength, 1);
 
-    data = new uint8_t[decompressInfo.output_width * decompressInfo.output_height * 3];
+    data = new uint8_t[rowLength * decompressInfo.output_height];
     size_t data_offest = 0;
     while (decompressInfo.output_scanline < decompressInfo.output_height)
     {
         jpeg_read_scanlines(&decompressInfo, pixelBuffor, 1);
         memcpy(data + data_offest, pixelBuffor[0], rowLength);
-        data_offest += rowLength;
+        data_offest += rowLength; //wiem że tutaj też teoretycznie da sie odwrćóić ale próowałem na wszystkie znane mi oraz znalezione w sieci sposoby i wywala mem error przy finishowaniu
     }
+
+	int8_t flipBuffer = 0;
+	for (unsigned int i = 0; i < (decompressInfo.output_height)/2; i++)
+	{
+		for (unsigned int x = 0; x < rowLength; x++)
+		{
+			flipBuffer = data[i * rowLength + x];
+			data[i * rowLength + x] = data[(decompressInfo.output_height - i - 1) * rowLength + x];
+			data[(decompressInfo.output_height - i - 1) * rowLength + x] = flipBuffer;
+		}		
+	}
 
     jpeg_finish_decompress(&decompressInfo);
     jpeg_destroy_decompress(&decompressInfo);
 
-    if (error.publicErrorManager.num_warnings) throw std::runtime_error("Decompressing error");
+    if (errorManager.publicErrorManager.num_warnings) throw std::runtime_error("Decompressing error");
 
     width = decompressInfo.output_width;
     height = decompressInfo.output_height;

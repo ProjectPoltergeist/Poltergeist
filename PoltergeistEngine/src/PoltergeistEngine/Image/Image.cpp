@@ -1,7 +1,8 @@
-#include "PoltergeistEngine/Image/Image.hpp"
+﻿#include "PoltergeistEngine/Image/Image.hpp"
 #include "PoltergeistEngine/Image/PngImage.hpp"
 #include "PoltergeistEngine/Image/JpegImage.hpp"
 #include "PoltergeistEngine/IO/FileUtilities.hpp"
+#include "PoltergeistEngine/Image/ImageLoader.hpp"
 #include <cstdio>
 
 Image::Image(const std::filesystem::path &imagePath)
@@ -11,12 +12,14 @@ Image::Image(const std::filesystem::path &imagePath)
 	if (!file)
 		throw std::runtime_error("Couldn't open the file");
 
-	if (PngImage::IsValidFormat(file))
-		PngImage::LoadImageFromFile(file, m_width, m_height, m_data);
-	else if (JpegImage::IsValidFormat(file))
-		JpegImage::LoadImageFromFile(file, m_width, m_height, m_data);
-	else
-		throw std::runtime_error("Unsupported format");
+	ImageLoader* loader = ImageLoader::GetLoaderForFormat(file);
+	if(!loader)
+		throw std::runtime_error("Unsupported Format!");
+	loader->LoadImage(file);
+
+	m_width = loader->width;
+	m_height = loader->height;
+	m_data = loader->data;
 
 	fclose(file);
 }

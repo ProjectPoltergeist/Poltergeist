@@ -1,4 +1,4 @@
-#include "PoltergeistEngine/Image/PngImage.hpp"
+﻿#include "PoltergeistEngine/Image/PngImage.hpp"
 #include <png.h>
 
 bool PngImage::IsValidFormat(FILE* file)
@@ -6,11 +6,10 @@ bool PngImage::IsValidFormat(FILE* file)
 	uint8_t header[8];
 	fread(header, 1, 8, file);
 	fseek(file, -8, SEEK_CUR);
-
 	return png_sig_cmp(header, 0, 8) == 0;
 }
 
-void PngImage::LoadImageFromFile(FILE* file, uint32_t& width, uint32_t& height, uint8_t*& data)
+void PngImage::LoadImage(FILE* file)
 {
 	png_structp internalState = png_create_read_struct(PNG_LIBPNG_VER_STRING, nullptr, nullptr, nullptr);
 
