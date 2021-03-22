@@ -6,14 +6,14 @@
 struct my_error_mgr
 {
     jpeg_error_mgr publicErrorManager;
-    jmp_buf setJmpBuffer;
+    jmp_buf setJumpBuffer;
 };
 
 void my_error_exit(j_common_ptr cinfo)
 {
     my_error_mgr* error = (my_error_mgr*)cinfo->err;
     (*cinfo->err->output_message) (cinfo);
-    longjmp(error->setJmpBuffer, 1);
+    longjmp(error->setJumpBuffer, 1);
 }
 
 bool JpegImage::IsValidHeader(FILE* file)
@@ -33,7 +33,7 @@ std::shared_ptr<JpegImage> JpegImage::LoadFromFile(FILE* file)
 
     decompressInfo.err = jpeg_std_error(&error.publicErrorManager);
     error.publicErrorManager.error_exit = my_error_exit;
-    if (setjmp(error.setJmpBuffer))
+    if (setjmp(error.setJumpBuffer))
     {
         jpeg_destroy_decompress(&decompressInfo);
         throw std::runtime_error("jpg:jmp error");
