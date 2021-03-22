@@ -1,8 +1,5 @@
 ﻿#include "PoltergeistEngine/Rendering/Texture.hpp"
 #include "PoltergeistEngine/Image/Image.hpp"
-#include "PoltergeistEngine/Image/JpegImage.hpp"
-#include "PoltergeistEngine/Image/PngImage.hpp"
-#include "PoltergeistEngine/IO/FileUtilities.hpp"
 #include <glad/glad.h>
 
 Texture::Texture(uint32_t textureId, uint8_t slot) noexcept
@@ -49,19 +46,7 @@ std::shared_ptr<Texture> Texture::CreateFromFile(const std::filesystem::path &te
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-	FILE* file = OpenFile(texturePath.generic_string().c_str(), "rb");
-
-	if (!file)
-		throw std::runtime_error("Couldn't open the file");
-
-	std::shared_ptr<Image> image;
-
-	if (JpegImage::IsValidHeader(file))
-		image = JpegImage::LoadFromFile(file);
-	if (PngImage::IsValidHeader(file))
-		image = PngImage::LoadFromFile(file);
-	else
-		throw std::runtime_error("Unsupported format!");
+	std::shared_ptr<Image> image = Image::LoadFromFile(texturePath);
 
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image->GetWidth(), image->GetHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, image->GetData());

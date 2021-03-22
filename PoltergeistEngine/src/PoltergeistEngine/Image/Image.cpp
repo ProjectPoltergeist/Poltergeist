@@ -1,6 +1,31 @@
 ﻿#include "PoltergeistEngine/Image/Image.hpp"
 #include "PoltergeistEngine/Image/PngImage.hpp"
 #include "PoltergeistEngine/Image/JpegImage.hpp"
+#include "PoltergeistEngine/IO/FileUtilities.hpp"
+
+std::shared_ptr<Image> Image::LoadFromFile(const std::filesystem::path& imagePath)
+{
+	FILE* file = OpenFile(imagePath.generic_string().c_str(), "rb");
+
+	if (!file)
+		throw std::runtime_error("Couldn't open the file");
+
+	if (JpegImage::IsValidHeader(file))
+	{
+		fclose(file);
+		return JpegImage::LoadFromFile(file);
+	}
+	else if (PngImage::IsValidHeader(file))
+	{
+		fclose(file);
+		return PngImage::LoadFromFile(file);
+	}
+	else
+	{
+		fclose(file);
+		throw std::runtime_error("Unsupported format!");
+	}
+}
 
 uint32_t Image::GetWidth() const noexcept
 {
