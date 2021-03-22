@@ -3,7 +3,7 @@
 
 #include "PoltergeistEngine/Image/Image.hpp"
 
-static class JpegImage : public Image
+class JpegImage : public Image
 {
 public:
 	[[nodiscard]] static std::shared_ptr<JpegImage> LoadFromFile(FILE* file);
