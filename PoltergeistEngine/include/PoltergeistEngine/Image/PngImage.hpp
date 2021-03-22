@@ -1,14 +1,13 @@
-#ifndef POLTERGEIST_PNGIMAGE_HPP
+﻿#ifndef POLTERGEIST_PNGIMAGE_HPP
 #define POLTERGEIST_PNGIMAGE_HPP
 
-#include <cstdint>
-#include <cstdio>
+#include "PoltergeistEngine/Image/Image.hpp"
 
-static class PngImage
+static class PngImage : public Image
 {
 public:
-	static bool IsValidFormat(FILE* file);
-	static void LoadImageFromFile(FILE* file, uint32_t& width, uint32_t& height, uint8_t*& data);
+	[[nodiscard]] static std::shared_ptr<PngImage> LoadFromFile(FILE* file);
+	[[nodiscard]] static bool IsValidHeader(FILE* file);
 };
 
 #endif

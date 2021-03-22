@@ -1,7 +1,7 @@
-#include "PoltergeistEngine/Image/PngImage.hpp"
+﻿#include "PoltergeistEngine/Image/PngImage.hpp"
 #include <png.h>
 
-bool PngImage::IsValidFormat(FILE* file)
+bool PngImage::IsValidHeader(FILE* file)
 {
 	uint8_t header[8];
 	fread(header, 1, 8, file);
@@ -10,8 +10,9 @@ bool PngImage::IsValidFormat(FILE* file)
 	return png_sig_cmp(header, 0, 8) == 0;
 }
 
-void PngImage::LoadImageFromFile(FILE* file, uint32_t& width, uint32_t& height, uint8_t*& data)
+std::shared_ptr<PngImage> PngImage::LoadFromFile(FILE* file)
 {
+	std::shared_ptr<PngImage> result = std::make_shared<PngImage>();
 	png_structp internalState = png_create_read_struct(PNG_LIBPNG_VER_STRING, nullptr, nullptr, nullptr);
 
 	png_set_user_limits(internalState, 0x7fffffff, 0x7fffffff);
@@ -22,32 +23,33 @@ void PngImage::LoadImageFromFile(FILE* file, uint32_t& width, uint32_t& height, 
 	png_read_info(internalState, imageInfo);
 	png_set_palette_to_rgb(internalState);
 
-	width = png_get_image_width(internalState, imageInfo);
-	height = png_get_image_height(internalState, imageInfo);
+	result->m_width = png_get_image_width(internalState, imageInfo);
+	result->m_height = png_get_image_height(internalState, imageInfo);
 
 	png_read_update_info(internalState, imageInfo);
 
-	png_bytepp rows = new png_bytep[height];
+	png_bytepp rows = new png_bytep[result->m_height];
 
-	for (size_t row = 0; row < height; row++)
+	for (size_t row = 0; row < result->m_height; row++)
 	{
-		rows[row] = new png_byte[width * 3];
+		rows[row] = new png_byte[result->m_width * 3];
 	}
 
 	png_read_image(internalState, rows);
 	png_read_end(internalState, imageInfo);
 
-	data = new uint8_t[width * height * 3];
+	result->m_data = new uint8_t[result->m_width * result->m_height * 3];
 
-	for (uint32_t y = 0; y < height; y++)
+	for (uint32_t y = 0; y < result->m_height; y++)
 	{
-		for (uint32_t x = 0; x < width * 3; x++)
+		for (uint32_t x = 0; x < result->m_width * 3; x++)
 		{
-			(data)[y * width * 3 + x] = rows[y][x];
+			(result->m_data)[y * result->m_width * 3 + x] = rows[y][x];
 		}
 	}
 
 	delete[] rows;
 
 	png_destroy_read_struct(&internalState, &imageInfo, nullptr);
+	return result;
 }
