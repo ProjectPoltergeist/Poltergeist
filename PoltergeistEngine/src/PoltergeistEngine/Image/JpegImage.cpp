@@ -9,10 +9,10 @@ struct my_error_mgr
     jmp_buf setJumpBuffer;
 };
 
-void my_error_exit(j_common_ptr cinfo)
+void my_error_exit(j_common_ptr decompressInfo)
 {
-    my_error_mgr* error = (my_error_mgr*)cinfo->err;
-    (*cinfo->err->output_message) (cinfo);
+    my_error_mgr* error = (my_error_mgr*)decompressInfo->err;
+    (*decompressInfo->err->output_message) (decompressInfo);
     longjmp(error->setJumpBuffer, 1);
 }
 
