@@ -38,7 +38,7 @@ std::shared_ptr<JpegImage> JpegImage::LoadFromFile(FILE* file)
 
 	jpeg_create_decompress(&decompressInfo);
 	jpeg_stdio_src(&decompressInfo, file);
-	jpeg_read_header(&decompressInfo, TRUE);
+	jpeg_read_header(&decompressInfo, true);
 	jpeg_start_decompress(&decompressInfo);
 
 	int rowLength = decompressInfo.output_width * decompressInfo.output_components;
