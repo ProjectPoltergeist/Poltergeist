@@ -2,6 +2,8 @@
 #include <memory>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
@@ -91,10 +93,12 @@ int main()
 		gameObject2.AddComponent<TagComponent>("Second square");
 		gameObject2.AddComponent<TransformComponent>(glm::vec2(-1.0f, -1.0f), 0.0f, glm::vec2(0.5f, 0.5f));
 
+		GameObject* selectedGameObject = nullptr;
+
 		while (!glfwWindowShouldClose(window.get()))
 		{
 			glfwPollEvents();
-			
+
 			ImGui_ImplOpenGL3_NewFrame();
 			ImGui_ImplGlfw_NewFrame();
 			ImGui::NewFrame();
@@ -103,7 +107,7 @@ int main()
 
 			size_t currentNodeIndex = 0;
 
-			for (const GameObject& gameObject : defaultScene.GetGameObjects())
+			for (GameObject& gameObject : defaultScene.GetGameObjects())
 			{
 				const char* nodeName = gameObject.HasComponent<TagComponent>()
 				        ? gameObject.GetComponent<TagComponent>().m_tag.c_str()
@@ -111,12 +115,61 @@ int main()
 
 				bool open = ImGui::TreeNodeEx(reinterpret_cast<void*>(currentNodeIndex), ImGuiTreeNodeFlags_OpenOnArrow, nodeName);
 
+				if (ImGui::IsItemClicked())
+				{
+					selectedGameObject = &gameObject;
+				}
+
 				if (open)
 				{
 					ImGui::TreePop();
 				}
 
 				currentNodeIndex++;
+			}
+
+			ImGui::End();
+
+			ImGui::Begin("Inspector", nullptr, ImGuiWindowFlags_NoCollapse);
+
+			if (selectedGameObject)
+			{
+				if (selectedGameObject->HasComponent<TagComponent>())
+				{
+					bool open = ImGui::TreeNode("Tag component");
+
+					if (open)
+					{
+						TagComponent& tag = selectedGameObject->GetComponent<TagComponent>();
+
+						char tagBuffer[128];
+						memset(tagBuffer, 0, sizeof(tagBuffer));
+						std::strncpy(tagBuffer, tag.m_tag.c_str(), sizeof(tagBuffer));
+
+						if (ImGui::InputText("Tag", tagBuffer, sizeof(tagBuffer)))
+						{
+							tag.m_tag = std::string(tagBuffer);
+						}
+
+						ImGui::TreePop();
+					}
+				}
+
+				if (selectedGameObject->HasComponent<TransformComponent>())
+				{
+					bool open = ImGui::TreeNode("Transform component");
+
+					if (open)
+					{
+						TransformComponent& transform = selectedGameObject->GetComponent<TransformComponent>();
+
+						ImGui::DragFloat2("Position", glm::value_ptr(transform.m_position), 0.1f, 0.0f, 0.0f, "%.5f");
+						ImGui::DragFloat("Rotation", &transform.m_rotation, 0.1f, 0.0f, 0.0f, "%.5f");
+						ImGui::DragFloat2("Scale", glm::value_ptr(transform.m_scale), 0.1f, 0.0f, 0.0f, "%.5f");
+
+						ImGui::TreePop();
+					}
+				}
 			}
 
 			ImGui::End();
