@@ -5,6 +5,7 @@
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
+#include <PoltergeistEngine/Components/TagComponent.hpp>
 #include <PoltergeistEngine/Components/TransformComponent.hpp>
 #include <PoltergeistEngine/Rendering/Texture.hpp>
 #include <PoltergeistEngine/Rendering/FrameBuffer.hpp>
@@ -83,9 +84,11 @@ int main()
 		Scene defaultScene;
 
 		GameObject& gameObject1 = defaultScene.CreateGameObject();
+		gameObject1.AddComponent<TagComponent>("First square");
 		gameObject1.AddComponent<TransformComponent>(glm::vec2(0.0f, 0.0f), 0.0f, glm::vec2(0.25f, 0.25f));
 
 		GameObject& gameObject2 = defaultScene.CreateGameObject();
+		gameObject2.AddComponent<TagComponent>("Second square");
 		gameObject2.AddComponent<TransformComponent>(glm::vec2(-1.0f, -1.0f), 0.0f, glm::vec2(0.5f, 0.5f));
 
 		while (!glfwWindowShouldClose(window.get()))
@@ -102,7 +105,11 @@ int main()
 
 			for (const GameObject& gameObject : defaultScene.GetGameObjects())
 			{
-				bool open = ImGui::TreeNodeEx(reinterpret_cast<void*>(currentNodeIndex), ImGuiTreeNodeFlags_OpenOnArrow,"Object");
+				const char* nodeName = gameObject.HasComponent<TagComponent>()
+				        ? gameObject.GetComponent<TagComponent>().m_tag.c_str()
+				        : "Object";
+
+				bool open = ImGui::TreeNodeEx(reinterpret_cast<void*>(currentNodeIndex), ImGuiTreeNodeFlags_OpenOnArrow, nodeName);
 
 				if (open)
 				{
