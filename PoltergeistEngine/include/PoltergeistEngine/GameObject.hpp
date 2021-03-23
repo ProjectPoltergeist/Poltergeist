@@ -44,13 +44,24 @@ public:
 	}
 
 	template<typename T>
-	bool HasComponent() noexcept
+	bool HasComponent() const noexcept
 	{
 		return m_registry.has<T>(m_entityId);
 	}
 
 	template<typename T>
 	T& GetComponent()
+	{
+		if (!HasComponent<T>())
+		{
+			throw std::runtime_error("Entity doesn't have component");
+		}
+
+		return m_registry.get<T>(m_entityId);
+	}
+
+	template<typename T>
+	const T& GetComponent() const
 	{
 		if (!HasComponent<T>())
 		{
