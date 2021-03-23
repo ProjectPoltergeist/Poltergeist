@@ -11,7 +11,7 @@ struct my_error_mgr
 
 void my_error_exit(j_common_ptr decompressInfo)
 {
-    my_error_mgr* error = (my_error_mgr*)decompressInfo->err;
+    my_error_mgr* error = reinterpret_cast<my_error_mgr*>(decompressInfo->err);
     (*decompressInfo->err->output_message) (decompressInfo);
     longjmp(error->setJumpBuffer, 1);
 }
@@ -33,7 +33,7 @@ std::shared_ptr<JpegImage> JpegImage::LoadFromFile(FILE* file)
 	if (setjmp(error.setJumpBuffer))
 	{
 		jpeg_destroy_decompress(&decompressInfo);
-		throw std::runtime_error("jpg:jmp error");
+		throw std::runtime_error("Initalizing decompress error");
 	}
 
 	jpeg_create_decompress(&decompressInfo);
@@ -44,22 +44,23 @@ std::shared_ptr<JpegImage> JpegImage::LoadFromFile(FILE* file)
 	int rowLength = decompressInfo.output_width * decompressInfo.output_components;
 	JSAMPARRAY pixelBuffer;
 	pixelBuffer = (*decompressInfo.mem->alloc_sarray)
-		((j_common_ptr)&decompressInfo, JPOOL_IMAGE, rowLength, 1);
+		(reinterpret_cast<j_common_ptr>(&decompressInfo), JPOOL_IMAGE, rowLength, 1);
 
 	std::shared_ptr<JpegImage> result = std::make_shared<JpegImage>();
 	result->m_data = new uint8_t[decompressInfo.output_width * decompressInfo.output_height * 3];
-	size_t data_offest = 0;
+	size_t dataOffset = 0;
 	while (decompressInfo.output_scanline < decompressInfo.output_height)
 	{
 		jpeg_read_scanlines(&decompressInfo, pixelBuffer, 1);
-		memcpy(result->m_data + data_offest, pixelBuffer[0], rowLength);
-		data_offest += rowLength;
+		memcpy(result->m_data + dataOffset, pixelBuffer[0], rowLength);
+		dataOffset += rowLength;
 	}
 
 	jpeg_finish_decompress(&decompressInfo);
 	jpeg_destroy_decompress(&decompressInfo);
 
-	if (error.publicErrorManager.num_warnings) throw std::runtime_error("Decompressing error");
+	if (error.publicErrorManager.num_warnings)
+		throw std::runtime_error("Decompressing error");
 
 	result->m_width = decompressInfo.output_width;
 	result->m_height = decompressInfo.output_height;
