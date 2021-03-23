@@ -8,7 +8,7 @@ std::shared_ptr<Image> Image::LoadFromFile(const std::filesystem::path& imagePat
 	FILE* file = OpenFile(imagePath.u8string().c_str(), "rb");
 
 	if (!file)
-	throw std::runtime_error("Couldn't open the file");
+		throw std::runtime_error("Couldn't open the file");
 
 	std::shared_ptr<Image> result;
 	if (JpegImage::IsValidHeader(file))

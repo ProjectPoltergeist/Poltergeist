@@ -26,11 +26,8 @@ bool JpegImage::IsValidHeader(FILE* file)
 
 std::shared_ptr<JpegImage> JpegImage::LoadFromFile(FILE* file)
 {
-	std::shared_ptr<JpegImage> result = std::make_shared<JpegImage>();
-	my_error_mgr error;
 	jpeg_decompress_struct decompressInfo;
-	JSAMPARRAY pixelBuffer;
-
+	my_error_mgr error;
 	decompressInfo.err = jpeg_std_error(&error.publicErrorManager);
 	error.publicErrorManager.error_exit = my_error_exit;
 	if (setjmp(error.setJumpBuffer))
@@ -45,9 +42,11 @@ std::shared_ptr<JpegImage> JpegImage::LoadFromFile(FILE* file)
 	jpeg_start_decompress(&decompressInfo);
 
 	int rowLength = decompressInfo.output_width * decompressInfo.output_components;
+	JSAMPARRAY pixelBuffer;
 	pixelBuffer = (*decompressInfo.mem->alloc_sarray)
 		((j_common_ptr)&decompressInfo, JPOOL_IMAGE, rowLength, 1);
 
+	std::shared_ptr<JpegImage> result = std::make_shared<JpegImage>();
 	result->m_data = new uint8_t[decompressInfo.output_width * decompressInfo.output_height * 3];
 	size_t data_offest = 0;
 	while (decompressInfo.output_scanline < decompressInfo.output_height)

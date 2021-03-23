@@ -12,7 +12,6 @@ bool PngImage::IsValidHeader(FILE* file)
 
 std::shared_ptr<PngImage> PngImage::LoadFromFile(FILE* file)
 {
-	std::shared_ptr<PngImage> result = std::make_shared<PngImage>();
 	png_structp internalState = png_create_read_struct(PNG_LIBPNG_VER_STRING, nullptr, nullptr, nullptr);
 
 	png_set_user_limits(internalState, 0x7fffffff, 0x7fffffff);
@@ -23,6 +22,7 @@ std::shared_ptr<PngImage> PngImage::LoadFromFile(FILE* file)
 	png_read_info(internalState, imageInfo);
 	png_set_palette_to_rgb(internalState);
 
+	std::shared_ptr<PngImage> result = std::make_shared<PngImage>();
 	result->m_width = png_get_image_width(internalState, imageInfo);
 	result->m_height = png_get_image_height(internalState, imageInfo);
 
