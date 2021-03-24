@@ -5,7 +5,7 @@
 
 std::shared_ptr<Image> Image::LoadFromFile(const std::filesystem::path& imagePath)
 {
-	FILE* file = OpenFile(imagePath.u8string().c_str(), "rb");
+	FILE* file = OpenFile(reinterpret_cast<const char*>(imagePath.u8string().c_str()), "rb");
 
 	if (!file)
 		throw std::runtime_error("Couldn't open the file");
