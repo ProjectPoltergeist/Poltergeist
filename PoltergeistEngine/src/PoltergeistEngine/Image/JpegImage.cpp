@@ -2,6 +2,7 @@
 #include <jpeglib.h>
 #include <iostream>
 #include <csetjmp>
+#include <cstring>
 
 struct my_error_mgr
 {
