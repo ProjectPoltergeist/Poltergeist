@@ -10,7 +10,7 @@ std::shared_ptr<Image> Image::LoadFromFile(const std::filesystem::path& imagePat
 	if (!file)
 		throw std::runtime_error("Couldn't open the file");
 
-	std::shared_ptr<Image> result = std::make_shared<Image>();
+	std::shared_ptr<Image> result;
 	if (JpegImage::IsValidHeader(file))
 		result = JpegImage::LoadFromFile(file);
 	if (PngImage::IsValidHeader(file))

@@ -28,6 +28,7 @@ bool JpegImage::IsValidHeader(FILE* file)
 std::shared_ptr<JpegImage> JpegImage::LoadFromFile(FILE* file)
 {
 	jpeg_decompress_struct decompressInfo;
+	decompressInfo.out_color_space = JCS_RGB;
 	ErrorManager errorManager;
 	decompressInfo.err = jpeg_std_error(&errorManager.publicErrorManager);
 	errorManager.publicErrorManager.error_exit = ErrorExit;
@@ -41,7 +42,6 @@ std::shared_ptr<JpegImage> JpegImage::LoadFromFile(FILE* file)
 	jpeg_stdio_src(&decompressInfo, file);
 	jpeg_read_header(&decompressInfo, true);
 	jpeg_start_decompress(&decompressInfo);
-	decompressInfo.out_color_space = JCS_RGB;
 
 	int rowLength = decompressInfo.output_width * decompressInfo.output_components;
 	JSAMPARRAY pixelBuffer;
