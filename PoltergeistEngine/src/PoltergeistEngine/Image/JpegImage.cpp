@@ -12,9 +12,9 @@ struct ErrorManager
 
 void ErrorExit(j_common_ptr decompressInfo)
 {
-    ErrorManager* error = reinterpret_cast<ErrorManager*>(decompressInfo->err);
+    ErrorManager* errorManager = reinterpret_cast<ErrorManager*>(decompressInfo->err);
     (*decompressInfo->err->output_message) (decompressInfo);
-    longjmp(error->setJumpBuffer, 1);
+    longjmp(errorManager->setJumpBuffer, 1);
 }
 
 bool JpegImage::IsValidHeader(FILE* file)
