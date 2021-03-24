@@ -4,15 +4,15 @@
 #include <csetjmp>
 #include <cstring>
 
-struct MyErrorManager
+struct ErrorManager
 {
     jpeg_error_mgr publicErrorManager;
     jmp_buf setJumpBuffer;
 };
 
-void MyErrorExit(j_common_ptr decompressInfo)
+void ErrorExit(j_common_ptr decompressInfo)
 {
-    MyErrorManager* error = reinterpret_cast<MyErrorManager*>(decompressInfo->err);
+    ErrorManager* error = reinterpret_cast<ErrorManager*>(decompressInfo->err);
     (*decompressInfo->err->output_message) (decompressInfo);
     longjmp(error->setJumpBuffer, 1);
 }
@@ -28,9 +28,9 @@ bool JpegImage::IsValidHeader(FILE* file)
 std::shared_ptr<JpegImage> JpegImage::LoadFromFile(FILE* file)
 {
 	jpeg_decompress_struct decompressInfo;
-	MyErrorManager error;
+	ErrorManager error;
 	decompressInfo.err = jpeg_std_error(&error.publicErrorManager);
-	error.publicErrorManager.error_exit = MyErrorExit;
+	error.publicErrorManager.error_exit = ErrorExit;
 	if (setjmp(error.setJumpBuffer))
 	{
 		jpeg_destroy_decompress(&decompressInfo);
