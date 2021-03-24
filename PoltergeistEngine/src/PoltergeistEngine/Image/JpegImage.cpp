@@ -28,10 +28,10 @@ bool JpegImage::IsValidHeader(FILE* file)
 std::shared_ptr<JpegImage> JpegImage::LoadFromFile(FILE* file)
 {
 	jpeg_decompress_struct decompressInfo;
-	ErrorManager error;
-	decompressInfo.err = jpeg_std_error(&error.publicErrorManager);
-	error.publicErrorManager.error_exit = ErrorExit;
-	if (setjmp(error.setJumpBuffer))
+	ErrorManager errorManager;
+	decompressInfo.err = jpeg_std_error(&errorManager.publicErrorManager);
+	errorManager.publicErrorManager.error_exit = ErrorExit;
+	if (setjmp(errorManager.setJumpBuffer))
 	{
 		jpeg_destroy_decompress(&decompressInfo);
 		throw std::runtime_error("Initalizing decompress error");
@@ -47,22 +47,23 @@ std::shared_ptr<JpegImage> JpegImage::LoadFromFile(FILE* file)
 	pixelBuffer = (*decompressInfo.mem->alloc_sarray)
 		(reinterpret_cast<j_common_ptr>(&decompressInfo), JPOOL_IMAGE, rowLength, 1);
 
-	std::shared_ptr<JpegImage> result = std::make_shared<JpegImage>();
-	result->m_data = new uint8_t[decompressInfo.output_width * decompressInfo.output_height * 3];
+	std::shared_ptr<JpegImage> decompressResult = std::make_shared<JpegImage>();
+	decompressResult->m_data = new uint8_t[decompressInfo.output_width * decompressInfo.output_height * 3];
 	size_t dataOffset = 0;
 	while (decompressInfo.output_scanline < decompressInfo.output_height)
 	{
 		jpeg_read_scanlines(&decompressInfo, pixelBuffer, 1);
-		memcpy(result->m_data + dataOffset, pixelBuffer[0], rowLength);
+		memcpy(decompressResult->m_data + dataOffset, pixelBuffer[0], rowLength);
 		dataOffset += rowLength;
 	}
 
 	jpeg_finish_decompress(&decompressInfo);
 	jpeg_destroy_decompress(&decompressInfo);
 
-	if (error.publicErrorManager.num_warnings > 0)
+	if (errorManager.publicErrorManager.num_warnings > 0)
 		throw std::runtime_error("Decompressing error");
 
-	result->m_width = decompressInfo.output_width;
-	result->m_height = decompressInfo.output_height;
+	decompressResult->m_width = decompressInfo.output_width;
+	decompressResult->m_height = decompressInfo.output_height;
+	return decompressResult;
 }

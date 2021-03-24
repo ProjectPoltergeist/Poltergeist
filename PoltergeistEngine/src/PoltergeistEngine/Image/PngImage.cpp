@@ -22,34 +22,34 @@ std::shared_ptr<PngImage> PngImage::LoadFromFile(FILE* file)
 	png_read_info(internalState, imageInfo);
 	png_set_palette_to_rgb(internalState);
 
-	std::shared_ptr<PngImage> result = std::make_shared<PngImage>();
-	result->m_width = png_get_image_width(internalState, imageInfo);
-	result->m_height = png_get_image_height(internalState, imageInfo);
+	std::shared_ptr<PngImage> decompressResult = std::make_shared<PngImage>();
+	decompressResult->m_width = png_get_image_width(internalState, imageInfo);
+	decompressResult->m_height = png_get_image_height(internalState, imageInfo);
 
 	png_read_update_info(internalState, imageInfo);
 
-	png_bytepp rows = new png_bytep[result->m_height];
+	png_bytepp rows = new png_bytep[decompressResult->m_height];
 
-	for (size_t row = 0; row < result->m_height; row++)
+	for (size_t row = 0; row < decompressResult->m_height; row++)
 	{
-		rows[row] = new png_byte[result->m_width * 3];
+		rows[row] = new png_byte[decompressResult->m_width * 3];
 	}
 
 	png_read_image(internalState, rows);
 	png_read_end(internalState, imageInfo);
 
-	result->m_data = new uint8_t[result->m_width * result->m_height * 3];
+	decompressResult->m_data = new uint8_t[decompressResult->m_width * decompressResult->m_height * 3];
 
-	for (uint32_t y = 0; y < result->m_height; y++)
+	for (uint32_t y = 0; y < decompressResult->m_height; y++)
 	{
-		for (uint32_t x = 0; x < result->m_width * 3; x++)
+		for (uint32_t x = 0; x < decompressResult->m_width * 3; x++)
 		{
-			(result->m_data)[y * result->m_width * 3 + x] = rows[y][x];
+			(decompressResult->m_data)[y * decompressResult->m_width * 3 + x] = rows[y][x];
 		}
 	}
 
 	delete[] rows;
 
 	png_destroy_read_struct(&internalState, &imageInfo, nullptr);
-	return result;
+	return decompressResult;
 }
