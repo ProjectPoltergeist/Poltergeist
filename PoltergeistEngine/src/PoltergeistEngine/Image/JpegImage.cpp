@@ -60,7 +60,7 @@ std::shared_ptr<JpegImage> JpegImage::LoadFromFile(FILE* file)
 	jpeg_finish_decompress(&decompressInfo);
 	jpeg_destroy_decompress(&decompressInfo);
 
-	if (error.publicErrorManager.num_warnings)
+	if (error.publicErrorManager.num_warnings > 0)
 		throw std::runtime_error("Decompressing error");
 
 	result->m_width = decompressInfo.output_width;
