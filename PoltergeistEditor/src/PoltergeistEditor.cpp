@@ -137,6 +137,17 @@ int main()
 				if (selectedGameObject->HasComponent<TagComponent>())
 				{
 					bool open = ImGui::TreeNode("Tag component");
+					bool removeComponent = false;
+
+					if (ImGui::BeginPopupContextItem())
+					{
+						if (ImGui::MenuItem("Remove"))
+						{
+							removeComponent = true;
+						}
+
+						ImGui::EndPopup();
+					}
 
 					if (open)
 					{
@@ -153,11 +164,27 @@ int main()
 
 						ImGui::TreePop();
 					}
+
+					if (removeComponent)
+					{
+						selectedGameObject->RemoveComponent<TagComponent>();
+					}
 				}
 
 				if (selectedGameObject->HasComponent<TransformComponent>())
 				{
 					bool open = ImGui::TreeNode("Transform component");
+					bool removeComponent = false;
+
+					if (ImGui::BeginPopupContextItem())
+					{
+						if (ImGui::MenuItem("Remove"))
+						{
+							removeComponent = true;
+						}
+
+						ImGui::EndPopup();
+					}
 
 					if (open)
 					{
@@ -169,6 +196,35 @@ int main()
 
 						ImGui::TreePop();
 					}
+
+					if (removeComponent)
+					{
+						selectedGameObject->RemoveComponent<TransformComponent>();
+					}
+				}
+
+				if (ImGui::Button("Add component"))
+				{
+					ImGui::OpenPopup("AddComponentPopup");
+				}
+
+				if (ImGui::BeginPopup("AddComponentPopup"))
+				{
+					if (!selectedGameObject->HasComponent<TagComponent>() && ImGui::MenuItem("Tag component"))
+					{
+						selectedGameObject->AddComponent<TagComponent>("Object");
+
+						ImGui::CloseCurrentPopup();
+					}
+
+					if (!selectedGameObject->HasComponent<TransformComponent>() && ImGui::MenuItem("Transform component"))
+					{
+						selectedGameObject->AddComponent<TransformComponent>(glm::vec2(0.0f, 0.0f), 0.0f, glm::vec2(1.0f, 1.0f));
+
+						ImGui::CloseCurrentPopup();
+					}
+
+					ImGui::EndPopup();
 				}
 			}
 
