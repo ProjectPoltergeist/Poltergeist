@@ -39,7 +39,7 @@ std::shared_ptr<JpegImage> JpegImage::LoadFromFile(FILE* file)
 	if (setjmp(errorManager.setJumpBuffer))
 	{
 		jpeg_destroy_decompress(&decompressInfo);
-		throw std::runtime_error("Initalizing decompress error");
+		throw std::runtime_error("Initializing decompress error");
 	}
 
 	jpeg_create_decompress(&decompressInfo);
