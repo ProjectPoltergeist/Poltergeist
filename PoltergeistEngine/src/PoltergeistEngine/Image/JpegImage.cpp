@@ -20,10 +20,10 @@ void ErrorExit(j_common_ptr decompressInfo)
 bool JpegImage::IsValidHeader(FILE* file)
 {
 	uint8_t header[2];
-	size_t result = fread(&header, 1, 2, file);
-	fseek(file, -result, SEEK_CUR);
+	size_t readSize = fread(&header, 1, 2, file);
+	fseek(file, -readSize, SEEK_CUR);
 
-	if(result != 2)
+	if (readSize != 2)
 		return false;
 
 	return header[0] == 0xFF && header[1] == 0xD8;
