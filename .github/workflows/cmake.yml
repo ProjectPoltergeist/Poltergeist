@@ -35,6 +35,8 @@ jobs:
             generator: 'MSYS Makefiles' 
           - compiler: 'msvc'
             generator: 'MSYS Makefiles'
+          - compiler: 'clangcl'
+            generator: 'MSYS Makefiles'
           - compiler: 'gcc'
             generator: 'Visual Studio 16 2019'
           - compiler: 'clang'
