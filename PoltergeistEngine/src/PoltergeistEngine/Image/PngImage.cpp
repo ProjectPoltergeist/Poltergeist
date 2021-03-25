@@ -4,11 +4,12 @@
 bool PngImage::IsValidHeader(FILE* file)
 {
 	uint8_t header[8];
-	size_t resultLength = fread(header, 1, 8, file);
-	fseek(file, -resultLength, SEEK_CUR);
+	size_t result = fread(header, 1, 8, file);
+	fseek(file, -result, SEEK_CUR);
 
-	if (resultLength != 8)
+	if (result != 8)
 		return false;
+
 	return png_sig_cmp(header, 0, 8) == 0;
 }
 
