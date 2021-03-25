@@ -11,6 +11,7 @@ protected:
 	uint8_t* m_data = nullptr;
 public:
 	[[nodiscard]] static std::shared_ptr<Image> LoadFromFile(const std::filesystem::path& imagePath);
+
 	[[nodiscard]] uint32_t GetWidth() const noexcept;
 	[[nodiscard]] uint32_t GetHeight() const noexcept;
 	[[nodiscard]] uint8_t* GetData() const noexcept;

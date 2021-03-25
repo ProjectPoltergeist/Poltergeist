@@ -22,6 +22,7 @@ std::shared_ptr<Image> Image::LoadFromFile(const std::filesystem::path& imagePat
 	}
 
 	fclose(file);
+
 	return result;
 }
 

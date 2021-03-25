@@ -4,9 +4,11 @@
 bool PngImage::IsValidHeader(FILE* file)
 {
 	uint8_t header[8];
-	fread(header, 1, 8, file);
-	fseek(file, -8, SEEK_CUR);
+	size_t resultLength = fread(header, 1, 8, file);
+	fseek(file, -resultLength, SEEK_CUR);
 
+	if (resultLength != 8)
+		return false;
 	return png_sig_cmp(header, 0, 8) == 0;
 }
 
@@ -48,8 +50,12 @@ std::shared_ptr<PngImage> PngImage::LoadFromFile(FILE* file)
 		}
 	}
 
-	delete[] rows;
+	for (size_t row = 0; row < decompressResult->m_height; row++)
+	{
+		delete[] rows[row];
+	}
 
 	png_destroy_read_struct(&internalState, &imageInfo, nullptr);
+
 	return decompressResult;
 }

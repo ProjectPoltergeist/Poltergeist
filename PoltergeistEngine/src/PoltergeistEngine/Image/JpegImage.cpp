@@ -20,8 +20,11 @@ void ErrorExit(j_common_ptr decompressInfo)
 bool JpegImage::IsValidHeader(FILE* file)
 {
 	uint16_t header;
-	fread(&header, 1, 2, file);
-	fseek(file, -2, SEEK_CUR);
+	size_t resultLength = fread(&header, 1, 2, file);
+	fseek(file, -resultLength, SEEK_CUR);
+
+	if(resultLength != 2)
+		return false;
 	return header == 0xD8FF;
 }
 
@@ -66,5 +69,6 @@ std::shared_ptr<JpegImage> JpegImage::LoadFromFile(FILE* file)
 
 	decompressResult->m_width = decompressInfo.output_width;
 	decompressResult->m_height = decompressInfo.output_height;
+
 	return decompressResult;
 }
