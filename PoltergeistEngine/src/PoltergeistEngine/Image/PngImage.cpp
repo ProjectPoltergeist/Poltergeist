@@ -46,7 +46,7 @@ std::shared_ptr<PngImage> PngImage::LoadFromFile(FILE* file)
 	{
 		for (uint32_t x = 0; x < decompressResult->m_width * 3; x++)
 		{
-			(decompressResult->m_data)[y * decompressResult->m_width * 3 + x] = rows[y][x];
+			decompressResult->m_data[y * decompressResult->m_width * 3 + x] = rows[y][x];
 		}
 	}
 
