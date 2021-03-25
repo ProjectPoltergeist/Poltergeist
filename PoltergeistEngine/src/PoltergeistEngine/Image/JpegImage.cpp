@@ -19,13 +19,14 @@ void ErrorExit(j_common_ptr decompressInfo)
 
 bool JpegImage::IsValidHeader(FILE* file)
 {
-	uint16_t header;
+	uint16_t header[2];
 	size_t resultLength = fread(&header, 1, 2, file);
 	fseek(file, -resultLength, SEEK_CUR);
 
 	if(resultLength != 2)
 		return false;
-	return header == 0xD8FF;
+
+	return header[0] == 0xFF && header[1] == 0xD8;
 }
 
 std::shared_ptr<JpegImage> JpegImage::LoadFromFile(FILE* file)
