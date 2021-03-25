@@ -15,8 +15,9 @@ jobs:
       fail-fast: false
       matrix:
         os: [windows-latest,ubuntu-20.04]
-        compiler: ['msvc','gcc','clang']
+        compiler: ['msvc','clangcl','gcc','clang']
         generator: ['Visual Studio 16 2019', 'MSYS Makefiles', 'Unix Makefiles']
+        toolkit: ['']
         configuration: ['Debug', 'Release']
         exclude:
           - os: windows-latest
@@ -25,6 +26,8 @@ jobs:
             compiler: 'gcc'
           - os: windows-latest
             compiler: 'clang'
+          - os: ubuntu-20.04
+            compiler: 'clangcl'
           - os: ubuntu-20.04
             compiler: 'msvc'
           - os: ubuntu-20.04
@@ -37,7 +40,9 @@ jobs:
             generator: 'Visual Studio 16 2019'
           - compiler: 'clang'
             generator: 'Visual Studio 16 2019'
-#        include:
+        include:
+          - compiler: 'clangcl'
+            toolkit: ' -T ClangCL'
 #          - generator: 'Visual Studio 16 2019'
 #            cmakewrapper: ''
 #          - generator: 'MSYS Makefiles'
@@ -117,7 +122,7 @@ jobs:
         setupOnly: true
         doNotUpdateVcpkg: true
         vcpkgDirectory: '${{github.workspace}}/vcpkg'
-        appendedCacheKey: ${{matrix.os}}-${{matrix.generator}}-${{matrix.compiler}}-${{matrix.configuration}}-${{hashFiles('vcpkg.json')}}
+        appendedCacheKey: ${{matrix.os}}-${{matrix.generator}}-${{matrix.compiler}}-${{matrix.toolkit}}-${{matrix.configuration}}-${{hashFiles('vcpkg.json')}}
         additionalCachedPaths: '${{env.buildDir}}/vcpkg_installed'
 
     - name: Build
@@ -130,4 +135,4 @@ jobs:
         buildWithCMakeArgs: '--config ${{matrix.configuration}}'
         buildDirectory: ${{env.buildDir}}
         cmakeListsTxtPath: '${{github.workspace}}/CMakeLists.txt'
-        cmakeAppendedArgs: '-G "${{matrix.generator}}" -DCMAKE_BUILD_TYPE=${{matrix.configuration}}'
+        cmakeAppendedArgs: '-G "${{matrix.generator}}" -DCMAKE_BUILD_TYPE=${{matrix.configuration}}${{matrix.toolkit}}'
