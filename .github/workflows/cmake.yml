@@ -17,7 +17,6 @@ jobs:
         os: [windows-latest,ubuntu-20.04]
         compiler: ['msvc','clangcl','gcc','clang']
         generator: ['Visual Studio 16 2019', 'MSYS Makefiles', 'Unix Makefiles']
-        toolkit: ['']
         configuration: ['Debug', 'Release']
         exclude:
           - os: windows-latest
