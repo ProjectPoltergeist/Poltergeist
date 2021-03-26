@@ -105,6 +105,9 @@ int main()
 
 			ImGui::Begin("Scene Hierarchy", nullptr, ImGuiWindowFlags_NoCollapse);
 
+			if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
+				selectedGameObject = nullptr;
+
 			size_t currentNodeIndex = 0;
 
 			for (GameObject& gameObject : defaultScene.GetGameObjects())
