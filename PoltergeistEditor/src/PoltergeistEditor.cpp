@@ -108,6 +108,18 @@ int main()
 			if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
 				selectedGameObject = nullptr;
 
+			if (ImGui::BeginPopupContextWindow(nullptr, 1, false))
+			{
+				if (ImGui::MenuItem("Create game object"))
+				{
+					GameObject& gameObject = defaultScene.CreateGameObject();
+					gameObject.AddComponent<TagComponent>("Object");
+					gameObject.AddComponent<TransformComponent>(glm::vec2(0.0f, 0.0f), 0.0f, glm::vec2(1.0f, 1.0f));
+				}
+
+				ImGui::EndPopup();
+			}
+
 			size_t currentNodeIndex = 0;
 
 			for (GameObject& gameObject : defaultScene.GetGameObjects())
@@ -123,9 +135,27 @@ int main()
 					selectedGameObject = &gameObject;
 				}
 
+				bool removeGameObject = false;
+
+				if (ImGui::BeginPopupContextItem())
+				{
+					if (ImGui::MenuItem("Remove"))
+						removeGameObject = true;
+
+					ImGui::EndPopup();
+				}
+
 				if (open)
 				{
 					ImGui::TreePop();
+				}
+
+				if (removeGameObject)
+				{
+					defaultScene.RemoveGameObject(gameObject);
+
+					if (selectedGameObject == &gameObject)
+						selectedGameObject = nullptr;
 				}
 
 				currentNodeIndex++;

@@ -28,6 +28,11 @@ GameObject& GameObject::operator =(GameObject&& other) noexcept
 	return *this;
 }
 
+bool GameObject::operator ==(const GameObject& other) noexcept
+{
+	return &m_registry == &other.m_registry && m_entityId == other.m_entityId;
+}
+
 GameObject GameObject::Create(entt::registry& registry) noexcept
 {
 	return GameObject(registry, registry.create());

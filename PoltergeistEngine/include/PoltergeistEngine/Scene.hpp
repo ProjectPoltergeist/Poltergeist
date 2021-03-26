@@ -12,6 +12,7 @@ private:
 	std::vector<GameObject> m_gameObjects;
 public:
 	GameObject& CreateGameObject() noexcept;
+	void RemoveGameObject(GameObject& gameObject) noexcept;
 
 	std::vector<GameObject>& GetGameObjects() noexcept;
 };

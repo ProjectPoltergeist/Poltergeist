@@ -19,6 +19,8 @@ public:
 	GameObject& operator =(const GameObject& other) noexcept = delete;
 	GameObject& operator =(GameObject&& other) noexcept;
 
+	bool operator ==(const GameObject& other) noexcept;
+
 	static GameObject Create(entt::registry& registry) noexcept;
 
 	template<typename T, typename... Arguments>
