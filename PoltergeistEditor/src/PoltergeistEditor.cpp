@@ -15,6 +15,8 @@
 #include <PoltergeistEngine/GameObject.hpp>
 #include <PoltergeistEngine/Macros.hpp>
 #include <PoltergeistEngine/Scene.hpp>
+#include <yaml-cpp/yaml.h>
+#include <nfd.h>
 #ifdef WIN32
 #include <Windows.h>
 #endif
@@ -102,6 +104,91 @@ int main()
 			ImGui_ImplOpenGL3_NewFrame();
 			ImGui_ImplGlfw_NewFrame();
 			ImGui::NewFrame();
+
+			if (ImGui::BeginMainMenuBar())
+			{
+				if (ImGui::BeginMenu("File"))
+				{
+					if (ImGui::MenuItem("Save", "Ctrl+S"))
+					{
+						YAML::Emitter emitter;
+
+						emitter << YAML::BeginMap;
+						emitter << YAML::Key << "game_objects";
+						emitter << YAML::Value << YAML::BeginSeq;
+
+						for (const GameObject& gameObject : defaultScene.GetGameObjects())
+						{
+							emitter << YAML::BeginMap;
+							emitter << YAML::Key << "components";
+							emitter << YAML::Value << YAML::BeginMap;
+
+							if (gameObject.HasComponent<TagComponent>())
+							{
+								const TagComponent& tagComponent = gameObject.GetComponent<TagComponent>();
+
+								emitter << YAML::Key << "tag_component";
+								emitter << YAML::Value << YAML::BeginMap;
+
+								emitter << YAML::Key << "tag";
+								emitter << YAML::Value << tagComponent.m_tag;
+
+								emitter << YAML::EndMap;
+							}
+
+							if (gameObject.HasComponent<TransformComponent>())
+							{
+								const TransformComponent& transformComponent = gameObject.GetComponent<TransformComponent>();
+
+								emitter << YAML::Key << "transform_component";
+								emitter << YAML::Value << YAML::BeginMap;
+
+								emitter << YAML::Key << "position";
+								emitter << YAML::Value << YAML::BeginMap;
+								emitter << YAML::Key << "x";
+								emitter << YAML::Value << transformComponent.m_position.x;
+								emitter << YAML::Key << "y";
+								emitter << YAML::Value << transformComponent.m_position.y;
+								emitter << YAML::EndMap;
+
+								emitter << YAML::Key << "rotation";
+								emitter << YAML::Value << transformComponent.m_rotation;
+
+								emitter << YAML::Key << "scale";
+								emitter << YAML::Value << YAML::BeginMap;
+								emitter << YAML::Key << "width";
+								emitter << YAML::Value << transformComponent.m_scale.x;
+								emitter << YAML::Key << "height";
+								emitter << YAML::Value << transformComponent.m_scale.y;
+								emitter << YAML::EndMap;
+
+								emitter << YAML::EndMap;
+							}
+
+							emitter << YAML::EndMap;
+							emitter << YAML::EndMap;
+						}
+
+						emitter << YAML::EndSeq;
+						emitter << YAML::EndMap;
+
+						nfdchar_t* path = nullptr;
+						nfdresult_t dialogResult = NFD_SaveDialog("scene", nullptr, &path);
+
+						if (dialogResult == NFD_OKAY)
+						{
+							std::ofstream fileStream(path);
+
+							if (fileStream.good())
+								fileStream << emitter.c_str();
+						}
+					}
+
+					ImGui::EndMenu();
+				}
+
+				ImGui::EndMainMenuBar();
+			}
 
 			ImGui::Begin("Scene Hierarchy", nullptr, ImGuiWindowFlags_NoCollapse);
 

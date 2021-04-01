@@ -13,6 +13,8 @@
 				"opengl3-glad-binding"
 			]
 		},
-		"entt"
+		"entt",
+		"yaml-cpp",
+		"nativefiledialog"
 	]
 }
