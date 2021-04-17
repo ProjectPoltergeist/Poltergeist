@@ -6,6 +6,7 @@
 		"glad",
 		"glm",
 		"libpng",
+		"libjpeg-turbo",
 		{
 			"name":"imgui",
 			"features":[
