@@ -1,0 +1,29 @@
+version: 2
+updates:
+- package-ecosystem: nuget
+  directory: "/"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 10
+  reviewers:
+  - KernelErr0r
+  assignees:
+  - KernelErr0r
+- package-ecosystem: github-actions
+  directory: "/"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 10
+  reviewers:
+  - KernelErr0r
+  assignees:
+  - KernelErr0r
+- package-ecosystem: gitsubmodule
+  directory: "/"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 10
+  reviewers:
+  - KernelErr0r
+  assignees:
+  - KernelErr0r
