@@ -127,7 +127,7 @@ jobs:
         additionalCachedPaths: '${{env.buildDir}}/vcpkg_installed'
 
     - name: Build
-      uses: lukka/run-cmake@v3.3
+      uses: lukka/run-cmake@v3.4
       with:
 #        cmakeWrapperCommand: '${{matrix.cmakewrapper}}'
         cmakeListsOrSettingsJson: CMakeListsTxtAdvanced
