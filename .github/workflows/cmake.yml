@@ -94,7 +94,7 @@ jobs:
 
     - if: matrix.compiler == 'clang' && matrix.os != 'windows-latest'
       name: Install LLVM and Clang
-      uses: KyleMayes/install-llvm-action@v1
+      uses: KyleMayes/install-llvm-action@v1.3.0
       with:
         version: "11"
         directory: '${{env.llvmLocation}}'
