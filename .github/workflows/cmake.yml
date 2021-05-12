@@ -118,7 +118,7 @@ jobs:
       uses: lukka/get-cmake@latest
 
     - name: Run vcpkg
-      uses: lukka/run-vcpkg@v7.1
+      uses: lukka/run-vcpkg@v7.3
       with:
         setupOnly: true
         doNotUpdateVcpkg: true
