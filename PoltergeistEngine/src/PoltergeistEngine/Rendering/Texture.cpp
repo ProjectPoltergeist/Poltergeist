@@ -1,4 +1,4 @@
-#include "PoltergeistEngine/Rendering/Texture.hpp"
+﻿#include "PoltergeistEngine/Rendering/Texture.hpp"
 #include "PoltergeistEngine/Image/Image.hpp"
 #include <glad/glad.h>
 
@@ -46,10 +46,10 @@ std::shared_ptr<Texture> Texture::CreateFromFile(const std::filesystem::path &te
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-	Image image(texturePath);
+	std::shared_ptr<Image> image = Image::LoadFromFile(texturePath);
 
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image.GetWidth(), image.GetHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, image.GetData());
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image->GetWidth(), image->GetHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, image->GetData());
 
 	texture->Unbind();
 
