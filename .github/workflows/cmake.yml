@@ -87,7 +87,7 @@ jobs:
     - if: matrix.compiler == 'clang' && matrix.os != 'windows-latest'
       name: Cache LLVM and Clang
       id: cache-llvm
-      uses: actions/cache@v2
+      uses: actions/cache@v3.0.1
       with:
         path: '${{env.llvmLocation}}'
         key: llvm-11
